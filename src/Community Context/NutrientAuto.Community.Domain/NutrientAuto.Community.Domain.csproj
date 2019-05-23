@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CrossCutting\NutrientAuto.CrossCutting.HttpService\NutrientAuto.CrossCutting.HttpService.csproj" />
+    <ProjectReference Include="..\..\CrossCutting\NutrientAuto.CrossCutting.Storage\NutrientAuto.CrossCutting.Storage.csproj" />
+    <ProjectReference Include="..\..\Shared Kernel\NutrientAuto.Shared.IntegrationEvents\NutrientAuto.Shared.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\..\Shared Kernel\NutrientAuto.Shared\NutrientAuto.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

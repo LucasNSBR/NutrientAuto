@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="5.2.3" />
+    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="5.2.3" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="5.2.3" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Community Context\NutrientAuto.Community.Data\NutrientAuto.Community.Data.csproj" />
+    <ProjectReference Include="..\..\Community Context\NutrientAuto.Community.Domain\NutrientAuto.Community.Domain.csproj" />
+    <ProjectReference Include="..\..\Identity Context\NutrientAuto.Identity.Data\NutrientAuto.Identity.Data.csproj" />
+    <ProjectReference Include="..\..\Identity Context\NutrientAuto.Identity.Service\NutrientAuto.Identity.Service.csproj" />
+    <ProjectReference Include="..\NutrientAuto.CrossCutting.EmailService\NutrientAuto.CrossCutting.EmailService.csproj" />
+    <ProjectReference Include="..\NutrientAuto.CrossCutting.Mapping\NutrientAuto.CrossCutting.Mapping.csproj" />
+    <ProjectReference Include="..\NutrientAuto.CrossCutting.ServiceBus\NutrientAuto.CrossCutting.ServiceBus.csproj" />
+    <ProjectReference Include="..\NutrientAuto.CrossCutting.Storage\NutrientAuto.CrossCutting.Storage.csproj" />
+  </ItemGroup>
+
+</Project>
