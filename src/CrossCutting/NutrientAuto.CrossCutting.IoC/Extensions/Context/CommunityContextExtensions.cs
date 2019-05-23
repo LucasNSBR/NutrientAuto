@@ -65,7 +65,7 @@ namespace NutrientAuto.CrossCutting.IoC.Extensions.Context
         public static IServiceCollection AddCommunityContext(this IServiceCollection services)
         {
             services.AddDbContext<CommunityDbContext>(opt =>
-                 opt.UseInMemoryDatabase("NutrientDb"));
+                 opt.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=NutrientDb;Integrated Security=True"));
 
             services.AddScoped<IProfileRepository, ProfileRepository>();
             services.AddScoped<IProfileReadModelRepository, ProfileReadModelRepository>();
