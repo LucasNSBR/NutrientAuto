@@ -13,11 +13,11 @@ namespace NutrientAuto.Identity.Domain.Aggregates.UserAggregate
         {
         }
 
-        public NutrientIdentityUser(string name, string email, DateTime birthDate)
+        public NutrientIdentityUser(string name, string username, string email, DateTime birthDate)
         {
             Name = name;
+            UserName = username;
             Email = email;
-            UserName = email;
             BirthDate = birthDate;
         }
     }

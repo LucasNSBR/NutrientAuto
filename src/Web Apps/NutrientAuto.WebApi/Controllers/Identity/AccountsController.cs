@@ -26,6 +26,18 @@ namespace NutrientAuto.WebApi.Controllers.Identity
             _jwtFactory = jwtFactory;
         }
 
+        [HttpGet]
+        [Route("check-username")]
+        public async Task<IActionResult> CheckUsernameAvailabilityAsync(string username)
+        {
+            bool isAvailable = await _accountService.CheckUsernameAvailabilityAsync(username);
+
+            return CreateResponse(new
+            {
+                available = isAvailable
+            });
+        }
+
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> RegisterAsync([FromBody]RegisterUserCommand command)
@@ -57,7 +69,7 @@ namespace NutrientAuto.WebApi.Controllers.Identity
                 {
                     id = identity.Name,
                     email = command.Email,
-                    token 
+                    token
                 });
             }
 

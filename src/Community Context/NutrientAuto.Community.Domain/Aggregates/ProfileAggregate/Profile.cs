@@ -21,7 +21,7 @@ namespace NutrientAuto.Community.Domain.Aggregates.ProfileAggregate
         public bool IsProtected => Settings.PrivacyType == PrivacyType.Protected;
         public bool IsPrivate => Settings.PrivacyType == PrivacyType.Private;
 
-        private readonly List<Friend> _friends;
+        private readonly List<Friend> _friends = new List<Friend>();
         public IReadOnlyList<Friend> Friends => _friends;
 
         protected Profile()
@@ -37,7 +37,6 @@ namespace NutrientAuto.Community.Domain.Aggregates.ProfileAggregate
             EmailAddress = emailAddress;
             BirthDate = birthDate;
             Settings = new ProfileSettings(PrivacyType.Public);
-            _friends = new List<Friend>();
         }
 
         public void Update(Genre genre, string name, string username, EmailAddress emailAddress, DateTime birthDate, string bio)

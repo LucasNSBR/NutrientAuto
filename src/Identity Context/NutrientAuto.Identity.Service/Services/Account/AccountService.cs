@@ -31,12 +31,26 @@ namespace NutrientAuto.Identity.Service.Services.Account
             _mediator = mediator;
         }
 
+        public async Task<bool> CheckUsernameAvailabilityAsync(string username)
+        {
+            NutrientIdentityUser existingUser = await _userManager.FindByNameAsync(username);
+
+            return existingUser == null;
+        }
+
         public async Task<NutrientIdentityUser> RegisterAsync(RegisterUserCommand command)
         {
             if (NotifyCommandErrors(command))
                 return null;
 
-            NutrientIdentityUser user = new NutrientIdentityUser(command.Name, command.Email, command.BirthDate);
+            bool isAvailable = await CheckUsernameAvailabilityAsync(command.Username);
+            if (!isAvailable)
+            {
+                AddNotification("Nome de usuário inválido", "O nome de usuário que você escolheu já está em uso.");
+                return null;
+            }
+
+            NutrientIdentityUser user = new NutrientIdentityUser(command.Name, command.Username, command.Email, command.BirthDate);
 
             IdentityResult result = await _userManager.CreateAsync(user, command.Password);
             if (result.Succeeded)

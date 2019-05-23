@@ -7,6 +7,7 @@ namespace NutrientAuto.Identity.Service.Services.Account
 {
     public interface IAccountService
     {
+        Task<bool> CheckUsernameAvailabilityAsync(string username);
         Task<NutrientIdentityUser> RegisterAsync(RegisterUserCommand command);
         Task<ClaimsIdentity> LoginAsync(LoginUserCommand command);
         Task GenerateAccountConfirmationEmailAsync(SendAccountConfirmationEmailCommand command);
