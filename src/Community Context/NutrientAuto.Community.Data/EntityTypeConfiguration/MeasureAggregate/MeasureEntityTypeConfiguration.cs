@@ -47,6 +47,7 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MeasureAggregate
                     bodyPictureCfg.HasKey("Id");
                     bodyPictureCfg.Property(i => i.Name).IsRequired().HasMaxLength(150).HasColumnName("BodyPictureImageName");
                     bodyPictureCfg.Property(i => i.UrlPath).IsRequired().HasMaxLength(500).HasColumnName("BodyPictureImageUrlPath");
+                    bodyPictureCfg.ToTable("MeasureBodyPictures");
                 });
 
             builder
