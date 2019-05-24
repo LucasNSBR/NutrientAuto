@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NutrientAuto.Community.Domain.Aggregates.PostAggregate;
 using NutrientAuto.Community.Domain.Aggregates.PostAggregate.Subtypes;
 using NutrientAuto.Community.Domain.Aggregates.ProfileAggregate;
-using NutrientAuto.Shared.Data.EntityTypeConfiguration.ValueObjects;
 using System;
 
 namespace NutrientAuto.Community.Data.EntityTypeConfiguration.PostAggregate
@@ -64,6 +63,7 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.PostAggregate
                     cfg.HasKey("Id");
                     cfg.HasOne<Profile>().WithMany().HasForeignKey(pl => pl.ProfileId);
                     cfg.Property(p => p.DateCreated).IsRequired();
+                    cfg.ToTable("PostLikes");
                 });
         }
     }
