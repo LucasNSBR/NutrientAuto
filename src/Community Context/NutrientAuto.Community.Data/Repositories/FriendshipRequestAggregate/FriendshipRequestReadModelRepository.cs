@@ -26,10 +26,11 @@ namespace NutrientAuto.Community.Data.Repositories.FriendshipRequestAggregate
 
         public Task<IEnumerable<FriendshipRequestListReadModel>> GetFriendshipRequestList(Guid requestedId, string nameFilter = null, int pageNumber = 1, int pageSize = 20)
         {
-            string sql = @"SELECT FriendshipRequests.Id, FriendshipRequests.RequesterId, FriendshipRequests.DateCreated, Profiles.Name AS RequesterName, Profiles.AvatarImageName AS AvatarImageName, Profiles.AvatarImageUrlPath AS AvatarImageUrlPath FROM FriendshipRequests
+            string sql = @"SELECT FriendshipRequests.Id, FriendshipRequests.RequesterId, FriendshipRequests.DateCreated, Profiles.Name AS RequesterName, Profiles.AvatarImageName AS AvatarImageName, Profiles.AvatarImageUrlPath AS AvatarImageUrlPath 
+                         FROM FriendshipRequests
                          JOIN Profiles ON FriendshipRequests.RequesterId = Profiles.Id 
-                         WHERE Title LIKE %@nameFilter%
-                         ORDER BY Profiles.Name
+                         WHERE Title LIKE '%@nameFilter%'
+                         ORDER BY FriendshipRequests.DateCreated DESC
                          OFFSET (@pageNumber - 1) * @pageSize ROWS
                          FETCH NEXT @pageSize ROWS ONLY";
 
@@ -49,10 +50,11 @@ namespace NutrientAuto.Community.Data.Repositories.FriendshipRequestAggregate
 
         public Task<IEnumerable<FriendshipRequestSentListReadModel>> GetFriendshipRequestSentList(Guid requesterId, string nameFilter = null, int pageNumber = 1, int pageSize = 20)
         {
-            string sql = @"SELECT FriendshipRequests.Id, FriendshipRequests.RequestedId, FriendshipRequests.DateCreated, Profiles.Name AS RequestedName, Profiles.AvatarImageName AS AvatarImageName, Profiles.AvatarImageUrlPath AS AvatarImageUrlPath FROM FriendshipRequests
+            string sql = @"SELECT FriendshipRequests.Id, FriendshipRequests.RequestedId, FriendshipRequests.DateCreated, Profiles.Name AS RequestedName, Profiles.AvatarImageName AS AvatarImageName, Profiles.AvatarImageUrlPath AS AvatarImageUrlPath 
+                         FROM FriendshipRequests
                          JOIN Profiles ON FriendshipRequests.RequestedId = Profiles.Id 
-                         WHERE Title LIKE %@nameFilter%
-                         ORDER BY Profiles.Name
+                         WHERE Title LIKE '%@nameFilter%'
+                         ORDER BY FriendshipRequests.DateCreated DESC
                          OFFSET (@pageNumber - 1) * @pageSize ROWS
                          FETCH NEXT @pageSize ROWS ONLY";
 
