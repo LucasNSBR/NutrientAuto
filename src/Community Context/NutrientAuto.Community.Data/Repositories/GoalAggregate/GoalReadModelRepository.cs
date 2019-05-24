@@ -16,8 +16,9 @@ namespace NutrientAuto.Community.Data.Repositories.GoalAggregate
 
         public Task<IEnumerable<GoalListReadModel>> GetGoalListAsync(Guid profileId, string titleFilter = null, int pageNumber = 1, int pageSize = 20)
         {
-            string sql = @"SELECT Id, ProfileId, Title, DateCreated, IsCompleted FROM Goals 
-                         WHERE Title LIKE %@titleFilter%
+            string sql = @"SELECT Id, ProfileId, Title, DateCreated, IsCompleted 
+                         FROM Goals 
+                         WHERE Title LIKE '%@titleFilter%'
                          ORDER BY DateCreated DESC
                          OFFSET (@pageNumber - 1) * @pageSize ROWS
                          FETCH NEXT @pageSize ROWS ONLY";
@@ -27,7 +28,8 @@ namespace NutrientAuto.Community.Data.Repositories.GoalAggregate
 
         public Task<GoalSummaryReadModel> GetGoalSummaryAsync(Guid id)
         {
-            string sql = @"SELECT Id, ProfileId, Title, Details, DateCreated, IsCompleted, DateCompleted, AccomplishmentDetails FROM Goals
+            string sql = @"SELECT Id, ProfileId, Title, Details, DateCreated, IsCompleted, DateCompleted, AccomplishmentDetails 
+                         FROM Goals
                          WHERE Id = @id";
 
             return GetByIdAsync<GoalSummaryReadModel>(sql, new { id });
