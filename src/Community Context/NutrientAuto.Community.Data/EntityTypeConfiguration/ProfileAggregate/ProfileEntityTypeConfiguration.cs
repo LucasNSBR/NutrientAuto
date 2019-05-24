@@ -65,6 +65,7 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.ProfileAggregate
                     cfg.Property<Guid>("Id");
                     cfg.HasKey("Id");
                     cfg.HasOne<Profile>().WithMany().HasForeignKey(pl => pl.FriendId);
+                    cfg.ToTable("Friends");
                 });
         }
     }

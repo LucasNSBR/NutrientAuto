@@ -22,8 +22,9 @@ namespace NutrientAuto.Community.Data.Repositories.ProfileAggregate
 
         public Task<IEnumerable<ProfileListReadModel>> GetProfileListAsync(string nameFilter = null, int pageNumber = 1, int pageSize = 20)
         {
-            string sql = @"SELECT Profiles.Id, Profiles.Name, Profiles.Username, Profiles.AvatarImageName AS AvatarImageName, Profiles.AvatarImageUrlPath AS AvatarImageUrlPath FROM Profiles
-                         WHERE Profiles.Name LIKE %@nameFilter%
+            string sql = @"SELECT Profiles.Id, Profiles.Name, Profiles.Username, Profiles.AvatarImageName, Profiles.AvatarImageUrlPath
+                         FROM Profiles
+                         WHERE Profiles.Name LIKE '%@nameFilter%'
                          ORDER BY Profiles.Name
                          OFFSET (@pageNumber - 1) * @pageSize ROWS
                          FETCH NEXT @pageSize ROWS ONLY";
@@ -44,9 +45,10 @@ namespace NutrientAuto.Community.Data.Repositories.ProfileAggregate
 
         public async Task<ProfileSummaryReadModel> GetProfileSummaryAsync(Guid id)
         {
-            string sql = @"SELECT Profiles.Id, Profiles.Genre, Profiles.Name, Profiles.Username, Profiles.Bio, Profiles.BirthDate, Profiles.EmailAddress AS EmailAddress, Profiles.AvatarImageName AS AvatarImageName, Profiles.AvatarImageUrlPath AS AvatarImageUrlPath, Profiles.PrivacyType as PrivacyType FROM Profiles
-                         LEFT JOIN Friends ON Friends.Id = Profiles.Id
-                         WHERE Id = @id";
+            string sql = @"SELECT Profiles.Id, Profiles.Genre, Profiles.Name, Profiles.Username, Profiles.Bio, Profiles.BirthDate, Profiles.EmailAddress, Profiles.AvatarImageName, Profiles.AvatarImageUrlPath, Profiles.PrivacyType, 
+                         (SELECT COUNT(Friends.FriendId) FROM Friends WHERE Friends.ProfileId = Profiles.Id) AS FriendsCount 
+                         FROM Profiles
+                         WHERE Profiles.Id = @id";
 
             using (DbConnection connection = _dbContext.Database.GetDbConnection())
             {
@@ -67,7 +69,8 @@ namespace NutrientAuto.Community.Data.Repositories.ProfileAggregate
 
         public async Task<ProfileOverviewReadModel> GetProfileOverviewAsync(Guid id)
         {
-            string sql = @"SELECT Profiles.Id, Profiles.Genre, Profiles.Name, Profiles.Username, Profiles.Bio, Profiles.BirthDate, Profiles.EmailAddress AS EmailAddress, Profiles.AvatarImageName AS AvatarImageName, Profiles.AvatarImageUrlPath AS AvatarImageUrlPath FROM Profiles
+            string sql = @"SELECT Profiles.Id, Profiles.Genre, Profiles.Name, Profiles.Username, Profiles.Bio, Profiles.BirthDate, Profiles.EmailAddress, Profiles.AvatarImageName, Profiles.AvatarImageUrlPath 
+                         FROM Profiles
                          WHERE WHERE Id = @id";
 
             using (DbConnection connection = _dbContext.Database.GetDbConnection())
@@ -88,7 +91,8 @@ namespace NutrientAuto.Community.Data.Repositories.ProfileAggregate
 
         public async Task<ProfileSettingsReadModel> GetProfileSettingsAsync(Guid id)
         {
-            string sql = @"SELECT Profiles.Id, Profiles.PrivacyType as PrivacyType FROM Profiles
+            string sql = @"SELECT Profiles.Id, Profiles.PrivacyType 
+                         FROM Profiles
                          WHERE Id = @id";
 
             using (DbConnection connection = _dbContext.Database.GetDbConnection())
