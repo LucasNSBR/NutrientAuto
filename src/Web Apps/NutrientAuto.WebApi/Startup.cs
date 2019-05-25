@@ -196,7 +196,8 @@ namespace NutrientAuto.WebApi
 
             app.UseResponseCompression();
             app.UseAuthentication();
-            app.UseGlobalExceptionHandler();
+            
+            // app.UseGlobalExceptionHandler();
             // app.UseNotFoundLogger();
 
             app.UseSwagger();

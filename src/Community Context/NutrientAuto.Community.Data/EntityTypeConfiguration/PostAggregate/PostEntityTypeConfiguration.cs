@@ -32,7 +32,7 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.PostAggregate
             builder
                 .OwnsOne(p => p.AttachedImage, imageCfg =>
                 {
-                    imageCfg.Property(i => i.Name).IsRequired().HasMaxLength(150).HasColumnName("PostImageName");
+                    imageCfg.Property(i => i.ImageName).IsRequired().HasMaxLength(150).HasColumnName("PostImageName");
                     imageCfg.Property(i => i.UrlPath).IsRequired().HasMaxLength(500).HasColumnName("PostImageUrlPath");
                 });
 

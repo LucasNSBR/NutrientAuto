@@ -20,18 +20,18 @@ namespace NutrientAuto.Community.Data.Repositories.ProfileAggregate
         {
         }
 
-        public Task<IEnumerable<ProfileListReadModel>> GetProfileListAsync(string nameFilter = null, int pageNumber = 1, int pageSize = 20)
+        public async Task<IEnumerable<ProfileListReadModel>> GetProfileListAsync(string nameFilter = null, int pageNumber = 1, int pageSize = 20)
         {
-            string sql = @"SELECT Profiles.Id, Profiles.Name, Profiles.Username, Profiles.AvatarImageName, Profiles.AvatarImageUrlPath
+            string sql = $@"SELECT Profiles.Id, Profiles.Name, Profiles.Username, Profiles.AvatarImageName AS ImageName, Profiles.AvatarImageUrlPath as UrlPath
                          FROM Profiles
-                         WHERE Profiles.Name LIKE '%@nameFilter%'
+                         WHERE Profiles.Name LIKE '%{@nameFilter ?? string.Empty}%'
                          ORDER BY Profiles.Name
                          OFFSET (@pageNumber - 1) * @pageSize ROWS
                          FETCH NEXT @pageSize ROWS ONLY";
 
             using (DbConnection connection = _dbContext.Database.GetDbConnection())
             {
-                return connection
+                return await connection
                     .QueryAsync<ProfileListReadModel, Image, ProfileListReadModel>(sql,
                     (profile, avatarImage) =>
                     {
@@ -39,39 +39,38 @@ namespace NutrientAuto.Community.Data.Repositories.ProfileAggregate
                         return profile;
                     },
                     new { nameFilter = nameFilter ?? string.Empty, pageNumber, pageSize },
-                    splitOn: "AvatarImageName");
+                    splitOn: "ImageName");
             }
         }
 
         public async Task<ProfileSummaryReadModel> GetProfileSummaryAsync(Guid id)
         {
-            string sql = @"SELECT Profiles.Id, Profiles.Genre, Profiles.Name, Profiles.Username, Profiles.Bio, Profiles.BirthDate, Profiles.EmailAddress, Profiles.AvatarImageName, Profiles.AvatarImageUrlPath, Profiles.PrivacyType, 
-                         (SELECT COUNT(Friends.FriendId) FROM Friends WHERE Friends.ProfileId = Profiles.Id) AS FriendsCount 
+            string sql = @"SELECT Profiles.Id, Profiles.Genre, Profiles.Name, Profiles.Username, Profiles.Bio, Profiles.BirthDate, Profiles.PrivacyType, Profiles.EmailAddress AS Email, Profiles.AvatarImageName AS ImageName, Profiles.AvatarImageUrlPath AS UrlPath, 
+                         (SELECT COUNT(Friends.Id) FROM Friends WHERE Profiles.Id = Friends.ProfileId) AS FriendsCount 
                          FROM Profiles
                          WHERE Profiles.Id = @id";
 
             using (DbConnection connection = _dbContext.Database.GetDbConnection())
             {
                 return (await connection
-                    .QueryAsync<ProfileSummaryReadModel, EmailAddress, Image, ProfileSettings, ProfileSummaryReadModel>(sql,
-                    (profile, emailAddress, avatarImage, settings) =>
+                    .QueryAsync<ProfileSummaryReadModel, EmailAddress, Image, ProfileSummaryReadModel>(sql,
+                    (profile, emailAddress, avatarImage) =>
                     {
                         profile.EmailAddress = emailAddress;
                         profile.AvatarImage = avatarImage;
-                        profile.PrivacyType = settings.PrivacyType;
                         return profile;
                     },
                     new { id },
-                    splitOn: "EmailAddress,AvatarImageName,PrivacyType"))
+                    splitOn: "Email,ImageName"))
                     .FirstOrDefault();
             }
         }
 
         public async Task<ProfileOverviewReadModel> GetProfileOverviewAsync(Guid id)
         {
-            string sql = @"SELECT Profiles.Id, Profiles.Genre, Profiles.Name, Profiles.Username, Profiles.Bio, Profiles.BirthDate, Profiles.EmailAddress, Profiles.AvatarImageName, Profiles.AvatarImageUrlPath 
+            string sql = @"SELECT Profiles.Id, Profiles.Genre, Profiles.Name, Profiles.Username, Profiles.Bio, Profiles.BirthDate, Profiles.EmailAddress AS Email, Profiles.AvatarImageName AS ImageName, Profiles.AvatarImageUrlPath AS UrlPath
                          FROM Profiles
-                         WHERE WHERE Id = @id";
+                         WHERE WHERE Profiles.Id = @id";
 
             using (DbConnection connection = _dbContext.Database.GetDbConnection())
             {
@@ -84,16 +83,16 @@ namespace NutrientAuto.Community.Data.Repositories.ProfileAggregate
                         return profile;
                     },
                     new { id },
-                    splitOn: "EmailAddress,AvatarImageName"))
+                    splitOn: "Email,ImageName"))
                     .FirstOrDefault();
             }
         }
 
         public async Task<ProfileSettingsReadModel> GetProfileSettingsAsync(Guid id)
         {
-            string sql = @"SELECT Profiles.Id, Profiles.PrivacyType 
+            string sql = @"SELECT Profiles.Id, Profiles.PrivacyType AS PrivacyType
                          FROM Profiles
-                         WHERE Id = @id";
+                         WHERE Profiles.Id = @id";
 
             using (DbConnection connection = _dbContext.Database.GetDbConnection())
             {

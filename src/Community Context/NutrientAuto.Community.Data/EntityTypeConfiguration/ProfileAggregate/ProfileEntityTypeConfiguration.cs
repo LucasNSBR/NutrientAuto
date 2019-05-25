@@ -15,7 +15,7 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.ProfileAggregate
             builder
                 .OwnsOne(p => p.AvatarImage, imageCfg =>
                 {
-                    imageCfg.Property(i => i.Name).IsRequired().HasMaxLength(150).HasColumnName("AvatarImageName");
+                    imageCfg.Property(i => i.ImageName).IsRequired().HasMaxLength(150).HasColumnName("AvatarImageName");
                     imageCfg.Property(i => i.UrlPath).IsRequired().HasMaxLength(500).HasColumnName("AvatarImageUrlPath");
                 });
 
