@@ -36,8 +36,8 @@ namespace NutrientAuto.WebApi.Controllers.Community
         [ProducesResponseType(typeof(IEnumerable<GoalListReadModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllByProfileIdAsync(Guid profileId, string titleFilter = null, int pageNumber = 1, int pageSize = 20)
         {
-            bool canAccessDiets = await _profileDomainService.CanAccessProfileData(_currentProfileId, profileId);
-            if (canAccessDiets)
+            bool canAccessGoals = await _profileDomainService.CanAccessProfileData(_currentProfileId, profileId);
+            if (canAccessGoals)
             {
                 IEnumerable<GoalListReadModel> goals = await _goalReadModelRepository.GetGoalListAsync(profileId, titleFilter, pageNumber, pageSize);
                 return CreateResponse(goals);
