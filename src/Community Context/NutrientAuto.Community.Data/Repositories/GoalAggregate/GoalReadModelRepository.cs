@@ -23,7 +23,7 @@ namespace NutrientAuto.Community.Data.Repositories.GoalAggregate
         {
             string sql = $@"SELECT Goals.Id, Goals.ProfileId, Goals.Title, Goals.DateCreated, Goals.IsCompleted 
                          FROM Goals
-                         WHERE Goals.Title LIKE '%{titleFilter ?? string.Empty}%'
+                         WHERE Goals.Title LIKE '%{titleFilter ?? string.Empty}%' AND Goals.ProfileId = @profileId
                          ORDER BY Goals.DateCreated DESC
                          OFFSET (@pageNumber - 1) * @pageSize ROWS
                          FETCH NEXT @pageSize ROWS ONLY";
@@ -31,7 +31,7 @@ namespace NutrientAuto.Community.Data.Repositories.GoalAggregate
             using (DbConnection connection = _dbContext.Database.GetDbConnection())
             {
                 return await connection
-                    .QueryAsync<GoalListReadModel>(sql, new { titleFilter = titleFilter ?? string.Empty, pageNumber, pageSize });
+                    .QueryAsync<GoalListReadModel>(sql, new { profileId, titleFilter = titleFilter ?? string.Empty, pageNumber, pageSize });
             }
         }
 
