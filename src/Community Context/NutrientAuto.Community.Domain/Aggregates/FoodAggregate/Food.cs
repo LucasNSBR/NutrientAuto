@@ -27,7 +27,7 @@ namespace NutrientAuto.Community.Domain.Aggregates.FoodAggregate
             Description = description;
             FoodTableId = foodTableId;
             Macronutrients = macronutrients;
-            Micronutrients = micronutrients;
+            Micronutrients = micronutrients ?? new MicronutrientTable();
             FoodUnit = foodUnit;
         }
 
@@ -37,7 +37,7 @@ namespace NutrientAuto.Community.Domain.Aggregates.FoodAggregate
             Description = description;
             FoodTableId = foodTableId;
             Macronutrients = macronutrients;
-            Micronutrients = micronutrients;
+            Micronutrients = micronutrients ?? new MicronutrientTable();
             FoodUnit = foodUnit;
         }
     }
