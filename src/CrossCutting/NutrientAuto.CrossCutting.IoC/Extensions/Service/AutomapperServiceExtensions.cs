@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
+using NutrientAuto.CrossCutting.Mapping.Profiles.Community;
 
 namespace NutrientAuto.CrossCutting.IoC.Extensions.Service
 {
@@ -9,6 +10,7 @@ namespace NutrientAuto.CrossCutting.IoC.Extensions.Service
         {
             MapperConfiguration mapperConfiguration = new MapperConfiguration(cfg =>
             {
+                cfg.AddProfile(new CommunityMappingProfile());
             });
 
             services.AddSingleton<IMapper, Mapper>(factory => new Mapper(mapperConfiguration));
