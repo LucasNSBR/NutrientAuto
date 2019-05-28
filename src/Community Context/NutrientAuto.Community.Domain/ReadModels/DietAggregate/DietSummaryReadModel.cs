@@ -12,10 +12,11 @@ namespace NutrientAuto.Community.Domain.ReadModels.DietAggregate
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
-        public decimal KcalsCount { get; set; }
-        
+
         public MacronutrientTable TotalMacronutrients { get; set; }
 
         public List<MealListReadModel> Meals { get; set; }
+
+        public int MealCount { get; set; }
     }
 }
