@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NutrientAuto.Community.Data.Context;
 using NutrientAuto.Community.Domain.Aggregates.FoodAggregate;
@@ -12,9 +13,10 @@ using NutrientAuto.Community.Domain.Aggregates.MeasureCategoryAggregate;
 namespace NutrientAuto.Community.Data.Migrations
 {
     [DbContext(typeof(CommunityDbContext))]
-    partial class CommunityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190528005550_dietmacro")]
+    partial class dietmacro
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
