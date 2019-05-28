@@ -36,6 +36,7 @@ namespace NutrientAuto.Community.Domain.CommandValidators.FoodAggregate.BaseComm
         public void ValidateMacronutrients()
         {
             RuleFor(command => command.Macronutrients)
+                .NotNull()
                 .SetValidator(new MacronutrientTableDtoValidator());
         }
 

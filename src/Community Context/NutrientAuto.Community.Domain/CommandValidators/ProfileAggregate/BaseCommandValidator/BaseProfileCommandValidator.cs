@@ -17,6 +17,7 @@ namespace NutrientAuto.Community.Domain.CommandValidators.ProfileAggregate.BaseC
         public void ValidateAvatarImage()
         {
             RuleFor(command => command.AvatarImage)
+                .NotNull()
                 .SetValidator(new FormFileValidator());
         }
 
@@ -41,6 +42,7 @@ namespace NutrientAuto.Community.Domain.CommandValidators.ProfileAggregate.BaseC
         public void ValidateEmailAddress()
         {
             RuleFor(command => command.EmailAddress)
+                .NotNull()
                 .SetValidator(new EmailAddressDtoValidator());
         }
 

@@ -18,7 +18,7 @@ namespace NutrientAuto.Community.Domain.CommandValidators.DietAggregate
                 .MaximumLength(250);
 
             RuleFor(command => command.TimeOfDay)
-                .NotEmpty()
+                .NotNull()
                 .SetValidator(new TimeDtoValidator());
         }
     }
