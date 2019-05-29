@@ -17,16 +17,11 @@ namespace NutrientAuto.Community.Data.Repositories.FriendshipRequestAggregate
             : base(dbContext)
         {
         }
-
-        public Guid Id { get; set; }
-        public Guid RequesterId { get; set; }
-        public DateTime DateCreated { get; set; }
-        public Image RequesterAvatarImage { get; set; }
-        public string RequesterName { get; set; }
-
+        
         public async Task<IEnumerable<FriendshipRequestListReadModel>> GetFriendshipRequestList(Guid requestedId, string nameFilter = null, int pageNumber = 1, int pageSize = 20)
         {
-            string sql = $@"SELECT FriendshipRequests.Id, FriendshipRequests.RequesterId, FriendshipRequests.DateCreated, Profiles.Name AS RequesterName, Profiles.AvatarImageName AS ImageName, Profiles.AvatarImageUrlPath AS UrlPath 
+            string sql = $@"SELECT FriendshipRequests.Id, FriendshipRequests.RequesterId, FriendshipRequests.DateCreated, 
+                         Profiles.Name AS RequesterName, Profiles.AvatarImageName AS ImageName, Profiles.AvatarImageUrlPath AS UrlPath 
                          FROM FriendshipRequests
                          JOIN Profiles ON FriendshipRequests.RequesterId = Profiles.Id 
                          WHERE Profiles.Name LIKE '%{@nameFilter ?? string.Empty}%' AND FriendshipRequests.RequestedId = @requestedId
@@ -50,7 +45,8 @@ namespace NutrientAuto.Community.Data.Repositories.FriendshipRequestAggregate
 
         public async Task<IEnumerable<FriendshipRequestSentListReadModel>> GetFriendshipRequestSentList(Guid requesterId, string nameFilter = null, int pageNumber = 1, int pageSize = 20)
         {
-            string sql = $@"SELECT FriendshipRequests.Id, FriendshipRequests.RequestedId, FriendshipRequests.DateCreated, Profiles.Name AS RequestedName, Profiles.AvatarImageName AS ImageName, Profiles.AvatarImageUrlPath AS UrlPath 
+            string sql = $@"SELECT FriendshipRequests.Id, FriendshipRequests.RequestedId, FriendshipRequests.DateCreated, 
+                         Profiles.Name AS RequestedName, Profiles.AvatarImageName AS ImageName, Profiles.AvatarImageUrlPath AS UrlPath 
                          FROM FriendshipRequests
                          JOIN Profiles ON FriendshipRequests.RequestedId = Profiles.Id 
                          WHERE Profiles.Name LIKE '%{@nameFilter ?? string.Empty}%' AND FriendshipRequests.RequesterId = @requesterId

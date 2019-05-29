@@ -37,7 +37,8 @@ namespace NutrientAuto.Community.Data.Repositories.GoalAggregate
 
         public async Task<GoalSummaryReadModel> GetGoalSummaryAsync(Guid id)
         {
-            string sql = @"SELECT Goals.Id, Goals.ProfileId, Goals.Title, Goals.Details, Goals.DateCreated, Goals.IsCompleted AS IsCompleted, Goals.DateCompleted AS DateCompleted, Goals.AccomplishmentDetails AS AccomplishmentDetails  
+            string sql = @"SELECT Goals.Id, Goals.ProfileId, Goals.Title, Goals.Details, Goals.DateCreated, Goals.IsCompleted AS IsCompleted, 
+                         Goals.DateCompleted AS DateCompleted, Goals.AccomplishmentDetails AS AccomplishmentDetails  
                          FROM Goals
                          WHERE Id = @id";
 

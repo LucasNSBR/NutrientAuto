@@ -1,5 +1,4 @@
 ﻿using NutrientAuto.Community.Domain.Aggregates.SeedWork;
-using NutrientAuto.Community.Domain.ReadModels.MealAggregate;
 using System;
 using System.Collections.Generic;
 
@@ -15,7 +14,7 @@ namespace NutrientAuto.Community.Domain.ReadModels.DietAggregate
 
         public MacronutrientTable TotalMacronutrients { get; set; }
 
-        public List<MealListReadModel> Meals { get; set; }
+        public List<DietMealReadModel> Meals { get; set; }
 
         public int MealCount { get; set; }
     }
