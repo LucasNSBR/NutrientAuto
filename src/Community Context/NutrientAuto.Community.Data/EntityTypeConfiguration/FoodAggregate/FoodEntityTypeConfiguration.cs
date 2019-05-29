@@ -53,6 +53,7 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.FoodAggregate
                     microCfg.Property(fm => fm.Phosphorus).HasColumnName("MicronutrientsPhosphorus");
                     microCfg.Property(fm => fm.Potassium).HasColumnName("MicronutrientsPotassium");
                     microCfg.Property(fm => fm.Sodium).HasColumnName("MicronutrientsSodium");
+                    microCfg.Property(fm => fm.Selenium).HasColumnName("MicronutrientsSelenium");
                     microCfg.Property(fm => fm.Zinc).HasColumnName("MicronutrientsZinc");
                     microCfg.Property(fm => fm.VitaminB1).HasColumnName("MicronutrientsVitaminB1");
                     microCfg.Property(fm => fm.VitaminB2).HasColumnName("MicronutrientsVitaminB2");
