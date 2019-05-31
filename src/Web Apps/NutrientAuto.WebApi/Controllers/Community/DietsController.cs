@@ -53,8 +53,8 @@ namespace NutrientAuto.WebApi.Controllers.Community
         {
             DietSummaryReadModel diet = await _readModelRepository.GetDietSummaryAsync(id);
 
-            //bool canAccessDiet = await _profileDomainService.CanAccessProfileData(_currentProfileId, diet.ProfileId);
-           // if (canAccessDiet)
+            bool canAccessDiet = await _profileDomainService.CanAccessProfileData(_currentProfileId, diet.ProfileId);
+            if (canAccessDiet)
                 return CreateResponse(diet);
 
             return Forbid();
