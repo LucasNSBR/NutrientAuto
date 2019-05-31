@@ -7,6 +7,7 @@ using NutrientAuto.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 namespace NutrientAuto.Community.Data.Repositories.FriendshipRequestAggregate
@@ -29,7 +30,7 @@ namespace NutrientAuto.Community.Data.Repositories.FriendshipRequestAggregate
                          OFFSET (@pageNumber - 1) * @pageSize ROWS
                          FETCH NEXT @pageSize ROWS ONLY";
 
-            using (DbConnection connection = _dbContext.Database.GetDbConnection())
+            using (DbConnection connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString))
             {
                 return await connection
                     .QueryAsync<FriendshipRequestListReadModel, Image, FriendshipRequestListReadModel>(sql,
@@ -54,7 +55,7 @@ namespace NutrientAuto.Community.Data.Repositories.FriendshipRequestAggregate
                          OFFSET (@pageNumber - 1) * @pageSize ROWS
                          FETCH NEXT @pageSize ROWS ONLY";
 
-            using (DbConnection connection = _dbContext.Database.GetDbConnection())
+            using (DbConnection connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString))
             {
                 return await connection
                     .QueryAsync<FriendshipRequestSentListReadModel, Image, FriendshipRequestSentListReadModel>(sql,

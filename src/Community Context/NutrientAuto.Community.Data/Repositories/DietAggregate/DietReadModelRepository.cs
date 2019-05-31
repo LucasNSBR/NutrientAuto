@@ -8,6 +8,7 @@ using NutrientAuto.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,7 +31,7 @@ namespace NutrientAuto.Community.Data.Repositories.DietAggregate
                          OFFSET (@pageNumber - 1) * @pageSize ROWS
                          FETCH NEXT @pageSize ROWS ONLY";
 
-            using (DbConnection connection = _dbContext.Database.GetDbConnection())
+            using (DbConnection connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString))
             {
                 return await connection
                      .QueryAsync<DietListReadModel, MacronutrientTable, DietListReadModel>(sql,
@@ -54,7 +55,7 @@ namespace NutrientAuto.Community.Data.Repositories.DietAggregate
                          LEFT JOIN Meals ON Meals.DietId = Diets.Id
                          WHERE Diets.Id = @id";
 
-            using (DbConnection connection = _dbContext.Database.GetDbConnection())
+            using (DbConnection connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString))
             {
                 Dictionary<Guid, DietSummaryReadModel> rows = new Dictionary<Guid, DietSummaryReadModel>();
 

@@ -7,6 +7,7 @@ using NutrientAuto.Community.Domain.Repositories.GoalAggregate;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,7 +29,7 @@ namespace NutrientAuto.Community.Data.Repositories.GoalAggregate
                          OFFSET (@pageNumber - 1) * @pageSize ROWS
                          FETCH NEXT @pageSize ROWS ONLY";
 
-            using (DbConnection connection = _dbContext.Database.GetDbConnection())
+            using (DbConnection connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString))
             {
                 return await connection
                     .QueryAsync<GoalListReadModel>(sql, new { profileId, titleFilter = titleFilter ?? string.Empty, pageNumber, pageSize });
@@ -42,7 +43,7 @@ namespace NutrientAuto.Community.Data.Repositories.GoalAggregate
                          FROM Goals
                          WHERE Id = @id";
 
-            using (DbConnection connection = _dbContext.Database.GetDbConnection())
+            using (DbConnection connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString))
             {
                 return (await connection
                     .QueryAsync<GoalSummaryReadModel, GoalStatus, GoalSummaryReadModel>(sql,

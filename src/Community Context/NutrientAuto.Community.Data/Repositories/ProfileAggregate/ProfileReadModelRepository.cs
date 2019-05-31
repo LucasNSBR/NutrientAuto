@@ -8,6 +8,7 @@ using NutrientAuto.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,7 +31,7 @@ namespace NutrientAuto.Community.Data.Repositories.ProfileAggregate
                          OFFSET (@pageNumber - 1) * @pageSize ROWS
                          FETCH NEXT @pageSize ROWS ONLY";
 
-            using (DbConnection connection = _dbContext.Database.GetDbConnection())
+            using (DbConnection connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString))
             {
                 return await connection
                     .QueryAsync<ProfileListReadModel, Image, ProfileListReadModel>(sql,
@@ -53,7 +54,7 @@ namespace NutrientAuto.Community.Data.Repositories.ProfileAggregate
                          FROM Profiles
                          WHERE Profiles.Id = @id";
 
-            using (DbConnection connection = _dbContext.Database.GetDbConnection())
+            using (DbConnection connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString))
             {
                 return (await connection
                     .QueryAsync<ProfileSummaryReadModel, EmailAddress, Image, ProfileSummaryReadModel>(sql,
@@ -77,7 +78,7 @@ namespace NutrientAuto.Community.Data.Repositories.ProfileAggregate
                          FROM Profiles
                          WHERE WHERE Profiles.Id = @id";
 
-            using (DbConnection connection = _dbContext.Database.GetDbConnection())
+            using (DbConnection connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString))
             {
                 return (await connection
                     .QueryAsync<ProfileOverviewReadModel, EmailAddress, Image, ProfileOverviewReadModel>(sql,
@@ -100,7 +101,7 @@ namespace NutrientAuto.Community.Data.Repositories.ProfileAggregate
                          FROM Profiles
                          WHERE Profiles.Id = @id";
 
-            using (DbConnection connection = _dbContext.Database.GetDbConnection())
+            using (DbConnection connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString))
             {
                 return (await connection
                     .QueryAsync<ProfileSettingsReadModel, ProfileSettings, ProfileSettingsReadModel>(sql,

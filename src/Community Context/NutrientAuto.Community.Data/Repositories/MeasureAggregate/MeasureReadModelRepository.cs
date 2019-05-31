@@ -8,6 +8,7 @@ using NutrientAuto.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,7 +31,7 @@ namespace NutrientAuto.Community.Data.Repositories.MeasureAggregate
                          OFFSET (@pageNumber - 1) * @pageSize ROWS
                          FETCH NEXT @pageSize ROWS ONLY";
 
-            using (DbConnection connection = _dbContext.Database.GetDbConnection())
+            using (DbConnection connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString))
             {
                 return await connection
                     .QueryAsync<MeasureListReadModel>(sql, new { profileId, titleFilter = titleFilter ?? string.Empty, pageNumber, pageSize });
@@ -48,7 +49,7 @@ namespace NutrientAuto.Community.Data.Repositories.MeasureAggregate
                          LEFT JOIN (SELECT MeasureLines.Id, MeasureLines.MeasureId, MeasureLines.MeasureCategoryId AS MeasureCategoryId, MeasureLines.Value AS Value, MeasureCategories.Name, MeasureCategories.Description FROM MeasureLines INNER JOIN MeasureCategories ON MeasureCategoryId = MeasureCategories.Id) MeasureLines ON MeasureLines.MeasureId = Measures.Id
                          WHERE Measures.Id = @id;";
 
-            using (DbConnection connection = _dbContext.Database.GetDbConnection())
+            using (DbConnection connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString))
             {
                 Dictionary<Guid, MeasureSummaryReadModel> rows = new Dictionary<Guid, MeasureSummaryReadModel>();
 

@@ -10,6 +10,7 @@ using NutrientAuto.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,7 +35,7 @@ namespace NutrientAuto.Community.Data.Repositories.MealAggregate
                          LEFT JOIN MealFoods ON Meals.Id = MealFoods.MealId
                          WHERE Meals.Id = @id";
 
-            using (DbConnection connection = _dbContext.Database.GetDbConnection())
+            using (DbConnection connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString))
             {
                 Dictionary<Guid, MealSummaryReadModel> rows = new Dictionary<Guid, MealSummaryReadModel>();
 
