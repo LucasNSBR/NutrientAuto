@@ -46,48 +46,44 @@ namespace NutrientAuto.Community.Data.Repositories.DietAggregate
 
         public async Task<DietSummaryReadModel> GetDietSummaryAsync(Guid id)
         {
-            string sql = $@"SELECT Diets.Id, Diets.ProfileId, Diets.Name, Diets.StartDate, 
-                         Diets.DietTotalKcal AS Kcal, Diets.DietTotalKj AS Kj, Diets.DietTotalProtein AS Protein, Diets.DietTotalCarbohydrate AS Carbohydrate, Diets.DietTotalFat AS Fat
-                         FROM Diets
-                         WHERE Id = @id;
-                         
-                         SELECT Meals.Id, Meals.Name, 
+            string sql = $@"SELECT Diets.Id, Diets.ProfileId, Diets.Name, Diets.Description, Diets.StartDate, 
+                         Diets.DietTotalKcal AS Kcal, Diets.DietTotalKj AS Kj, Diets.DietTotalProtein AS Protein, Diets.DietTotalCarbohydrate AS Carbohydrate, Diets.DietTotalFat AS Fat,
+                         Meals.Id, Meals.Name, 
                          Meals.MealHour AS Hour, Meals.MealMinute AS Minute, Meals.MealSecond AS Second 
-                         FROM Meals
-                         WHERE Meals.DietId = @id";
-
+                         FROM Diets
+                         LEFT JOIN Meals ON Meals.DietId = Diets.Id
+                         WHERE Diets.Id = @id";
 
             using (DbConnection connection = _dbContext.Database.GetDbConnection())
             {
-                SqlMapper.GridReader dataGrid = await connection.QueryMultipleAsync(sql, new { id });
+                Dictionary<Guid, DietSummaryReadModel> rows = new Dictionary<Guid, DietSummaryReadModel>();
 
-                DietSummaryReadModel readModel = dataGrid.Read<DietSummaryReadModel, MacronutrientTable, DietSummaryReadModel>((diet, macros) =>
-                {
-                    diet.TotalMacronutrients = macros;
-                    return diet;
-                },
-                splitOn: "Kcal")
-                .FirstOrDefault();
-
-                if (readModel != null)
-                {
-                    List<DietMealReadModel> meals = dataGrid.Read<DietMealReadModel, Time, DietMealReadModel>((dietMeal, time) =>
+                return (await connection
+                    .QueryAsync<DietSummaryReadModel, MacronutrientTable, DietMealReadModel, Time, DietSummaryReadModel>(sql,
+                    (diet, dietMacros, meal, mealTime) =>
                     {
-                        return new DietMealReadModel
+                        DietSummaryReadModel summary;
+
+                        if(!rows.TryGetValue(id, out summary))
                         {
-                            Id = dietMeal.Id,
-                            Name = dietMeal.Name,
-                            Time = time
-                        };
+                            summary = diet;
+                            summary.Meals = new List<DietMealReadModel>();
+                            rows.Add(id, summary);
+                        }
+
+                        if (meal != null)
+                        {
+                            meal.Time = mealTime;
+                            summary.Meals.Add(meal);
+                        }
+
+                        summary.MealCount = summary.Meals?.Count ?? 0;
+                        summary.TotalMacronutrients = dietMacros;
+                        return summary;
                     },
-                    splitOn: "Hour")
-                    .ToList();
-
-                    readModel.Meals = meals;
-                    readModel.MealCount = meals?.Count ?? 0;
-                }
-
-                return readModel;
+                    new { id },
+                    splitOn: "Kcal,Id,Hour"))
+                    .FirstOrDefault();
             }
         }
     }

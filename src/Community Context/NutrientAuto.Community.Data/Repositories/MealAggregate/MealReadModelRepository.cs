@@ -24,45 +24,46 @@ namespace NutrientAuto.Community.Data.Repositories.MealAggregate
 
         public async Task<MealSummaryReadModel> GetMealSummaryAsync(Guid id)
         {
-            string sql = $@"SELECT Meals.Id, Meals.ProfileId, Meals.DietId,
-                         Meals.Name, Meals.MealHour AS Hour, Meals.MealMinute AS Minute, Meals.MealSecond AS Second, 
-                         Meals.MealTotalKcal AS Kcal, Meals.MealTotalKj AS Kj, Meals.MealTotalProtein AS Protein, Meals.MealTotalCarbohydrate AS Carbohydrate, Meals.MealTotalFat AS Fat
-                         FROM Meals
-                         WHERE Id = @id;
-
-                         SELECT MealFoods.Id, MealFoods.FoodId, MealFoods.Name, MealFoods.Description, MealFoods.Quantity,
+            string sql = $@"SELECT Meals.Id, Meals.ProfileId, Meals.DietId, Meals.Name, 
+                         Meals.MealHour AS Hour, Meals.MealMinute AS Minute, Meals.MealSecond AS Second, 
+                         Meals.MealTotalKcal AS Kcal, Meals.MealTotalKj AS Kj, Meals.MealTotalProtein AS Protein, Meals.MealTotalCarbohydrate AS Carbohydrate, Meals.MealTotalFat AS Fat,
+                         MealFoods.Id, MealFoods.FoodId, MealFoods.Name, MealFoods.Description, MealFoods.Quantity,
                          MealFoods.MealFoodUnitType AS UnitType, MealFoods.MealFoodDefaultGramsQuantityMultiplier AS DefaultGramsQuantityMultiplier,
-                         MealFoods.MealFoodKcal AS Kcal, MealFoods.MealFoodKj AS Kj, MealFoods.MealFoodProtein AS Protein, MealFoods.MealFoodCarbohydrate AS Carbohydrate, MealFoods.MealFoodFat AS Fat
-                         FROM MealFoods
-                         WHERE MealFoods.MealId = @id";
+                         MealFoods.MealFoodKcal AS Kcal, MealFoods.MealFoodKj AS Kj, MealFoods.MealFoodProtein AS Protein, MealFoods.MealFoodCarbohydrate AS Carbohydrate, MealFoods.MealFoodFat AS Fat                        
+                         FROM Meals
+                         LEFT JOIN MealFoods ON Meals.Id = MealFoods.MealId
+                         WHERE Meals.Id = @id";
 
             using (DbConnection connection = _dbContext.Database.GetDbConnection())
             {
-                SqlMapper.GridReader dataGrid = await connection.QueryMultipleAsync(sql, new { id });
+                Dictionary<Guid, MealSummaryReadModel> rows = new Dictionary<Guid, MealSummaryReadModel>();
 
-                MealSummaryReadModel readModel = dataGrid.Read<MealSummaryReadModel, Time, MacronutrientTable, MealSummaryReadModel>((meal, time, macros) =>
-                {
-                    meal.TimeOfDay = time;
-                    meal.MealMacronutrients = macros;
-                    return meal;
-                },
-                splitOn: "Hour,Kcal")
-                .FirstOrDefault();
-
-                if (readModel != null)
-                {
-                    List<MealFood> foods = dataGrid.Read<MealFood, FoodUnit, MacronutrientTable, MealFood>((mealFood, foodUnit, macros) =>
+                return (await connection
+                    .QueryAsync<MealSummaryReadModel, Time, MacronutrientTable, MealFood, FoodUnit, MacronutrientTable, MealSummaryReadModel>(sql,
+                    (meal, mealTime, mealMacros, mealFood, mealFoodUnit, mealFoodMacros) =>
                     {
-                        return new MealFood(mealFood.Id, mealFood.Name, mealFood.Description, macros, foodUnit, mealFood.Quantity);
+                        MealSummaryReadModel summary;
+
+                        if (!rows.TryGetValue(id, out summary))
+                        {
+                            summary = meal;
+                            summary.Foods = new List<MealFood>();
+                            rows.Add(id, summary);
+                        }
+
+                        if (mealFood != null)
+                        {
+                            mealFood = new MealFood(mealFood.Id, mealFood.Name, mealFood.Description, mealFoodMacros, mealFoodUnit, mealFood.Quantity);
+                            summary.Foods.Add(mealFood);
+                        }
+
+                        summary.FoodsCount = summary.Foods?.Count ?? 0;
+                        summary.MealMacronutrients = mealMacros;
+                        return summary;
                     },
-                    splitOn: "UnitType,Kcal")
-                    .ToList();
-
-                    readModel.Foods = foods;
-                    readModel.FoodsCount = foods?.Count ?? 0;
-                }
-
-                return readModel;
+                    new { id },
+                    splitOn: "Hour,Kcal,Id,UnitType,Kcal"))
+                    .FirstOrDefault();
             }
         }
     }
