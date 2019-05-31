@@ -20,37 +20,69 @@ namespace NutrientAuto.Community.Data.Repositories.MeasureAggregate
         {
         }
 
-        public Task<IEnumerable<MeasureListReadModel>> GetMeasureListAsync(Guid profileId, string titleFilter = null, int pageNumber = 1, int pageSize = 20)
+        public async Task<IEnumerable<MeasureListReadModel>> GetMeasureListAsync(Guid profileId, string titleFilter = null, int pageNumber = 1, int pageSize = 20)
         {
-            string sql = @"SELECT Measures.Id, Measures.ProfileId, Measures.Title, Measures.DateMeasure, (SELECT COUNT(BodyPictures.Id) FROM MeasureBodyPictures WHERE BodyPictures.MeasureId = Measure.Id) AS BodyPicturesCount 
+            string sql = $@"SELECT Measures.Id, Measures.ProfileId, Measures.Title, Measures.MeasureDate, 
+                         (SELECT COUNT(MeasureBodyPictures.Id) FROM MeasureBodyPictures WHERE MeasureBodyPictures.MeasureId = Measures.Id) AS BodyPicturesCount 
                          FROM Measures
-                         WHERE Title LIKE '%@titleFilter%'
-                         ORDER BY DateCreated DESC
+                         WHERE Measures.Title LIKE '%{titleFilter ?? string.Empty}%' AND Measures.ProfileId = @profileId
+                         ORDER BY Measures.MeasureDate DESC
                          OFFSET (@pageNumber - 1) * @pageSize ROWS
                          FETCH NEXT @pageSize ROWS ONLY";
 
-            return GetAllAsync<MeasureListReadModel>(sql, new { profileId, titleFilter = titleFilter ?? string.Empty, pageNumber, pageSize });
+            using (DbConnection connection = _dbContext.Database.GetDbConnection())
+            {
+                return await connection
+                    .QueryAsync<MeasureListReadModel>(sql, new { profileId, titleFilter = titleFilter ?? string.Empty, pageNumber, pageSize });
+            }
         }
 
         public async Task<MeasureSummaryReadModel> GetMeasureSummaryAsync(Guid id)
         {
-            string sql = @"SELECT Measures.Id, Measures.ProfileId, Measures.Title, Measures.Details, Measures.DateMeasure, Measures.Height, Measures.Weight, Measures.Bmi, MeasureBodyPictures.BodyPictureImageName, MeasureBodyPictures.BodyPictureImageUrlPath
+            string sql = @"SELECT Measures.Id, Measures.ProfileId, Measures.Title, Measures.Details, Measures.MeasureDate, 
+                         Measures.Height AS Height, Measures.Weight AS Weight, Measures.Bmi AS Bmi,
+                         MeasureBodyPictures.BodyPictureImageName AS ImageName, MeasureBodyPictures.BodyPictureImageUrlPath AS UrlPath,
+                         MeasureLines.Id, MeasureLines.MeasureCategoryId, MeasureLines.MeasureId, MeasureLines.Value, MeasureLines.Name, MeasureLines.Description
                          FROM Measures
                          LEFT JOIN MeasureBodyPictures ON MeasureBodyPictures.MeasureId = Measures.Id
-                         WHERE Id = @id";
+                         LEFT JOIN (SELECT MeasureLines.Id, MeasureLines.MeasureId, MeasureLines.MeasureCategoryId AS MeasureCategoryId, MeasureLines.Value AS Value, MeasureCategories.Name, MeasureCategories.Description FROM MeasureLines INNER JOIN MeasureCategories ON MeasureCategoryId = MeasureCategories.Id) MeasureLines ON MeasureLines.MeasureId = Measures.Id
+                         WHERE Measures.Id = @id;";
 
             using (DbConnection connection = _dbContext.Database.GetDbConnection())
             {
+                Dictionary<Guid, MeasureSummaryReadModel> rows = new Dictionary<Guid, MeasureSummaryReadModel>();
+
                 return (await connection
-                    .QueryAsync<MeasureSummaryReadModel, BasicMeasure, IEnumerable<Image>, MeasureSummaryReadModel>(sql,
-                    (measure, basicMeasure, bodyPictures) =>
+                    .QueryAsync<MeasureSummaryReadModel, BasicMeasure, Image, MeasureLineReadModel, MeasureSummaryReadModel>(sql,
+                    (measure, basicMeasure, bodyPicture, measureLine) =>
                     {
+                        MeasureSummaryReadModel summary;
+
+                        if (!rows.TryGetValue(id, out summary))
+                        {
+                            summary = measure;
+                            summary.BodyPictures = new List<Image>();
+                            summary.MeasureLines = new List<MeasureLineReadModel>();
+                            rows.Add(id, summary);
+                        }
+
+                        if (bodyPicture != null)
+                        {
+                            if (!summary.BodyPictures.Contains(bodyPicture))
+                                summary.BodyPictures.Add(bodyPicture);
+                        }
+
+                        if (measureLine != null)
+                        {
+                            if (!summary.MeasureLines.Any(m => m.Id == measureLine.Id))
+                                summary.MeasureLines.Add(measureLine);
+                        }
+
                         measure.BasicMeasure = basicMeasure;
-                        measure.BodyPictures = bodyPictures.ToList();
                         return measure;
                     },
                     new { id },
-                    splitOn: "Height,BodyPictureImageName"))
+                    splitOn: "Height,ImageName,Id"))
                     .FirstOrDefault();
             }
         }
