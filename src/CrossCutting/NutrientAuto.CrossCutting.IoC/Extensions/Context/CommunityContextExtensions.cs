@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NutrientAuto.Community.Data.Context;
 using NutrientAuto.Community.Data.Repositories.CommentAggregate;
@@ -62,10 +63,10 @@ namespace NutrientAuto.CrossCutting.IoC.Extensions.Context
 {
     public static partial class ContextDependencyInjectionExtensions
     {
-        public static IServiceCollection AddCommunityContext(this IServiceCollection services)
+        public static IServiceCollection AddCommunityContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<CommunityDbContext>(opt =>
-                 opt.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=NutrientDb;Integrated Security=True"));
+                 opt.UseSqlServer(configuration.GetConnectionString("SqlServerMain")));
 
             services.AddScoped<IProfileRepository, ProfileRepository>();
             services.AddScoped<IProfileReadModelRepository, ProfileReadModelRepository>();

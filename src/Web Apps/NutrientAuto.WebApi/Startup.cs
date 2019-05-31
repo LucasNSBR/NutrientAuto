@@ -31,7 +31,7 @@ namespace NutrientAuto.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCoreContext();
-            services.AddCommunityContext();
+            services.AddCommunityContext(Configuration);
 
             services.AddIdentityContext(opt =>
             {
