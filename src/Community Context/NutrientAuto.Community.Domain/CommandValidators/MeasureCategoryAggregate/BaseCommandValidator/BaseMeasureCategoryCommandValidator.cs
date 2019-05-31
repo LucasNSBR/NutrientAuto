@@ -15,12 +15,14 @@ namespace NutrientAuto.Community.Domain.CommandValidators.MeasureCategoryAggrega
         public void ValidateName()
         {
             RuleFor(command => command.Name)
+                .NotEmpty()
                 .Length(3, 100);
         }
 
         public void ValidateDescription()
         {
             RuleFor(command => command.Description)
+                .NotEmpty()
                 .MaximumLength(250);
         }
     }

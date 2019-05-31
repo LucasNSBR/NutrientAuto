@@ -49,7 +49,7 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpPost]
         [Route("")]
-        public async Task<IActionResult> RegisterAsync(RegisterMeasureCategoryCommand command)
+        public async Task<IActionResult> RegisterAsync([FromBody]RegisterMeasureCategoryCommand command)
         {
             bool validCommand = command.Validate();
             if (!validCommand)
@@ -68,7 +68,7 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpPut]
         [Route("{id:guid}")]
-        public async Task<IActionResult> UpdateAsync(Guid id, UpdateMeasureCategoryCommand command)
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody]UpdateMeasureCategoryCommand command)
         {
             bool validCommand = command.Validate();
             if (!validCommand)
