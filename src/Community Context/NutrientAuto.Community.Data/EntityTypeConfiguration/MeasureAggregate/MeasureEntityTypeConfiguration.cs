@@ -51,11 +51,14 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MeasureAggregate
                 });
 
             builder
-                .OwnsMany(m => m.MeasureLines, cfg =>
+                .OwnsMany(m => m.MeasureLines, measureLineCfg =>
                 {
-                    cfg.Property<Guid>("Id");
-                    cfg.HasKey("Id");
-                    cfg.HasOne(m => m.MeasureCategory).WithMany().HasForeignKey(ml => ml.MeasureCategoryId);
+                    measureLineCfg.Property<Guid>("Id");
+                    measureLineCfg.HasKey("Id");
+                    measureLineCfg.HasOne(m => m.MeasureCategory).WithMany().HasForeignKey(ml => ml.MeasureCategoryId);
+                    measureLineCfg.Property(m => m.MeasureCategoryId).HasColumnName("MeasureCategoryId");
+                    measureLineCfg.Property(m => m.Value).HasColumnName("Value");
+                    measureLineCfg.ToTable("MeasureLines");
                 });
         }
     }
