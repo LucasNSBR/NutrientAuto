@@ -75,6 +75,8 @@ namespace NutrientAuto.WebApi
                 opt.AccountName = Configuration["Storage:AccountName"];
                 opt.AccountKey = Configuration["Storage:AccountKey"];
                 opt.ContainerName = Configuration["Storage:ContainerName"];
+                opt.DefaultAvatarImageName = "";
+                opt.DefaultAvatarImageUrl = "";
             });
 
             services.AddEmailService(opt =>
