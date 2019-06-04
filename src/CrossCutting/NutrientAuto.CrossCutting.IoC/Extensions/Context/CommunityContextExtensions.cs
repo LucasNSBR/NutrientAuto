@@ -76,8 +76,9 @@ namespace NutrientAuto.CrossCutting.IoC.Extensions.Context
             services.AddScoped<IMealReadModelRepository, MealReadModelRepository>();
             services.AddScoped<IDietRepository, DietRepository>();
             services.AddScoped<IDietReadModelRepository, DietReadModelRepository>();
-
             services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IPostReadModelRepository, PostReadModelRepository>();
+
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IGoalRepository, GoalRepository>();
             services.AddScoped<IGoalReadModelRepository, GoalReadModelRepository>();
