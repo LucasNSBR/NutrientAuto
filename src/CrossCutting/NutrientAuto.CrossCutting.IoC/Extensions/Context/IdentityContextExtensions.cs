@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NutrientAuto.CrossCutting.IoC.Configuration.Context;
 using NutrientAuto.CrossCutting.UnitOfwork.Abstractions;
@@ -18,13 +19,13 @@ namespace NutrientAuto.CrossCutting.IoC.Extensions.Context
 {
     public static partial class ContextDependencyInjectionExtensions
     {
-        public static IServiceCollection AddIdentityContext(this IServiceCollection services, Action<IdentityContextOptions> setupAction)
+        public static IServiceCollection AddIdentityContext(this IServiceCollection services, IConfiguration configuration, Action<IdentityContextOptions> setupAction)
         {
             IdentityContextOptions options = new IdentityContextOptions();
             setupAction(options);
 
             services.AddDbContext<ApplicationIdentityDbContext>(opt =>
-                opt.UseInMemoryDatabase("IdentityDb"));
+                 opt.UseSqlServer(configuration.GetConnectionString("SqlServerMain")));
 
             services.AddIdentity<NutrientIdentityUser, NutrientIdentityRole>(cfg =>
             {
