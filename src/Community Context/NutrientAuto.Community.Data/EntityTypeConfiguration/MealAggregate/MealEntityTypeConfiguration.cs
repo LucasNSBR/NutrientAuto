@@ -33,11 +33,11 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MealAggregate
             builder
                 .OwnsOne(m => m.MealMacronutrients, cfg =>
                 {
-                    cfg.Property(mm => mm.Kcal).HasColumnName("MealKcal");
-                    cfg.Property(mm => mm.Kj).HasColumnName("MealKj");
-                    cfg.Property(mm => mm.Protein).HasColumnName("MealProtein");
-                    cfg.Property(mm => mm.Carbohydrate).HasColumnName("MealCarbohydrate");
-                    cfg.Property(mm => mm.Fat).HasColumnName("MealFat");
+                    cfg.Property(mm => mm.Kcal).HasColumnName("MealTotalKcal");
+                    cfg.Property(mm => mm.Kj).HasColumnName("MealTotalKj");
+                    cfg.Property(mm => mm.Protein).HasColumnName("MealTotalProtein");
+                    cfg.Property(mm => mm.Carbohydrate).HasColumnName("MealTotalCarbohydrate");
+                    cfg.Property(mm => mm.Fat).HasColumnName("MealTotalFat");
                 });
 
             builder
@@ -50,8 +50,23 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MealAggregate
                     cfg.HasKey("Id");
                     cfg.Property(mf => mf.Name).IsRequired().HasMaxLength(100);
                     cfg.Property(mf => mf.Description).IsRequired().HasMaxLength(250);
-                    cfg.OwnsOne(mf => mf.Macronutrients);
-                    cfg.OwnsOne(mf => mf.FoodUnit);
+
+                    cfg.OwnsOne(mf => mf.Macronutrients, macroCfg =>
+                    {
+                        macroCfg.Property(fm => fm.Kcal).HasColumnName("MealFoodKcal");
+                        macroCfg.Property(fm => fm.Kj).HasColumnName("MealFoodKj");
+                        macroCfg.Property(fm => fm.Protein).HasColumnName("MealFoodProtein");
+                        macroCfg.Property(fm => fm.Carbohydrate).HasColumnName("MealFoodCarbohydrate");
+                        macroCfg.Property(fm => fm.Fat).HasColumnName("MealFoodFat");
+                    });
+
+                    cfg.OwnsOne(mf => mf.FoodUnit, unitCfg =>
+                    {
+                        unitCfg.Property(fu => fu.UnitType).HasColumnName("MealFoodUnitType");
+                        unitCfg.Property(fu => fu.DefaultGramsQuantityMultiplier).HasColumnName("MealFoodDefaultGramsQuantityMultiplier");
+                    });
+
+                    cfg.ToTable("MealFoods");
                 });
         }
     }

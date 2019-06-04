@@ -10,7 +10,7 @@ namespace NutrientAuto.Shared.Data.EntityTypeConfiguration.ValueObjects
         {
             Action<ReferenceOwnershipBuilder<T, Image>> setupAction = new Action<ReferenceOwnershipBuilder<T, Image>>(cfg =>
             {
-                cfg.Property(image => image.Name).IsRequired().HasMaxLength(100);
+                cfg.Property(image => image.ImageName).IsRequired().HasMaxLength(100);
                 cfg.Property(image => image.UrlPath).IsRequired().HasMaxLength(250);
             });
 

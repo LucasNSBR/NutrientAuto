@@ -17,7 +17,7 @@ namespace NutrientAuto.Community.Domain.Aggregates.MealAggregate
         public Time TimeOfDay { get; private set; }
         public MacronutrientTable MealMacronutrients { get; private set; }
 
-        public int MealFoodCount => _mealFoods.Count;
+        public int MealFoodCount => _mealFoods?.Count ?? 0;
 
         private readonly List<MealFood> _mealFoods;
         public IReadOnlyList<MealFood> MealFoods => _mealFoods;
@@ -37,7 +37,7 @@ namespace NutrientAuto.Community.Domain.Aggregates.MealAggregate
             MealMacronutrients = MacronutrientTable.Default();
             _mealFoods = new List<MealFood>();
         }
-        
+
         public void Update(string name, string description, Time timeOfDay)
         {
             Name = name;

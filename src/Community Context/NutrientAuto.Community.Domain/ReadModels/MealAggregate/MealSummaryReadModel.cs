@@ -1,4 +1,4 @@
-﻿using NutrientAuto.Community.Domain.Aggregates.FoodAggregate;
+﻿using NutrientAuto.Community.Domain.Aggregates.MealAggregate;
 using NutrientAuto.Community.Domain.Aggregates.SeedWork;
 using NutrientAuto.Shared.ValueObjects;
 using System;
@@ -15,6 +15,6 @@ namespace NutrientAuto.Community.Domain.ReadModels.MealAggregate
         public Time TimeOfDay { get; set; }
         public MacronutrientTable MealMacronutrients { get; set; }
         public int FoodsCount { get; set; }
-        public List<Food> Foods { get; set; }
+        public List<MealFood> Foods { get; set; }
     }
 }

@@ -28,6 +28,7 @@ namespace NutrientAuto.Community.Domain.CommandValidators.ReminderAggregate.Base
         public void ValidateTimeOfDay()
         {
             RuleFor(command => command.TimeOfDay)
+                .NotNull()
                 .SetValidator(new TimeDtoValidator());
         }
     }

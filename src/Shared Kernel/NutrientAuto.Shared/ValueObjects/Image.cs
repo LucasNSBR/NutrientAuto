@@ -3,21 +3,21 @@
     public class Image : ValueObject<Image>
     {
         public string UrlPath { get; private set; }
-        public string Name { get; private set; }
+        public string ImageName { get; private set; }
 
         protected Image()
         {
         }
 
-        public Image(string urlPath, string name)
+        public Image(string urlPath, string imageName)
         {
             UrlPath = urlPath;
-            Name = name;
+            ImageName = imageName;
         }
 
         public override string ToString()
         {
-            return Name;
+            return ImageName;
         }
     }
 }

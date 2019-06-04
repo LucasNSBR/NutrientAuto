@@ -31,7 +31,7 @@ namespace NutrientAuto.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCoreContext();
-            services.AddCommunityContext();
+            services.AddCommunityContext(Configuration);
 
             services.AddIdentityContext(opt =>
             {
@@ -196,7 +196,8 @@ namespace NutrientAuto.WebApi
 
             app.UseResponseCompression();
             app.UseAuthentication();
-            app.UseGlobalExceptionHandler();
+            
+            // app.UseGlobalExceptionHandler();
             // app.UseNotFoundLogger();
 
             app.UseSwagger();

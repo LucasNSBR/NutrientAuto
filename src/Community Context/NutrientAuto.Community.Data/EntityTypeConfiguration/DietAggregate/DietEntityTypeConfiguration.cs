@@ -32,7 +32,14 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.DietAggregate
                 .IsRequired();
             
             builder
-                .OwnsOne(d => d.TotalMacronutrients);
+                .OwnsOne(d => d.TotalMacronutrients, macronutrientTableCfg =>
+                {
+                    macronutrientTableCfg.Property(mt => mt.Kcal).HasColumnName("DietTotalKcal");
+                    macronutrientTableCfg.Property(mt => mt.Kj).HasColumnName("DietTotalKj");
+                    macronutrientTableCfg.Property(mt => mt.Carbohydrate).HasColumnName("DietTotalCarbohydrate");
+                    macronutrientTableCfg.Property(mt => mt.Protein).HasColumnName("DietTotalProtein");
+                    macronutrientTableCfg.Property(mt => mt.Fat).HasColumnName("DietTotalFat");
+                });
 
             builder
                 .Ignore(d => d.MealCount);

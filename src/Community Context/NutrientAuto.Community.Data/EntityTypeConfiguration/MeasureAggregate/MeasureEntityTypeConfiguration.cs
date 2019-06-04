@@ -45,16 +45,20 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MeasureAggregate
                 {
                     bodyPictureCfg.Property<Guid>("Id");
                     bodyPictureCfg.HasKey("Id");
-                    bodyPictureCfg.Property(i => i.Name).IsRequired().HasMaxLength(150).HasColumnName("BodyPictureImageName");
+                    bodyPictureCfg.Property(i => i.ImageName).IsRequired().HasMaxLength(150).HasColumnName("BodyPictureImageName");
                     bodyPictureCfg.Property(i => i.UrlPath).IsRequired().HasMaxLength(500).HasColumnName("BodyPictureImageUrlPath");
+                    bodyPictureCfg.ToTable("MeasureBodyPictures");
                 });
 
             builder
-                .OwnsMany(m => m.MeasureLines, cfg =>
+                .OwnsMany(m => m.MeasureLines, measureLineCfg =>
                 {
-                    cfg.Property<Guid>("Id");
-                    cfg.HasKey("Id");
-                    cfg.HasOne(m => m.MeasureCategory).WithMany().HasForeignKey(ml => ml.MeasureCategoryId);
+                    measureLineCfg.Property<Guid>("Id");
+                    measureLineCfg.HasKey("Id");
+                    measureLineCfg.HasOne(m => m.MeasureCategory).WithMany().HasForeignKey(ml => ml.MeasureCategoryId);
+                    measureLineCfg.Property(m => m.MeasureCategoryId).HasColumnName("MeasureCategoryId");
+                    measureLineCfg.Property(m => m.Value).HasColumnName("Value");
+                    measureLineCfg.ToTable("MeasureLines");
                 });
         }
     }

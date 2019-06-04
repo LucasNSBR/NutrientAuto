@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="AutoMapper" Version="8.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Profiles\NutritionistWorkspace\" />
+    <ProjectReference Include="..\..\Community Context\NutrientAuto.Community.Domain\NutrientAuto.Community.Domain.csproj" />
   </ItemGroup>
 
 </Project>

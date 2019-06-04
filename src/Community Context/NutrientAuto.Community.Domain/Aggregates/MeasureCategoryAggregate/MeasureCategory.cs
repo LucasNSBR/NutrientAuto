@@ -1,5 +1,4 @@
 ﻿using NutrientAuto.Shared.Entities;
-using System;
 
 namespace NutrientAuto.Community.Domain.Aggregates.MeasureCategoryAggregate
 {
