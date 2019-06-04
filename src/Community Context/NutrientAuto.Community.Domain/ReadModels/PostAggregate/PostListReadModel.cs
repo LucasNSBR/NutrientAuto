@@ -10,6 +10,7 @@ namespace NutrientAuto.Community.Domain.ReadModels.PostAggregate
         public string Title { get; set; }
         public string Body { get; set; }
         public DateTime DateCreated { get; set; }
+
         public Image AttachedImage { get; set; }
 
         public int LikesCount { get; set; }
