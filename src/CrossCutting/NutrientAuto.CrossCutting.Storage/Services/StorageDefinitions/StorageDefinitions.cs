@@ -8,6 +8,11 @@ namespace NutrientAuto.CrossCutting.Storage.Services.StorageDefinitions
     {
         private readonly IOptions<StorageOptions> _storageOptions;
 
+        public StorageDefinitions(IOptions<StorageOptions> storageOptions)
+        {
+            _storageOptions = storageOptions;
+        }
+
         public Image GetDefaultProfileAvatarImage()
         {
             return new Image(_storageOptions.Value.DefaultAvatarImageName, _storageOptions.Value.DefaultAvatarImageUrl);
