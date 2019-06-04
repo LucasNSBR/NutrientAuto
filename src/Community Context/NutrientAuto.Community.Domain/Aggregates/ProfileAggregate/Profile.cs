@@ -28,10 +28,11 @@ namespace NutrientAuto.Community.Domain.Aggregates.ProfileAggregate
         {
         }
 
-        public Profile(Guid id, Genre genre, string name, string username, EmailAddress emailAddress, DateTime birthDate)
+        public Profile(Guid id, Genre genre, Image avatarImage, string name, string username, EmailAddress emailAddress, DateTime birthDate)
         {
             Id = id;
             Genre = genre;
+            AvatarImage = avatarImage;
             Name = name;
             Username = username;
             EmailAddress = emailAddress;
