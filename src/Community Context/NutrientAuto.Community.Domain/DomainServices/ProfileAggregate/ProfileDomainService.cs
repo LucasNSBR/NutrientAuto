@@ -16,19 +16,26 @@ namespace NutrientAuto.Community.Domain.DomainServices.ProfileAggregate
             _profileRepository = profileRepository;
         }
 
-        public async Task<bool> CanAccessProfileData(Guid requesterId, Guid requestedId)
+        public async Task<ProfileAccessResult> CanAccessProfileData(Guid requesterId, Guid requestedId)
         {
-            Profile requestedProfile = await _profileRepository.GetByIdAsync(requestedId);
+            if (requesterId == requestedId)
+                return ProfileAccessResult.CanAccess;
 
+            Profile requestedProfile = await _profileRepository.GetByIdAsync(requestedId);
             if (requestedProfile != null)
             {
                 if (requestedProfile.IsPublic)
-                    return true;
+                    return ProfileAccessResult.CanAccess;
                 if (requestedProfile.IsProtected)
-                    return requestedProfile.IsFriend(requesterId);
+                {
+                    if (requestedProfile.IsFriend(requesterId))
+                        return ProfileAccessResult.CanAccess;
+                    else
+                        return ProfileAccessResult.Forbidden;
+                }
             }
 
-            return false;
+            return ProfileAccessResult.NotFound;
         }
 
         public async Task<CommandResult> MakeFriends(Guid requesterId, Guid requestedId)
