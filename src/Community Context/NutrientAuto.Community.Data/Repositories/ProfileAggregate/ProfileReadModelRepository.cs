@@ -48,9 +48,9 @@ namespace NutrientAuto.Community.Data.Repositories.ProfileAggregate
         public async Task<ProfileSummaryReadModel> GetProfileSummaryAsync(Guid id)
         {
             string sql = @"SELECT Profiles.Id, Profiles.Genre, Profiles.Name, Profiles.Username, Profiles.Bio, Profiles.BirthDate, Profiles.PrivacyType, 
+                         (SELECT COUNT(Friends.Id) FROM Friends WHERE Profiles.Id = Friends.FriendId) AS FriendsCount,
                          Profiles.EmailAddress AS Email, 
-                         Profiles.AvatarImageName AS ImageName, Profiles.AvatarImageUrlPath AS UrlPath, 
-                         (SELECT COUNT(Friends.Id) FROM Friends WHERE Profiles.Id = Friends.ProfileId) AS FriendsCount 
+                         Profiles.AvatarImageName AS ImageName, Profiles.AvatarImageUrlPath AS UrlPath
                          FROM Profiles
                          WHERE Profiles.Id = @id";
 
