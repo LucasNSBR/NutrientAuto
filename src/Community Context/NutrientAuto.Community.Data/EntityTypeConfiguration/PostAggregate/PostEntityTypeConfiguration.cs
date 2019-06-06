@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NutrientAuto.Community.Domain.Aggregates.PostAggregate;
-using NutrientAuto.Community.Domain.Aggregates.PostAggregate.Subtypes;
 using NutrientAuto.Community.Domain.Aggregates.ProfileAggregate;
 using System;
 
@@ -33,17 +32,9 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.PostAggregate
             builder
                 .OwnsOne(p => p.AttachedImage, imageCfg =>
                 {
-                    imageCfg.Property(i => i.ImageName).IsRequired().HasMaxLength(150).HasColumnName("PostImageName");
-                    imageCfg.Property(i => i.UrlPath).IsRequired().HasMaxLength(500).HasColumnName("PostImageUrlPath");
+                    imageCfg.Property(i => i.ImageName).HasMaxLength(150).HasColumnName("PostImageName");
+                    imageCfg.Property(i => i.UrlPath).HasMaxLength(500).HasColumnName("PostImageUrlPath");
                 });
-
-            builder.HasDiscriminator<int>("PostType")
-                .HasValue<Post>(0)
-                .HasValue<ProfileUpdatedPost>(1)
-                .HasValue<GoalRegisteredPost>(2)
-                .HasValue<GoalCompletedPost>(3)
-                .HasValue<MeasureRegisteredPost>(4)
-                .HasValue<DietRegisteredPost>(5);
 
             builder
                 .OwnsOne(p => p.EntityReference, entityReferenceCfg =>

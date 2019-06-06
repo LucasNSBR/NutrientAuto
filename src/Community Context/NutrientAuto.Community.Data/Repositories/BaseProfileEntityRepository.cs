@@ -46,13 +46,13 @@ namespace NutrientAuto.Community.Data.Repositories
         public virtual Task UpdateAsync(TEntity entity)
         {
             return Task.FromResult(_dbContext
-                .Remove(entity));
+                .Update(entity));
         }
 
         public virtual Task RemoveAsync(TEntity entity)
         {
             return Task.FromResult(_dbContext
-                .Update(entity));
+                .Remove(entity));
         }
     }
 }

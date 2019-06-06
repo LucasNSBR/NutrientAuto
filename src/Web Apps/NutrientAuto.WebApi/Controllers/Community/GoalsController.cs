@@ -53,9 +53,12 @@ namespace NutrientAuto.WebApi.Controllers.Community
         {
             GoalSummaryReadModel goal = await _goalReadModelRepository.GetGoalSummaryAsync(id);
 
-            bool canAccessGoal = await _profileDomainService.CanAccessProfileData(_currentProfileId, goal.ProfileId);
-            if (canAccessGoal)
-                return CreateResponse(goal);
+            if (goal != null)
+            {
+                bool canAccessGoal = await _profileDomainService.CanAccessProfileData(_currentProfileId, goal.ProfileId);
+                if (canAccessGoal)
+                    return CreateResponse(goal);
+            }
 
             return Forbid();
         }

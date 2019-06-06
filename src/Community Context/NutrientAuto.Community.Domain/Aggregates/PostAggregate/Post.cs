@@ -28,13 +28,13 @@ namespace NutrientAuto.Community.Domain.Aggregates.PostAggregate
         {
         }
 
-        public Post(Guid profileId, string title, string body, Image attachedImage = null)
+        public Post(Guid profileId, string title, string body, EntityReference entityReference = null, Image attachedImage = null)
         {
             ProfileId = profileId;
             Title = title;
             Body = body;
-            AttachedImage = attachedImage;
-            EntityReference = EntityReference.None();
+            AttachedImage = attachedImage ?? Image.Default();
+            EntityReference = entityReference ?? EntityReference.None();
             DateCreated = DateTime.Now;
             _likes = new List<PostLike>();
             _comments = new List<Comment>();

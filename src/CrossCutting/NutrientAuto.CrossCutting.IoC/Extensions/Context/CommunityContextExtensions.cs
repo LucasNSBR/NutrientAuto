@@ -44,6 +44,7 @@ using NutrientAuto.Community.Domain.DomainEvents.MeasureAggregate;
 using NutrientAuto.Community.Domain.DomainEvents.ProfileAggregate;
 using NutrientAuto.Community.Domain.DomainServices.MeasureStatisticsAggregate;
 using NutrientAuto.Community.Domain.DomainServices.ProfileAggregate;
+using NutrientAuto.Community.Domain.Factories.PostAggregate;
 using NutrientAuto.Community.Domain.Repositories.CommentAggregate;
 using NutrientAuto.Community.Domain.Repositories.DietAggregate;
 using NutrientAuto.Community.Domain.Repositories.FoodAggregate;
@@ -144,6 +145,8 @@ namespace NutrientAuto.CrossCutting.IoC.Extensions.Context
             services.AddScoped<INotificationHandler<GoalCompletedDomainEvent>, PostDomainEventHandler>();
             services.AddScoped<INotificationHandler<MeasureRegisteredDomainEvent>, PostDomainEventHandler>();
             services.AddScoped<INotificationHandler<DietRegisteredDomainEvent>, PostDomainEventHandler>();
+
+            services.AddScoped<IPostFactory, PostFactory>();
 
             services.AddScoped<ICommunityDbContext, CommunityDbContext>(provider => provider.GetRequiredService<CommunityDbContext>());
             services.AddScoped<IUnitOfWork<ICommunityDbContext>, UnitOfWork<ICommunityDbContext>>();
