@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NutrientAuto.Community.Domain.Aggregates.MeasureAggregate;
 using NutrientAuto.Community.Domain.Aggregates.ProfileAggregate;
+using NutrientAuto.Shared.Data.Extensions;
 using System;
 
 namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MeasureAggregate
@@ -16,7 +17,8 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MeasureAggregate
             builder
                 .HasOne<Profile>()
                 .WithMany()
-                .HasForeignKey(m => m.ProfileId);
+                .HasForeignKey(m => m.ProfileId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .Property(m => m.Title)
@@ -31,9 +33,9 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MeasureAggregate
             builder
                 .OwnsOne(m => m.BasicMeasure, basicMeasureCfg =>
                 {
-                    basicMeasureCfg.Property(m => m.Height).HasColumnName("Height");
-                    basicMeasureCfg.Property(m => m.Weight).HasColumnName("Weight");
-                    basicMeasureCfg.Property(m => m.Bmi).HasColumnName("Bmi");
+                    basicMeasureCfg.Property(m => m.Height).HasColumnName("Height").HasPrecision(18, 2);
+                    basicMeasureCfg.Property(m => m.Weight).HasColumnName("Weight").HasPrecision(18, 2);
+                    basicMeasureCfg.Property(m => m.Bmi).HasColumnName("Bmi").HasPrecision(18, 2);
                 });
 
             builder
@@ -47,6 +49,7 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MeasureAggregate
                     bodyPictureCfg.HasKey("Id");
                     bodyPictureCfg.Property(i => i.ImageName).IsRequired().HasMaxLength(150).HasColumnName("BodyPictureImageName");
                     bodyPictureCfg.Property(i => i.UrlPath).IsRequired().HasMaxLength(500).HasColumnName("BodyPictureImageUrlPath");
+                    bodyPictureCfg.OnDelete(DeleteBehavior.Cascade);
                     bodyPictureCfg.ToTable("MeasureBodyPictures");
                 });
 
@@ -55,9 +58,10 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MeasureAggregate
                 {
                     measureLineCfg.Property<Guid>("Id");
                     measureLineCfg.HasKey("Id");
-                    measureLineCfg.HasOne(m => m.MeasureCategory).WithMany().HasForeignKey(ml => ml.MeasureCategoryId);
+                    measureLineCfg.HasOne(m => m.MeasureCategory).WithMany().HasForeignKey(ml => ml.MeasureCategoryId).OnDelete(DeleteBehavior.Cascade);
                     measureLineCfg.Property(m => m.MeasureCategoryId).HasColumnName("MeasureCategoryId");
-                    measureLineCfg.Property(m => m.Value).HasColumnName("Value");
+                    measureLineCfg.Property(m => m.Value).HasColumnName("Value").HasPrecision(18, 2);
+                    measureLineCfg.OnDelete(DeleteBehavior.Cascade);
                     measureLineCfg.ToTable("MeasureLines");
                 });
         }

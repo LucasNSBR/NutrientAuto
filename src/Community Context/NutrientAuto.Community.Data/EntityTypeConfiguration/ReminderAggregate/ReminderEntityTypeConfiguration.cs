@@ -16,7 +16,8 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.ReminderAggregate
             builder
                 .HasOne<Profile>()
                 .WithMany()
-                .HasForeignKey(r => r.ProfileId);
+                .HasForeignKey(r => r.ProfileId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .Property(r => r.Title)

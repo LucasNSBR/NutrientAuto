@@ -33,10 +33,10 @@ namespace NutrientAuto.WebApi.Controllers.Community
         [ProducesResponseType(typeof(List<FriendshipRequestListReadModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetFriendshipRequestList(string nameFilter = null, int pageNumber = 1, int pageSize = 20)
         {
-            Guid followedId = _identityService.GetUserId();
+            Guid requestedId = _identityService.GetUserId();
 
             IEnumerable<FriendshipRequestListReadModel> friendshipRequests = await _friendshipRequestReadModelRepository
-                .GetFriendshipRequestList(followedId, nameFilter, pageNumber, pageSize);
+                .GetFriendshipRequestList(requestedId, nameFilter, pageNumber, pageSize);
 
             return CreateResponse(friendshipRequests);
         }
@@ -46,10 +46,10 @@ namespace NutrientAuto.WebApi.Controllers.Community
         [ProducesResponseType(typeof(List<FriendshipRequestSentListReadModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetFriendshipRequestSentList(string nameFilter = null, int pageNumber = 1, int pageSize = 20)
         {
-            Guid followerId = _identityService.GetUserId();
+            Guid requesterId = _identityService.GetUserId();
 
             IEnumerable<FriendshipRequestSentListReadModel> friendshipRequestsSent = await _friendshipRequestReadModelRepository
-                .GetFriendshipRequestSentList(followerId, nameFilter, pageNumber, pageSize);
+                .GetFriendshipRequestSentList(requesterId, nameFilter, pageNumber, pageSize);
 
             return CreateResponse(friendshipRequestsSent);
         }

@@ -28,10 +28,11 @@ namespace NutrientAuto.Community.Domain.Aggregates.ProfileAggregate
         {
         }
 
-        public Profile(Guid id, Genre genre, string name, string username, EmailAddress emailAddress, DateTime birthDate)
+        public Profile(Guid id, Genre genre, Image avatarImage, string name, string username, EmailAddress emailAddress, DateTime birthDate)
         {
             Id = id;
             Genre = genre;
+            AvatarImage = avatarImage;
             Name = name;
             Username = username;
             EmailAddress = emailAddress;
@@ -70,7 +71,7 @@ namespace NutrientAuto.Community.Domain.Aggregates.ProfileAggregate
             if (IsFriend(otherProfile))
                 AddNotification("Erro ao adicionar amigo", "Você e esse usuário já são amigos.");
 
-            _friends.Add(new Friend(otherProfile.Id));
+            _friends.Add(new Friend(Id, otherProfile.Id));
         }
 
         public void RemoveFriend(Profile otherProfile)

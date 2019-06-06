@@ -41,7 +41,6 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.ProfileAggregate
 
             builder
                 .Property(p => p.Bio)
-                .IsRequired()
                 .HasMaxLength(500);
 
             builder
@@ -60,13 +59,10 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.ProfileAggregate
                 .Ignore(p => p.IsPrivate);
 
             builder
-                .OwnsMany(p => p.Friends, cfg =>
-                {
-                    cfg.Property<Guid>("Id");
-                    cfg.HasKey("Id");
-                    cfg.HasOne<Profile>().WithMany().HasForeignKey(pl => pl.FriendId);
-                    cfg.ToTable("Friends");
-                });
+                .HasMany(p => p.Friends)
+                .WithOne()
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

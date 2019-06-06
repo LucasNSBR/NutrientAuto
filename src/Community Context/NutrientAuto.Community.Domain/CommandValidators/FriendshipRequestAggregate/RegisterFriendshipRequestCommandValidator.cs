@@ -10,8 +10,7 @@ namespace NutrientAuto.Community.Domain.CommandValidators.FriendshipRequestAggre
         {
             RuleFor(command => command.RequestBody)
                 .MaximumLength(100);
-
-            ValidateRequesterId();
+            
             ValidateRequestedId();
         }
     }

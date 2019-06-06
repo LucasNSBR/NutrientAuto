@@ -17,7 +17,8 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.PostAggregate
             builder
                 .HasOne<Profile>()
                 .WithMany()
-                .HasForeignKey(p => p.ProfileId);
+                .HasForeignKey(p => p.ProfileId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .Property(p => p.Title)
@@ -61,7 +62,7 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.PostAggregate
                 {
                     cfg.Property<Guid>("Id");
                     cfg.HasKey("Id");
-                    cfg.HasOne<Profile>().WithMany().HasForeignKey(pl => pl.ProfileId);
+                    cfg.HasOne<Profile>().WithMany().HasForeignKey(pl => pl.ProfileId).OnDelete(DeleteBehavior.Cascade);
                     cfg.Property(p => p.DateCreated).IsRequired();
                     cfg.ToTable("PostLikes");
                 });

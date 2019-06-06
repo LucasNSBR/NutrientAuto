@@ -33,7 +33,7 @@ namespace NutrientAuto.WebApi
             services.AddCoreContext();
             services.AddCommunityContext(Configuration);
 
-            services.AddIdentityContext(opt =>
+            services.AddIdentityContext(Configuration, opt =>
             {
                 opt.UserOptions = new UserOptions
                 {
@@ -75,6 +75,8 @@ namespace NutrientAuto.WebApi
                 opt.AccountName = Configuration["Storage:AccountName"];
                 opt.AccountKey = Configuration["Storage:AccountKey"];
                 opt.ContainerName = Configuration["Storage:ContainerName"];
+                opt.DefaultAvatarImageName = "";
+                opt.DefaultAvatarImageUrl = "";
             });
 
             services.AddEmailService(opt =>
@@ -183,7 +185,10 @@ namespace NutrientAuto.WebApi
                         context.Response.ContentType = "application/json";
                         return context.Response.WriteAsync(JsonConvert.SerializeObject(result));
                     }
+
                 });
+
+                app.UseGlobalExceptionHandler();
             }
 
             CultureInfo[] supportedCultures = new[] { new CultureInfo("pt-BR") };
@@ -196,9 +201,8 @@ namespace NutrientAuto.WebApi
 
             app.UseResponseCompression();
             app.UseAuthentication();
-            
-            // app.UseGlobalExceptionHandler();
-            // app.UseNotFoundLogger();
+
+            app.UseNotFoundLogger();
 
             app.UseSwagger();
             app.UseSwaggerUI(cfg =>

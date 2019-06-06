@@ -10,7 +10,6 @@ using NutrientAuto.CrossCutting.HttpService.HttpContext;
 using NutrientAuto.CrossCutting.UnitOfwork.Abstractions;
 using NutrientAuto.Shared.Commands;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -59,7 +58,7 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.FriendshipRequestAggrega
             if (friendshipRequest == null || !friendshipRequest.IsRequested(_currentProfileId))
                 return FailureDueToFriendshipNotFound();
 
-            CommandResult profileServiceResult = await _profileDomainService.MakeFriends(request.RequesterId, request.RequestedId);
+            CommandResult profileServiceResult = await _profileDomainService.MakeFriends(friendshipRequest.RequesterId, friendshipRequest.RequestedId);
             if (!profileServiceResult.Success)
                 return profileServiceResult;
 
