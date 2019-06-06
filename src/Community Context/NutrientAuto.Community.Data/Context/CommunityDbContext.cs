@@ -50,6 +50,7 @@ namespace NutrientAuto.Community.Data.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ProfileEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new FriendEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PostEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new CommentEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GoalEntityTypeConfiguration());
