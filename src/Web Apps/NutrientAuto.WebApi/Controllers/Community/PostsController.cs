@@ -37,14 +37,17 @@ namespace NutrientAuto.WebApi.Controllers.Community
         [ProducesResponseType(typeof(IEnumerable<PostListReadModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllByProfileIdAsync(Guid profileId, string titleFilter = null, int pageNumber = 1, int pageSize = 20)
         {
-            bool canAccessPosts = await _profileDomainService.CanAccessProfileData(_currentProfileId, profileId);
-            if (canAccessPosts)
+            ProfileAccessResult canAccessPosts = await _profileDomainService.CanAccessProfileData(_currentProfileId, profileId);
+
+            if (canAccessPosts == ProfileAccessResult.CanAccess)
             {
                 IEnumerable<PostListReadModel> posts = await _postReadModelRepository.GetPostListAsync(profileId, titleFilter, pageNumber, pageSize);
                 return CreateResponse(posts);
             }
+            else if (canAccessPosts == ProfileAccessResult.Forbidden) return Forbid();
 
-            return Forbid();
+
+            return NotFound();
         }
 
         [HttpGet]
@@ -54,11 +57,16 @@ namespace NutrientAuto.WebApi.Controllers.Community
         {
             PostSummaryReadModel post = await _postReadModelRepository.GetPostSummaryAsync(id);
 
-            bool canAccessPost = await _profileDomainService.CanAccessProfileData(_currentProfileId, post.ProfileId);
-            if (canAccessPost)
-                return CreateResponse(post);
+            if (post != null)
+            {
+                ProfileAccessResult canAccessPost = await _profileDomainService.CanAccessProfileData(_currentProfileId, post.ProfileId);
+                if (canAccessPost == ProfileAccessResult.CanAccess)
+                    return CreateResponse(post);
+                if (canAccessPost == ProfileAccessResult.Forbidden)
+                    return Forbid();
+            }
 
-            return Forbid();
+            return NotFound();
         }
 
         [HttpPost]

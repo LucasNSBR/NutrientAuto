@@ -36,14 +36,16 @@ namespace NutrientAuto.WebApi.Controllers.Community
         [ProducesResponseType(typeof(IEnumerable<GoalListReadModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllByProfileIdAsync(Guid profileId, string titleFilter = null, int pageNumber = 1, int pageSize = 20)
         {
-            bool canAccessGoals = await _profileDomainService.CanAccessProfileData(_currentProfileId, profileId);
-            if (canAccessGoals)
+            ProfileAccessResult canAccessGoals = await _profileDomainService.CanAccessProfileData(_currentProfileId, profileId);
+
+            if (canAccessGoals == ProfileAccessResult.CanAccess)
             {
                 IEnumerable<GoalListReadModel> goals = await _goalReadModelRepository.GetGoalListAsync(profileId, titleFilter, pageNumber, pageSize);
                 return CreateResponse(goals);
             }
+            else if (canAccessGoals == ProfileAccessResult.Forbidden) return Forbid();
 
-            return Forbid();
+            return NotFound();
         }
 
         [HttpGet]
@@ -55,12 +57,14 @@ namespace NutrientAuto.WebApi.Controllers.Community
 
             if (goal != null)
             {
-                bool canAccessGoal = await _profileDomainService.CanAccessProfileData(_currentProfileId, goal.ProfileId);
-                if (canAccessGoal)
+                ProfileAccessResult canAccessGoal = await _profileDomainService.CanAccessProfileData(_currentProfileId, goal.ProfileId);
+                if (canAccessGoal == ProfileAccessResult.CanAccess)
                     return CreateResponse(goal);
+                if (canAccessGoal == ProfileAccessResult.Forbidden)
+                    return Forbid();
             }
 
-            return Forbid();
+            return NotFound();
         }
 
         [HttpPost]

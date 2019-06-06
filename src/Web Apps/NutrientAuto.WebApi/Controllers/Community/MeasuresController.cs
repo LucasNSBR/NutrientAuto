@@ -36,14 +36,16 @@ namespace NutrientAuto.WebApi.Controllers.Community
         [ProducesResponseType(typeof(IEnumerable<MeasureListReadModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllByProfileIdAsync(Guid profileId, string titleFilter = null, int pageNumber = 1, int pageSize = 20)
         {
-            bool canAccessMeasures = await _profileDomainService.CanAccessProfileData(_currentProfileId, profileId);
-            if (canAccessMeasures)
+            ProfileAccessResult canAccessMeasures = await _profileDomainService.CanAccessProfileData(_currentProfileId, profileId);
+
+            if (canAccessMeasures == ProfileAccessResult.CanAccess)
             {
                 IEnumerable<MeasureListReadModel> measures = await _measureReadModelRepository.GetMeasureListAsync(profileId, titleFilter, pageNumber, pageSize);
                 return CreateResponse(measures);
             }
+            else if (canAccessMeasures == ProfileAccessResult.Forbidden) return Forbid();
 
-            return Forbid();
+            return NotFound();
         }
 
         [HttpGet]
@@ -53,11 +55,16 @@ namespace NutrientAuto.WebApi.Controllers.Community
         {
             MeasureSummaryReadModel measure = await _measureReadModelRepository.GetMeasureSummaryAsync(id);
 
-            bool canAccessMeasure = await _profileDomainService.CanAccessProfileData(_currentProfileId, measure.ProfileId);
-            if (canAccessMeasure)
-                return CreateResponse(measure);
+            if (measure != null)
+            {
+                ProfileAccessResult canAccessMeasure = await _profileDomainService.CanAccessProfileData(_currentProfileId, measure.ProfileId);
+                if (canAccessMeasure == ProfileAccessResult.CanAccess)
+                    return CreateResponse(measure);
+                if (canAccessMeasure == ProfileAccessResult.Forbidden)
+                    return Forbid();
+            }
 
-            return Forbid();
+            return NotFound();
         }
 
         [HttpPost]

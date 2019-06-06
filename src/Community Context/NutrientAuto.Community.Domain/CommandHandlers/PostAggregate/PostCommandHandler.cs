@@ -150,7 +150,8 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.PostAggregate
             if (post == null)
                 return false;
 
-            return await _profileDomainService.CanAccessProfileData(_currentProfileId, post.ProfileId);
+            ProfileAccessResult accessResult = await _profileDomainService.CanAccessProfileData(_currentProfileId, post.ProfileId);
+            return accessResult == ProfileAccessResult.CanAccess;
         }
     }
 }

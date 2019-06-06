@@ -37,8 +37,8 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.CommentAggregate
         {
             Post post = await _postRepository.GetByIdAsync(request.PostId);
 
-            bool canAccessPost = await _profileDomainService.CanAccessProfileData(_currentProfileId, post.ProfileId);
-            if (!canAccessPost)
+            ProfileAccessResult accessResult = await _profileDomainService.CanAccessProfileData(_currentProfileId, post.ProfileId);
+            if (accessResult != ProfileAccessResult.CanAccess)
                 return FailureDueToPostNotFound();
 
             Comment comment = await _commentRepository.GetByIdAsync(request.CommentId);

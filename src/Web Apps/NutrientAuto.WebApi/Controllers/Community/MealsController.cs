@@ -37,11 +37,16 @@ namespace NutrientAuto.WebApi.Controllers.Community
         {
             MealSummaryReadModel meal = await _readModelRepository.GetMealSummaryAsync(id);
 
-            bool canAccessMeal = await _profileDomainService.CanAccessProfileData(_currentProfileId, meal.ProfileId);
-            if (canAccessMeal)
-                return CreateResponse(meal);
+            if (meal != null)
+            {
+                ProfileAccessResult canAccessMeal = await _profileDomainService.CanAccessProfileData(_currentProfileId, meal.ProfileId);
+                if (canAccessMeal == ProfileAccessResult.CanAccess)
+                    return CreateResponse(meal);
+                if (canAccessMeal == ProfileAccessResult.Forbidden)
+                    return Forbid();
+            }
 
-            return Forbid();
+            return NotFound();
         }
 
         [HttpPut]
