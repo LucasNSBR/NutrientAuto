@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NutrientAuto.Community.Data.Context;
 using NutrientAuto.Community.Domain.Aggregates.FoodAggregate;
@@ -12,9 +13,10 @@ using NutrientAuto.Community.Domain.Aggregates.MeasureCategoryAggregate;
 namespace NutrientAuto.Community.Data.Migrations
 {
     [DbContext(typeof(CommunityDbContext))]
-    partial class CommunityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190605221612_decimal-precision")]
+    partial class decimalprecision
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,24 +274,6 @@ namespace NutrientAuto.Community.Data.Migrations
                     b.ToTable("Posts");
 
                     b.HasDiscriminator<int>("PostType").HasValue(0);
-                });
-
-            modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Friend", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid>("FriendId");
-
-                    b.Property<Guid>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FriendId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Friends");
                 });
 
             modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile", b =>
@@ -690,8 +674,7 @@ namespace NutrientAuto.Community.Data.Migrations
                                 .IsRequired()
                                 .HasMaxLength(100);
 
-                            b1.Property<decimal>("Quantity")
-                                .HasColumnType("decimal(18,2)");
+                            b1.Property<decimal>("Quantity");
 
                             b1.HasKey("Id");
 
@@ -830,16 +813,13 @@ namespace NutrientAuto.Community.Data.Migrations
                             b1.Property<Guid>("MeasureId");
 
                             b1.Property<decimal>("Bmi")
-                                .HasColumnName("Bmi")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("Bmi");
 
                             b1.Property<decimal>("Height")
-                                .HasColumnName("Height")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("Height");
 
                             b1.Property<decimal>("Weight")
-                                .HasColumnName("Weight")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("Weight");
 
                             b1.HasKey("MeasureId");
 
@@ -862,8 +842,7 @@ namespace NutrientAuto.Community.Data.Migrations
                             b1.Property<Guid>("MeasureId");
 
                             b1.Property<decimal>("Value")
-                                .HasColumnName("Value")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("Value");
 
                             b1.HasKey("Id");
 
@@ -999,21 +978,29 @@ namespace NutrientAuto.Community.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Friend", b =>
-                {
-                    b.HasOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile")
-                        .WithMany()
-                        .HasForeignKey("FriendId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile")
-                        .WithMany("Friends")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile", b =>
                 {
+                    b.OwnsMany("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Friend", "Friends", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd();
+
+                            b1.Property<Guid>("FriendId");
+
+                            b1.Property<Guid>("ProfileId");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ProfileId");
+
+                            b1.ToTable("Friends");
+
+                            b1.HasOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile")
+                                .WithMany("Friends")
+                                .HasForeignKey("ProfileId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
                     b.OwnsOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.ProfileSettings", "Settings", b1 =>
                         {
                             b1.Property<Guid>("ProfileId");

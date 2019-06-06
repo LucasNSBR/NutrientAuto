@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NutrientAuto.Community.Data.Context;
 using NutrientAuto.Community.Domain.Aggregates.FoodAggregate;
@@ -12,9 +13,10 @@ using NutrientAuto.Community.Domain.Aggregates.MeasureCategoryAggregate;
 namespace NutrientAuto.Community.Data.Migrations
 {
     [DbContext(typeof(CommunityDbContext))]
-    partial class CommunityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190605222740_friend-entity")]
+    partial class friendentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -281,13 +283,9 @@ namespace NutrientAuto.Community.Data.Migrations
 
                     b.Property<Guid>("FriendId");
 
-                    b.Property<Guid>("UserId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("FriendId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Friends");
                 });
@@ -862,8 +860,7 @@ namespace NutrientAuto.Community.Data.Migrations
                             b1.Property<Guid>("MeasureId");
 
                             b1.Property<decimal>("Value")
-                                .HasColumnName("Value")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("Value");
 
                             b1.HasKey("Id");
 
@@ -1002,13 +999,8 @@ namespace NutrientAuto.Community.Data.Migrations
             modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Friend", b =>
                 {
                     b.HasOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile")
-                        .WithMany()
-                        .HasForeignKey("FriendId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile")
                         .WithMany("Friends")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("FriendId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

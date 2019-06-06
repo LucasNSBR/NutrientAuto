@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NutrientAuto.Community.Data.Context;
 using NutrientAuto.Community.Domain.Aggregates.FoodAggregate;
@@ -12,9 +13,10 @@ using NutrientAuto.Community.Domain.Aggregates.MeasureCategoryAggregate;
 namespace NutrientAuto.Community.Data.Migrations
 {
     [DbContext(typeof(CommunityDbContext))]
-    partial class CommunityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190604025531_fix-bio")]
+    partial class fixbio
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -274,24 +276,6 @@ namespace NutrientAuto.Community.Data.Migrations
                     b.HasDiscriminator<int>("PostType").HasValue(0);
                 });
 
-            modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Friend", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid>("FriendId");
-
-                    b.Property<Guid>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FriendId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Friends");
-                });
-
             modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile", b =>
                 {
                     b.Property<Guid>("Id")
@@ -442,24 +426,19 @@ namespace NutrientAuto.Community.Data.Migrations
                             b1.Property<Guid>("DietId");
 
                             b1.Property<decimal>("Carbohydrate")
-                                .HasColumnName("DietTotalCarbohydrate")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("DietTotalCarbohydrate");
 
                             b1.Property<decimal>("Fat")
-                                .HasColumnName("DietTotalFat")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("DietTotalFat");
 
                             b1.Property<decimal>("Kcal")
-                                .HasColumnName("DietTotalKcal")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("DietTotalKcal");
 
                             b1.Property<decimal>("Kj")
-                                .HasColumnName("DietTotalKj")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("DietTotalKj");
 
                             b1.Property<decimal>("Protein")
-                                .HasColumnName("DietTotalProtein")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("DietTotalProtein");
 
                             b1.HasKey("DietId");
 
@@ -484,76 +463,58 @@ namespace NutrientAuto.Community.Data.Migrations
                             b1.Property<Guid>("FoodId");
 
                             b1.Property<decimal?>("Calcium")
-                                .HasColumnName("MicronutrientsCalcium")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsCalcium");
 
                             b1.Property<decimal?>("Chromium")
-                                .HasColumnName("MicronutrientsChromium")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsChromium");
 
                             b1.Property<decimal?>("Copper")
-                                .HasColumnName("MicronutrientsCopper")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsCopper");
 
                             b1.Property<decimal?>("Magnesium")
-                                .HasColumnName("MicronutrientsMagnesium")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsMagnesium");
 
                             b1.Property<decimal?>("Manganese")
-                                .HasColumnName("MicronutrientsManganese")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsManganese");
 
                             b1.Property<decimal?>("Phosphorus")
-                                .HasColumnName("MicronutrientsPhosphorus")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsPhosphorus");
 
                             b1.Property<decimal?>("Potassium")
-                                .HasColumnName("MicronutrientsPotassium")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsPotassium");
 
                             b1.Property<decimal?>("Selenium")
-                                .HasColumnName("MicronutrientsSelenium")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsSelenium");
 
                             b1.Property<decimal?>("Sodium")
-                                .HasColumnName("MicronutrientsSodium")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsSodium");
 
                             b1.Property<decimal?>("VitaminB1")
-                                .HasColumnName("MicronutrientsVitaminB1")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsVitaminB1");
 
                             b1.Property<decimal?>("VitaminB12")
-                                .HasColumnName("MicronutrientsVitaminB12")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsVitaminB12");
 
                             b1.Property<decimal?>("VitaminB2")
-                                .HasColumnName("MicronutrientsVitaminB2")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsVitaminB2");
 
                             b1.Property<decimal?>("VitaminB3")
-                                .HasColumnName("MicronutrientsVitaminB3")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsVitaminB3");
 
                             b1.Property<decimal?>("VitaminB6")
-                                .HasColumnName("MicronutrientsVitaminB6")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsVitaminB6");
 
                             b1.Property<decimal?>("VitaminC")
-                                .HasColumnName("MicronutrientsVitaminC")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsVitaminC");
 
                             b1.Property<decimal?>("VitaminD3")
-                                .HasColumnName("MicronutrientsVitaminD3")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsVitaminD3");
 
                             b1.Property<decimal?>("VitaminE")
-                                .HasColumnName("MicronutrientsVitaminE")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsVitaminE");
 
                             b1.Property<decimal?>("Zinc")
-                                .HasColumnName("MicronutrientsZinc")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MicronutrientsZinc");
 
                             b1.HasKey("FoodId");
 
@@ -570,8 +531,7 @@ namespace NutrientAuto.Community.Data.Migrations
                             b1.Property<Guid>("FoodId");
 
                             b1.Property<decimal>("DefaultGramsQuantityMultiplier")
-                                .HasColumnName("FoodDefaultGramsQuantityMultiplier")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("FoodDefaultGramsQuantityMultiplier");
 
                             b1.Property<int>("UnitType")
                                 .HasColumnName("FoodUnitType");
@@ -591,24 +551,19 @@ namespace NutrientAuto.Community.Data.Migrations
                             b1.Property<Guid>("FoodId");
 
                             b1.Property<decimal>("Carbohydrate")
-                                .HasColumnName("FoodCarbohydrate")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("FoodCarbohydrate");
 
                             b1.Property<decimal>("Fat")
-                                .HasColumnName("FoodFat")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("FoodFat");
 
                             b1.Property<decimal>("Kcal")
-                                .HasColumnName("FoodKcal")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("FoodKcal");
 
                             b1.Property<decimal>("Kj")
-                                .HasColumnName("FoodKj")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("FoodKj");
 
                             b1.Property<decimal>("Protein")
-                                .HasColumnName("FoodProtein")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("FoodProtein");
 
                             b1.HasKey("FoodId");
 
@@ -690,8 +645,7 @@ namespace NutrientAuto.Community.Data.Migrations
                                 .IsRequired()
                                 .HasMaxLength(100);
 
-                            b1.Property<decimal>("Quantity")
-                                .HasColumnType("decimal(18,2)");
+                            b1.Property<decimal>("Quantity");
 
                             b1.HasKey("Id");
 
@@ -709,8 +663,7 @@ namespace NutrientAuto.Community.Data.Migrations
                                     b2.Property<Guid>("MealFoodId");
 
                                     b2.Property<decimal>("DefaultGramsQuantityMultiplier")
-                                        .HasColumnName("MealFoodDefaultGramsQuantityMultiplier")
-                                        .HasColumnType("decimal(18,2)");
+                                        .HasColumnName("MealFoodDefaultGramsQuantityMultiplier");
 
                                     b2.Property<int>("UnitType")
                                         .HasColumnName("MealFoodUnitType");
@@ -730,24 +683,19 @@ namespace NutrientAuto.Community.Data.Migrations
                                     b2.Property<Guid>("MealFoodId");
 
                                     b2.Property<decimal>("Carbohydrate")
-                                        .HasColumnName("MealFoodCarbohydrate")
-                                        .HasColumnType("decimal(18,2)");
+                                        .HasColumnName("MealFoodCarbohydrate");
 
                                     b2.Property<decimal>("Fat")
-                                        .HasColumnName("MealFoodFat")
-                                        .HasColumnType("decimal(18,2)");
+                                        .HasColumnName("MealFoodFat");
 
                                     b2.Property<decimal>("Kcal")
-                                        .HasColumnName("MealFoodKcal")
-                                        .HasColumnType("decimal(18,2)");
+                                        .HasColumnName("MealFoodKcal");
 
                                     b2.Property<decimal>("Kj")
-                                        .HasColumnName("MealFoodKj")
-                                        .HasColumnType("decimal(18,2)");
+                                        .HasColumnName("MealFoodKj");
 
                                     b2.Property<decimal>("Protein")
-                                        .HasColumnName("MealFoodProtein")
-                                        .HasColumnType("decimal(18,2)");
+                                        .HasColumnName("MealFoodProtein");
 
                                     b2.HasKey("MealFoodId");
 
@@ -765,24 +713,19 @@ namespace NutrientAuto.Community.Data.Migrations
                             b1.Property<Guid>("MealId");
 
                             b1.Property<decimal>("Carbohydrate")
-                                .HasColumnName("MealTotalCarbohydrate")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MealTotalCarbohydrate");
 
                             b1.Property<decimal>("Fat")
-                                .HasColumnName("MealTotalFat")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MealTotalFat");
 
                             b1.Property<decimal>("Kcal")
-                                .HasColumnName("MealTotalKcal")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MealTotalKcal");
 
                             b1.Property<decimal>("Kj")
-                                .HasColumnName("MealTotalKj")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MealTotalKj");
 
                             b1.Property<decimal>("Protein")
-                                .HasColumnName("MealTotalProtein")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("MealTotalProtein");
 
                             b1.HasKey("MealId");
 
@@ -830,16 +773,13 @@ namespace NutrientAuto.Community.Data.Migrations
                             b1.Property<Guid>("MeasureId");
 
                             b1.Property<decimal>("Bmi")
-                                .HasColumnName("Bmi")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("Bmi");
 
                             b1.Property<decimal>("Height")
-                                .HasColumnName("Height")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("Height");
 
                             b1.Property<decimal>("Weight")
-                                .HasColumnName("Weight")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("Weight");
 
                             b1.HasKey("MeasureId");
 
@@ -862,8 +802,7 @@ namespace NutrientAuto.Community.Data.Migrations
                             b1.Property<Guid>("MeasureId");
 
                             b1.Property<decimal>("Value")
-                                .HasColumnName("Value")
-                                .HasColumnType("decimal(18,2)");
+                                .HasColumnName("Value");
 
                             b1.HasKey("Id");
 
@@ -999,21 +938,36 @@ namespace NutrientAuto.Community.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Friend", b =>
-                {
-                    b.HasOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile")
-                        .WithMany()
-                        .HasForeignKey("FriendId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile")
-                        .WithMany("Friends")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile", b =>
                 {
+                    b.OwnsMany("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Friend", "Friends", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd();
+
+                            b1.Property<Guid>("FriendId");
+
+                            b1.Property<Guid>("ProfileId");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("FriendId");
+
+                            b1.HasIndex("ProfileId");
+
+                            b1.ToTable("Friends");
+
+                            b1.HasOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile")
+                                .WithMany()
+                                .HasForeignKey("FriendId")
+                                .OnDelete(DeleteBehavior.Cascade);
+
+                            b1.HasOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile")
+                                .WithMany("Friends")
+                                .HasForeignKey("ProfileId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
                     b.OwnsOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.ProfileSettings", "Settings", b1 =>
                         {
                             b1.Property<Guid>("ProfileId");
