@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NutrientAuto.Community.Domain.Aggregates.MeasureAggregate;
 using NutrientAuto.Community.Domain.Aggregates.ProfileAggregate;
+using NutrientAuto.Shared.Data.Extensions;
 using System;
 
 namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MeasureAggregate
@@ -31,9 +32,9 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MeasureAggregate
             builder
                 .OwnsOne(m => m.BasicMeasure, basicMeasureCfg =>
                 {
-                    basicMeasureCfg.Property(m => m.Height).HasColumnName("Height");
-                    basicMeasureCfg.Property(m => m.Weight).HasColumnName("Weight");
-                    basicMeasureCfg.Property(m => m.Bmi).HasColumnName("Bmi");
+                    basicMeasureCfg.Property(m => m.Height).HasColumnName("Height").HasPrecision(18, 2);
+                    basicMeasureCfg.Property(m => m.Weight).HasColumnName("Weight").HasPrecision(18, 2);
+                    basicMeasureCfg.Property(m => m.Bmi).HasColumnName("Bmi").HasPrecision(18, 2);
                 });
 
             builder
@@ -57,7 +58,7 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MeasureAggregate
                     measureLineCfg.HasKey("Id");
                     measureLineCfg.HasOne(m => m.MeasureCategory).WithMany().HasForeignKey(ml => ml.MeasureCategoryId);
                     measureLineCfg.Property(m => m.MeasureCategoryId).HasColumnName("MeasureCategoryId");
-                    measureLineCfg.Property(m => m.Value).HasColumnName("Value");
+                    measureLineCfg.Property(m => m.Value).HasColumnName("Value").HasPrecision(18, 2);
                     measureLineCfg.ToTable("MeasureLines");
                 });
         }

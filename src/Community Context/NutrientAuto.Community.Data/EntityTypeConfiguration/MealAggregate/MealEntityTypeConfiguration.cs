@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NutrientAuto.Community.Domain.Aggregates.MealAggregate;
+using NutrientAuto.Shared.Data.Extensions;
 using System;
 
 namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MealAggregate
@@ -33,11 +34,11 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MealAggregate
             builder
                 .OwnsOne(m => m.MealMacronutrients, cfg =>
                 {
-                    cfg.Property(mm => mm.Kcal).HasColumnName("MealTotalKcal");
-                    cfg.Property(mm => mm.Kj).HasColumnName("MealTotalKj");
-                    cfg.Property(mm => mm.Protein).HasColumnName("MealTotalProtein");
-                    cfg.Property(mm => mm.Carbohydrate).HasColumnName("MealTotalCarbohydrate");
-                    cfg.Property(mm => mm.Fat).HasColumnName("MealTotalFat");
+                    cfg.Property(mm => mm.Kcal).HasColumnName("MealTotalKcal").HasPrecision(18, 2);
+                    cfg.Property(mm => mm.Kj).HasColumnName("MealTotalKj").HasPrecision(18, 2);
+                    cfg.Property(mm => mm.Protein).HasColumnName("MealTotalProtein").HasPrecision(18, 2);
+                    cfg.Property(mm => mm.Carbohydrate).HasColumnName("MealTotalCarbohydrate").HasPrecision(18, 2);
+                    cfg.Property(mm => mm.Fat).HasColumnName("MealTotalFat").HasPrecision(18, 2);
                 });
 
             builder
@@ -50,20 +51,21 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MealAggregate
                     cfg.HasKey("Id");
                     cfg.Property(mf => mf.Name).IsRequired().HasMaxLength(100);
                     cfg.Property(mf => mf.Description).IsRequired().HasMaxLength(250);
+                    cfg.Property(mf => mf.Quantity).HasPrecision(18, 2);
 
                     cfg.OwnsOne(mf => mf.Macronutrients, macroCfg =>
                     {
-                        macroCfg.Property(fm => fm.Kcal).HasColumnName("MealFoodKcal");
-                        macroCfg.Property(fm => fm.Kj).HasColumnName("MealFoodKj");
-                        macroCfg.Property(fm => fm.Protein).HasColumnName("MealFoodProtein");
-                        macroCfg.Property(fm => fm.Carbohydrate).HasColumnName("MealFoodCarbohydrate");
-                        macroCfg.Property(fm => fm.Fat).HasColumnName("MealFoodFat");
+                        macroCfg.Property(fm => fm.Kcal).HasColumnName("MealFoodKcal").HasPrecision(18, 2);
+                        macroCfg.Property(fm => fm.Kj).HasColumnName("MealFoodKj").HasPrecision(18, 2);
+                        macroCfg.Property(fm => fm.Protein).HasColumnName("MealFoodProtein").HasPrecision(18, 2);
+                        macroCfg.Property(fm => fm.Carbohydrate).HasColumnName("MealFoodCarbohydrate").HasPrecision(18, 2);
+                        macroCfg.Property(fm => fm.Fat).HasColumnName("MealFoodFat").HasPrecision(18, 2);
                     });
 
                     cfg.OwnsOne(mf => mf.FoodUnit, unitCfg =>
                     {
                         unitCfg.Property(fu => fu.UnitType).HasColumnName("MealFoodUnitType");
-                        unitCfg.Property(fu => fu.DefaultGramsQuantityMultiplier).HasColumnName("MealFoodDefaultGramsQuantityMultiplier");
+                        unitCfg.Property(fu => fu.DefaultGramsQuantityMultiplier).HasColumnName("MealFoodDefaultGramsQuantityMultiplier").HasPrecision(18, 2);
                     });
 
                     cfg.ToTable("MealFoods");

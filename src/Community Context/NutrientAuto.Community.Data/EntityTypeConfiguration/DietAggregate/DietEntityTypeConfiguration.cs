@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NutrientAuto.Community.Domain.Aggregates.DietAggregate;
 using NutrientAuto.Community.Domain.Aggregates.ProfileAggregate;
+using NutrientAuto.Shared.Data.Extensions;
 
 namespace NutrientAuto.Community.Data.EntityTypeConfiguration.DietAggregate
 {
@@ -34,11 +35,11 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.DietAggregate
             builder
                 .OwnsOne(d => d.TotalMacronutrients, macronutrientTableCfg =>
                 {
-                    macronutrientTableCfg.Property(mt => mt.Kcal).HasColumnName("DietTotalKcal");
-                    macronutrientTableCfg.Property(mt => mt.Kj).HasColumnName("DietTotalKj");
-                    macronutrientTableCfg.Property(mt => mt.Carbohydrate).HasColumnName("DietTotalCarbohydrate");
-                    macronutrientTableCfg.Property(mt => mt.Protein).HasColumnName("DietTotalProtein");
-                    macronutrientTableCfg.Property(mt => mt.Fat).HasColumnName("DietTotalFat");
+                    macronutrientTableCfg.Property(mt => mt.Kcal).HasColumnName("DietTotalKcal").HasPrecision(18, 2);
+                    macronutrientTableCfg.Property(mt => mt.Kj).HasColumnName("DietTotalKj").HasPrecision(18, 2);
+                    macronutrientTableCfg.Property(mt => mt.Carbohydrate).HasColumnName("DietTotalCarbohydrate").HasPrecision(18, 2);
+                    macronutrientTableCfg.Property(mt => mt.Protein).HasColumnName("DietTotalProtein").HasPrecision(18, 2);
+                    macronutrientTableCfg.Property(mt => mt.Fat).HasColumnName("DietTotalFat").HasPrecision(18, 2);
                 });
 
             builder
