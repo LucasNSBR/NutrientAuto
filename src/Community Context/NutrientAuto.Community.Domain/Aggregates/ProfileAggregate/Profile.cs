@@ -71,7 +71,7 @@ namespace NutrientAuto.Community.Domain.Aggregates.ProfileAggregate
             if (IsFriend(otherProfile))
                 AddNotification("Erro ao adicionar amigo", "Você e esse usuário já são amigos.");
 
-            _friends.Add(new Friend(otherProfile.Id));
+            _friends.Add(new Friend(Id, otherProfile.Id));
         }
 
         public void RemoveFriend(Profile otherProfile)
