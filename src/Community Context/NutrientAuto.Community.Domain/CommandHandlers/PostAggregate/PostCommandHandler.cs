@@ -2,13 +2,11 @@
 using Microsoft.Extensions.Logging;
 using NutrientAuto.Community.Domain.Aggregates.CommentAggregate;
 using NutrientAuto.Community.Domain.Aggregates.PostAggregate;
-using NutrientAuto.Community.Domain.Aggregates.ProfileAggregate;
 using NutrientAuto.Community.Domain.Commands.PostAggregate;
 using NutrientAuto.Community.Domain.Context;
 using NutrientAuto.Community.Domain.DomainServices.ProfileAggregate;
 using NutrientAuto.Community.Domain.Repositories.CommentAggregate;
 using NutrientAuto.Community.Domain.Repositories.PostAggregate;
-using NutrientAuto.Community.Domain.Repositories.ProfileAggregate;
 using NutrientAuto.CrossCutting.HttpService.HttpContext;
 using NutrientAuto.CrossCutting.UnitOfwork.Abstractions;
 using NutrientAuto.Shared.Commands;
@@ -49,7 +47,7 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.PostAggregate
                 _currentProfileId,
                 request.Title,
                 request.Body,
-                image
+                attachedImage: image
                 );
 
             await _postRepository.RegisterAsync(post);

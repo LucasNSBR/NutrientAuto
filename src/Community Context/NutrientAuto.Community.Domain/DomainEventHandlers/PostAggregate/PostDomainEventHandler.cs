@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using NutrientAuto.Community.Domain.Aggregates.PostAggregate;
-using NutrientAuto.Community.Domain.Aggregates.PostAggregate.Subtypes;
 using NutrientAuto.Community.Domain.Context;
 using NutrientAuto.Community.Domain.DomainEvents.DietAggregate;
 using NutrientAuto.Community.Domain.DomainEvents.GoalAggregate;
 using NutrientAuto.Community.Domain.DomainEvents.MeasureAggregate;
 using NutrientAuto.Community.Domain.DomainEvents.ProfileAggregate;
+using NutrientAuto.Community.Domain.Factories.PostAggregate;
 using NutrientAuto.Community.Domain.Repositories.PostAggregate;
 using NutrientAuto.CrossCutting.UnitOfwork.Abstractions;
 using System.Threading;
@@ -21,45 +21,47 @@ namespace NutrientAuto.Community.Domain.DomainEventHandlers.PostAggregate
                                           INotificationHandler<DietRegisteredDomainEvent>,
                                           INotificationHandler<ProfileUpdatedDomainEvent>
     {
+        private readonly IPostFactory _postFactory;
         private readonly IPostRepository _postRepository;
 
-        public PostDomainEventHandler(IPostRepository postRepository, IUnitOfWork<ICommunityDbContext> unitOfWork, ILogger<PostDomainEventHandler> logger)
+        public PostDomainEventHandler(IPostFactory postFactory, IPostRepository postRepository, IUnitOfWork<ICommunityDbContext> unitOfWork, ILogger<PostDomainEventHandler> logger)
             : base(unitOfWork, logger)
         {
+            _postFactory = postFactory;
             _postRepository = postRepository;
         }
 
         public async Task Handle(GoalRegisteredDomainEvent notification, CancellationToken cancellationToken)
         {
-            GoalRegisteredPost goalPost = new GoalRegisteredPost(notification.ProfileId, notification.GoalId);
+            Post goalPost = _postFactory.CreateGoalRegisteredPost(notification.ProfileId, notification.GoalId);
 
             await SaveAndCommitAsync(goalPost);
         }
 
         public async Task Handle(GoalCompletedDomainEvent notification, CancellationToken cancellationToken)
         {
-            GoalCompletedPost goalPost = new GoalCompletedPost(notification.ProfileId, notification.GoalId);
+            Post goalPost = _postFactory.CreateGoalCompletedPost(notification.ProfileId, notification.GoalId);
 
             await SaveAndCommitAsync(goalPost);
         }
 
         public async Task Handle(MeasureRegisteredDomainEvent notification, CancellationToken cancellationToken)
         {
-            MeasureRegisteredPost measurePost = new MeasureRegisteredPost(notification.ProfileId, notification.MeasureId);
+            Post measurePost = _postFactory.CreateMeasureRegisteredPost(notification.ProfileId, notification.MeasureId);
 
             await SaveAndCommitAsync(measurePost);
         }
 
         public async Task Handle(DietRegisteredDomainEvent notification, CancellationToken cancellationToken)
         {
-            DietRegisteredPost dietPost = new DietRegisteredPost(notification.ProfileId, notification.GoalId);
+            Post dietPost = _postFactory.CreateDietRegisteredPost(notification.ProfileId, notification.GoalId);
 
             await SaveAndCommitAsync(dietPost);
         }
 
         public async Task Handle(ProfileUpdatedDomainEvent notification, CancellationToken cancellationToken)
         {
-            ProfileUpdatedPost profilePost = new ProfileUpdatedPost(notification.Id);
+            Post profilePost = _postFactory.CreateProfileUpdatedPost(notification.Id);
 
             await SaveAndCommitAsync(profilePost);
         }
