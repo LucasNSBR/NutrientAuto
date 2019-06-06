@@ -15,7 +15,8 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.GoalAggregate
             builder
                 .HasOne<Profile>()
                 .WithMany()
-                .HasForeignKey(g => g.ProfileId);
+                .HasForeignKey(g => g.ProfileId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .Property(g => g.Title)

@@ -48,7 +48,8 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.DietAggregate
             builder
                .HasMany(d => d.DietMeals)
                .WithOne()
-               .HasForeignKey(m => m.DietId);
+               .HasForeignKey(m => m.DietId)
+               .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

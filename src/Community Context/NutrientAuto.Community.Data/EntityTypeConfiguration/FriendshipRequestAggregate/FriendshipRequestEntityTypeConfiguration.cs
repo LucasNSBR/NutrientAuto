@@ -15,12 +15,14 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.FriendshipRequestA
             builder
                 .HasOne<Profile>()
                 .WithMany()
-                .HasForeignKey(fr => fr.RequesterId);
+                .HasForeignKey(fr => fr.RequesterId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .HasOne<Profile>()
                 .WithMany()
-                .HasForeignKey(fr => fr.RequestedId);
+                .HasForeignKey(fr => fr.RequestedId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .Property(fr => fr.DateCreated)

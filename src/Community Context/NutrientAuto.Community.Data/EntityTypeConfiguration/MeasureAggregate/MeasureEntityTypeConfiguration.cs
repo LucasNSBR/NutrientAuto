@@ -17,7 +17,8 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MeasureAggregate
             builder
                 .HasOne<Profile>()
                 .WithMany()
-                .HasForeignKey(m => m.ProfileId);
+                .HasForeignKey(m => m.ProfileId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .Property(m => m.Title)
@@ -48,6 +49,7 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MeasureAggregate
                     bodyPictureCfg.HasKey("Id");
                     bodyPictureCfg.Property(i => i.ImageName).IsRequired().HasMaxLength(150).HasColumnName("BodyPictureImageName");
                     bodyPictureCfg.Property(i => i.UrlPath).IsRequired().HasMaxLength(500).HasColumnName("BodyPictureImageUrlPath");
+                    bodyPictureCfg.OnDelete(DeleteBehavior.Cascade);
                     bodyPictureCfg.ToTable("MeasureBodyPictures");
                 });
 
@@ -56,9 +58,10 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MeasureAggregate
                 {
                     measureLineCfg.Property<Guid>("Id");
                     measureLineCfg.HasKey("Id");
-                    measureLineCfg.HasOne(m => m.MeasureCategory).WithMany().HasForeignKey(ml => ml.MeasureCategoryId);
+                    measureLineCfg.HasOne(m => m.MeasureCategory).WithMany().HasForeignKey(ml => ml.MeasureCategoryId).OnDelete(DeleteBehavior.Cascade);
                     measureLineCfg.Property(m => m.MeasureCategoryId).HasColumnName("MeasureCategoryId");
                     measureLineCfg.Property(m => m.Value).HasColumnName("Value").HasPrecision(18, 2);
+                    measureLineCfg.OnDelete(DeleteBehavior.Cascade);
                     measureLineCfg.ToTable("MeasureLines");
                 });
         }

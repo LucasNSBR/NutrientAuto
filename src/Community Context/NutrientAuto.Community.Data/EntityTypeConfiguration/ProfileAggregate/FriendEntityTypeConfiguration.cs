@@ -18,7 +18,8 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.ProfileAggregate
             builder
                 .HasOne<Profile>()
                 .WithMany()
-                .HasForeignKey(f => f.FriendId);
+                .HasForeignKey(f => f.FriendId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .ToTable("Friends");

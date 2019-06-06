@@ -12,7 +12,8 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MeasureCategoryAgg
             builder
                 .HasOne<Profile>()
                 .WithMany()
-                .HasForeignKey(cft => cft.ProfileId);
+                .HasForeignKey(cft => cft.ProfileId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -12,7 +12,8 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.FoodAggregate
             builder
                 .HasOne<Profile>()
                 .WithMany()
-                .HasForeignKey(cf => cf.ProfileId);
+                .HasForeignKey(cf => cf.ProfileId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

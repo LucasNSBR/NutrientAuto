@@ -16,12 +16,14 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.CommentAggregate
             builder
                 .HasOne<Post>()
                 .WithMany()
-                .HasForeignKey(c => c.PostId);
+                .HasForeignKey(c => c.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .HasOne<Profile>()
                 .WithMany()
-                .HasForeignKey(c => c.ProfileId);
+                .HasForeignKey(c => c.ProfileId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .Property(c => c.Body)
@@ -35,7 +37,8 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.CommentAggregate
             builder
                 .HasMany(c => c.Replies)
                 .WithOne()
-                .HasForeignKey(c => c.ReplyTo);
+                .HasForeignKey(c => c.ReplyTo)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
