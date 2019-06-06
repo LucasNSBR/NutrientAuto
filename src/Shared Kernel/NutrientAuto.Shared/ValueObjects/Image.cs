@@ -15,6 +15,11 @@
             ImageName = imageName;
         }
 
+        public static Image Default()
+        {
+            return new Image(null, null);
+        }
+
         public override string ToString()
         {
             return ImageName;

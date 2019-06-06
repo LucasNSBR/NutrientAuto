@@ -33,7 +33,7 @@ namespace NutrientAuto.Community.Domain.Aggregates.PostAggregate
             ProfileId = profileId;
             Title = title;
             Body = body;
-            AttachedImage = attachedImage;
+            AttachedImage = attachedImage ?? Image.Default();
             EntityReference = EntityReference.None();
             DateCreated = DateTime.Now;
             _likes = new List<PostLike>();
