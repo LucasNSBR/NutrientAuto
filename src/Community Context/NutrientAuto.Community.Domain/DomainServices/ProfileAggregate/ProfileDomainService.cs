@@ -20,10 +20,13 @@ namespace NutrientAuto.Community.Domain.DomainServices.ProfileAggregate
         {
             Profile requestedProfile = await _profileRepository.GetByIdAsync(requestedId);
 
-            if (requestedProfile.IsPublic)
-                return true;
-            if (requestedProfile.IsProtected)
-                return requestedProfile.IsFriend(requesterId);
+            if (requestedProfile != null)
+            {
+                if (requestedProfile.IsPublic)
+                    return true;
+                if (requestedProfile.IsProtected)
+                    return requestedProfile.IsFriend(requesterId);
+            }
 
             return false;
         }
