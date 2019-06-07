@@ -16,9 +16,9 @@ namespace NutrientAuto.Community.Domain.Commands.MeasureAggregate.BaseCommand
         public decimal Weight { get; set; }
 
         public DateTime MeasureDate { get; set; }
-        public List<ImageDto> BodyPictures { get; set; }
+        public List<ImageDto> BodyPictures { get; set; } = new List<ImageDto>();
 
         public bool WritePost { get; set; }
-        public List<MeasureLineDto> MeasureLines { get; set; }
+        public List<MeasureLineDto> MeasureLines { get; set; } = new List<MeasureLineDto>();
     }
 }
