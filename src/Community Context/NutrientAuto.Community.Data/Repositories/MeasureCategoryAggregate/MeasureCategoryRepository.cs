@@ -81,7 +81,7 @@ namespace NutrientAuto.Community.Data.Repositories.MeasureCategoryAggregate
         public Task<CustomMeasureCategory> GetCustomByIdAsync(Guid id, Guid profileId)
         {
             return _dbContext
-                .FoodTables
+                .MeasureCategories
                 .OfType<CustomMeasureCategory>()
                 .FirstOrDefaultAsync(ft => ft.Id == id && ft.ProfileId == profileId);
         }

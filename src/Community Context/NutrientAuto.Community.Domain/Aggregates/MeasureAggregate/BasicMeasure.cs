@@ -18,7 +18,9 @@ namespace NutrientAuto.Community.Domain.Aggregates.MeasureAggregate
             Height = height;
             Weight = weight;
 
-            Bmi = weight / (height * height);
+            decimal inMetters = Height / 100;
+
+            Bmi = Weight / (inMetters * inMetters);
         }
 
         public override string ToString()
