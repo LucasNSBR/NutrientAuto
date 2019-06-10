@@ -41,7 +41,7 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.PostAggregate
 
         public async Task<CommandResult> Handle(RegisterPostCommand request, CancellationToken cancellationToken)
         {
-            Image image = new Image(request.AttachedImage.FilePath, request.AttachedImage.Name);
+            Image image = new Image(request.AttachedImage.UrlPath, request.AttachedImage.ImageName);
 
             Post post = new Post(
                 _currentProfileId,

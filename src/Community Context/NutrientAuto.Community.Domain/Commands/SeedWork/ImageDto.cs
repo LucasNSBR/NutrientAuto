@@ -2,7 +2,7 @@
 {
     public class ImageDto 
     {
-        public string Name { get; set; }
-        public string FilePath { get; set; }
+        public string UrlPath { get; set; }
+        public string ImageName { get; set; }
     }
 }

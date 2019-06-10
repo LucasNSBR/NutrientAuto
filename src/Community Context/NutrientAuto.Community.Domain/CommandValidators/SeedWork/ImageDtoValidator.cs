@@ -7,10 +7,10 @@ namespace NutrientAuto.Community.Domain.CommandValidators.SeedWork
     {
         public ImageDtoValidator()
         {
-            RuleFor(command => command.Name)
+            RuleFor(command => command.ImageName)
                 .NotEmpty();
 
-            RuleFor(command => command.FilePath)
+            RuleFor(command => command.UrlPath)
                 .NotEmpty();
         }
     }
