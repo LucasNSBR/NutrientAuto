@@ -81,6 +81,9 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.MeasureAggregate
             if (!EnsureBodyPicturesIsInLimit(request.BodyPictures))
                 return FailureDueToExcessiveImages();
 
+            if (!EnsureMeasureCategoryIdsIsNotDuplicated(request.MeasureLines))
+                return FailureDueToDuplicatedMeasureCategories();
+
             if (!await EnsureMeasureCategoriesExists(request.MeasureLines))
                 return FailureDueToCustomMeasureCategoryNotFound();
 
@@ -122,7 +125,7 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.MeasureAggregate
         public bool EnsureMeasureCategoryIdsIsNotDuplicated(List<MeasureLineDto> measureLineDtos)
         {
             bool hasDuplicates = measureLineDtos.GroupBy(ml => ml.MeasureCategoryId)
-                .Any(g => g.Count() > 0);
+                .Any(g => g.Count() > 1);
 
             return !hasDuplicates;
         }
