@@ -18,10 +18,10 @@ namespace NutrientAuto.Community.Domain.Aggregates.PostAggregate
         public EntityReference EntityReference { get; protected set; }
         public DateTime DateCreated { get; private set; }
 
-        private readonly List<PostLike> _likes;
+        private List<PostLike> _likes;
         public IReadOnlyList<PostLike> Likes => _likes;
 
-        private readonly List<Comment> _comments;
+        private List<Comment> _comments;
         public IReadOnlyList<Comment> Comments => _comments;
         
         protected Post()
