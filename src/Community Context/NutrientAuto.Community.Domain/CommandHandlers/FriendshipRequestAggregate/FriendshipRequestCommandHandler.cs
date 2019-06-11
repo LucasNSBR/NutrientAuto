@@ -37,6 +37,9 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.FriendshipRequestAggrega
 
         public async Task<CommandResult> Handle(RegisterFriendshipRequestCommand request, CancellationToken cancellationToken)
         {
+            if (_currentProfileId == request.RequestedId)
+                return FailureDueTo("Falha ao criar nova solicitação", "Não é possível enviar uma solicitação de amizade para si mesmo.");
+
             FriendshipRequest existingFriendshipRequest = await _friendshipRequestRepository.GetByCompositeIdAsync(_currentProfileId, request.RequestedId);
             if (existingFriendshipRequest != null)
                 return FailureDueTo("Falha ao criar nova solicitação", "Você já enviou uma solicitação de amizade para esse usuário.");
