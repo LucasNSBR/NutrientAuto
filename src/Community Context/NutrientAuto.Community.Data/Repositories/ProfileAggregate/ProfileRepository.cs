@@ -31,7 +31,6 @@ namespace NutrientAuto.Community.Data.Repositories.ProfileAggregate
             return _dbContext
                 .Profiles
                 .Include(p => p.Friends)
-                .AsNoTracking()
                 .FirstOrDefaultAsync(d => d.Id == id);
         }
 

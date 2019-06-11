@@ -30,7 +30,6 @@ namespace NutrientAuto.Community.Data.Repositories.DietAggregate
             return _dbContext
                 .Diets
                 .Include(d => d.DietMeals)
-                .AsNoTracking()
                 .FirstOrDefaultAsync(d => d.Id == id);
         }
     }

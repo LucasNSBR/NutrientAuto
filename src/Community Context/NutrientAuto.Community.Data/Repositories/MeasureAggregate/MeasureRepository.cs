@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NutrientAuto.Community.Data.Context;
 using NutrientAuto.Community.Domain.Aggregates.MeasureAggregate;
 using NutrientAuto.Community.Domain.Repositories.MeasureAggregate;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace NutrientAuto.Community.Data.Repositories.MeasureAggregate
 {
@@ -31,7 +31,6 @@ namespace NutrientAuto.Community.Data.Repositories.MeasureAggregate
         {
             return _dbContext
                 .Measures
-                .AsNoTracking()
                 .Include(m => m.MeasureLines)
                 .ThenInclude(ml => ml.MeasureCategory)
                 .FirstOrDefaultAsync(d => d.Id == id);

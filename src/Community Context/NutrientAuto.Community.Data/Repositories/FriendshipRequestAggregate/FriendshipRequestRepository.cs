@@ -40,7 +40,6 @@ namespace NutrientAuto.Community.Data.Repositories.FriendshipRequestAggregate
         {
             return _dbContext
                 .FriendshipRequests
-                .AsNoTracking()
                 .FirstOrDefaultAsync(fr => fr.Id == id);
         }
 

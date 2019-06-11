@@ -29,7 +29,6 @@ namespace NutrientAuto.Community.Data.Repositories.CommentAggregate
             return _dbContext
                 .Comments
                 .Include(c => c.Replies)
-                .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
     }

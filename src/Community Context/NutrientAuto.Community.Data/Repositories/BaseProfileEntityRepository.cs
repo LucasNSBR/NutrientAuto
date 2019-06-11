@@ -33,7 +33,6 @@ namespace NutrientAuto.Community.Data.Repositories
         {
             return _dbContext
                 .Set<TEntity>()
-                .AsNoTracking()
                 .FirstOrDefaultAsync(d => d.Id == id);
         }
 
