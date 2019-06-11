@@ -15,6 +15,7 @@ using NutrientAuto.Shared.Commands;
 using NutrientAuto.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -43,6 +44,9 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.MeasureAggregate
         {
             if (!EnsureBodyPicturesIsInLimit(request.BodyPictures))
                 return FailureDueToExcessiveImages();
+
+            if (!EnsureMeasureCategoryIdsIsNotDuplicated(request.MeasureLines))
+                return FailureDueToDuplicatedMeasureCategories();
 
             if (!await EnsureMeasureCategoriesExists(request.MeasureLines))
                 return FailureDueToCustomMeasureCategoryNotFound();
@@ -115,6 +119,14 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.MeasureAggregate
             return true;
         }
 
+        public bool EnsureMeasureCategoryIdsIsNotDuplicated(List<MeasureLineDto> measureLineDtos)
+        {
+            bool hasDuplicates = measureLineDtos.GroupBy(ml => ml.MeasureCategoryId)
+                .Any(g => g.Count() > 0);
+
+            return !hasDuplicates;
+        }
+
         private async Task<bool> EnsureMeasureCategoriesExists(List<MeasureLineDto> measureLineDtos)
         {
             foreach (MeasureLineDto measureLineDto in measureLineDtos)
@@ -135,6 +147,11 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.MeasureAggregate
         private CommandResult FailureDueToExcessiveImages()
         {
             return FailureDueTo("Erro ao anexar", "O número máximo de imagens dessa medição foi excedido.");
+        }
+
+        private CommandResult FailureDueToDuplicatedMeasureCategories()
+        {
+            return FailureDueToEntityNotFound("Categorias duplicatas", "Não é possível prosseguir com as categorias de medição duplicadas.");
         }
 
         private CommandResult FailureDueToMeasureNotFound()
