@@ -35,8 +35,21 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.FriendshipRequestA
                 .Ignore(fr => fr.IsAccepted);
 
             builder
+                .Ignore(fr => fr.IsRejected);
+
+            builder
+                .Ignore(fr => fr.IsCanceled);
+
+            builder
+                .Ignore(fr => fr.IsDumped);
+
+            builder
                 .Property(fr => fr.RequestBody)
                 .HasMaxLength(250);
+
+            builder
+                .Property(fr => fr.DateModified)
+                .IsRequired();
         }
     }
 }
