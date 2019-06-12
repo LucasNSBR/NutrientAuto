@@ -43,12 +43,14 @@ namespace NutrientAuto.Community.Data.Repositories.FriendshipRequestAggregate
                 .FirstOrDefaultAsync(fr => fr.Id == id);
         }
 
-        public Task<FriendshipRequest> GetByCompositeIdAsync(Guid requesterId, Guid requestedId)
+        public Task<FriendshipRequest> GetActiveByCompositeIdAsync(Guid requesterId, Guid requestedId)
         {
             return _dbContext
                 .FriendshipRequests
                 .AsNoTracking()
-                .FirstOrDefaultAsync(fr => fr.RequesterId == requesterId && fr.RequestedId == requestedId);
+                .FirstOrDefaultAsync(fr => (fr.RequesterId == requesterId && fr.RequestedId == requestedId ||
+                fr.RequestedId == requesterId && fr.RequesterId == requestedId) &&
+                fr.Status == FriendshipRequestStatus.Accepted || fr.Status == FriendshipRequestStatus.Pending);
         }
 
         public Task RegisterAsync(FriendshipRequest friendshipRequest)

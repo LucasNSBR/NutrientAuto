@@ -25,7 +25,7 @@ namespace NutrientAuto.Community.Data.Repositories.FriendshipRequestAggregate
                          Profiles.Name AS RequesterName, Profiles.AvatarImageName AS ImageName, Profiles.AvatarImageUrlPath AS UrlPath 
                          FROM FriendshipRequests
                          JOIN Profiles ON FriendshipRequests.RequesterId = Profiles.Id 
-                         WHERE Profiles.Name LIKE '%{@nameFilter ?? string.Empty}%' AND FriendshipRequests.RequestedId = @requestedId
+                         WHERE Profiles.Name LIKE '%{@nameFilter ?? string.Empty}%' AND FriendshipRequests.RequestedId = @requestedId AND FriendshipRequests.Status = 0
                          ORDER BY FriendshipRequests.DateCreated DESC
                          OFFSET (@pageNumber - 1) * @pageSize ROWS
                          FETCH NEXT @pageSize ROWS ONLY";
@@ -50,7 +50,7 @@ namespace NutrientAuto.Community.Data.Repositories.FriendshipRequestAggregate
                          Profiles.Name AS RequestedName, Profiles.AvatarImageName AS ImageName, Profiles.AvatarImageUrlPath AS UrlPath 
                          FROM FriendshipRequests
                          JOIN Profiles ON FriendshipRequests.RequestedId = Profiles.Id 
-                         WHERE Profiles.Name LIKE '%{@nameFilter ?? string.Empty}%' AND FriendshipRequests.RequesterId = @requesterId
+                         WHERE Profiles.Name LIKE '%{@nameFilter ?? string.Empty}%' AND FriendshipRequests.RequesterId = @requesterId AND FriendshipRequests.Status = 0
                          ORDER BY FriendshipRequests.DateCreated DESC
                          OFFSET (@pageNumber - 1) * @pageSize ROWS
                          FETCH NEXT @pageSize ROWS ONLY";
