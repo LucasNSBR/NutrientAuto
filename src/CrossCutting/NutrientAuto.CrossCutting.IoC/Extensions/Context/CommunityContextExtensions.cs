@@ -95,6 +95,8 @@ namespace NutrientAuto.CrossCutting.IoC.Extensions.Context
 
             services.AddScoped<IRequestHandler<UpdateProfileCommand, CommandResult>, ProfileCommandHandler>();
             services.AddScoped<IRequestHandler<SetAvatarImageCommand, CommandResult>, ProfileCommandHandler>();
+            services.AddScoped<IRequestHandler<ChangeSettingsCommand, CommandResult>, ProfileCommandHandler>();
+            services.AddScoped<IRequestHandler<UnfriendProfileCommand, CommandResult>, ProfileCommandHandler>();
 
             services.AddScoped<IRequestHandler<RegisterPostCommand, CommandResult>, PostCommandHandler>();
             services.AddScoped<IRequestHandler<RemovePostCommand, CommandResult>, PostCommandHandler>();
