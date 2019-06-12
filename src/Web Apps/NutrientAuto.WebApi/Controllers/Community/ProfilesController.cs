@@ -103,7 +103,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
         }
 
         [HttpPut]
-        [Route("{id:guid}/send-friendship")]
+        [Route("{id:guid}/add-friend")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> SendFriendshipRequestAsync(Guid id, [FromBody]RegisterFriendshipRequestCommand command)
@@ -121,7 +121,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
         {
             UnfriendProfileCommand command = new UnfriendProfileCommand
             {
-                ProfileId = id
+                FriendProfileId = id
             };
 
             return await CreateCommandResponse(command);

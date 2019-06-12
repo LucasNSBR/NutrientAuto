@@ -15,7 +15,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
 {
     [Produces("application/json")]
     //[Authorize(Policy = "ActiveProfile")]
-    [Route("api/friendships")]
+    [Route("api/friendship-requests")]
     public class FriendshipRequestsController : BaseController
     {
         private readonly IFriendshipRequestReadModelRepository _friendshipRequestReadModelRepository;
