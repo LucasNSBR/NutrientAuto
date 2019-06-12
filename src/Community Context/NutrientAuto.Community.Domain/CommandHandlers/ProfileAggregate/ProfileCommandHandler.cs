@@ -103,7 +103,7 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.ProfileAggregate
 
         public async Task<CommandResult> Handle(UnfriendProfileCommand request, CancellationToken cancellationToken)
         {
-            CommandResult unfriendResult = await _profileDomainService.EndFriendship(request.ProfileId, request.FriendProfileId);
+            CommandResult unfriendResult = await _profileDomainService.EndFriendship(_currentProfileId, request.FriendProfileId);
             if (!unfriendResult.Success)
                 return unfriendResult;
 
