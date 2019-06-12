@@ -40,9 +40,9 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.FriendshipRequestAggrega
             if (_currentProfileId == request.RequestedId)
                 return FailureDueTo("Falha ao criar nova solicitação", "Não é possível enviar uma solicitação de amizade para si mesmo.");
 
-            FriendshipRequest existingFriendshipRequest = await _friendshipRequestRepository.GetByCompositeIdAsync(_currentProfileId, request.RequestedId);
+            FriendshipRequest existingFriendshipRequest = await _friendshipRequestRepository.GetActiveByCompositeIdAsync(_currentProfileId, request.RequestedId);
             if (existingFriendshipRequest != null)
-                return FailureDueTo("Falha ao criar nova solicitação", "Você já enviou uma solicitação de amizade para esse usuário.");
+                return FailureDueTo("Falha ao criar nova solicitação", "Você já tem uma solicitação de amizade ativa para esse usuário.");
 
             FriendshipRequest friendshipRequest = new FriendshipRequest(
                 _currentProfileId,
@@ -80,7 +80,11 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.FriendshipRequestAggrega
             if (friendshipRequest == null || !friendshipRequest.IsRequested(_currentProfileId))
                 return FailureDueToFriendshipNotFound();
 
-            await _friendshipRequestRepository.RemoveAsync(friendshipRequest);
+            friendshipRequest.Reject();
+            if (!friendshipRequest.IsValid)
+                return FailureDueToEntityStateInconsistency(friendshipRequest);
+
+            await _friendshipRequestRepository.UpdateAsync(friendshipRequest);
 
             return await CommitAndPublishDefaultAsync();
         }
@@ -91,14 +95,15 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.FriendshipRequestAggrega
             if (friendshipRequest == null || !friendshipRequest.IsRequester(_currentProfileId))
                 return FailureDueToFriendshipNotFound();
 
-            if (!friendshipRequest.IsPending)
-                return FailureDueTo("Solicitação Inválida", "Não é possível remover uma solicitação de amizade que já foi aceita.");
+            friendshipRequest.Cancel();
+            if (!friendshipRequest.IsValid)
+                return FailureDueToEntityStateInconsistency(friendshipRequest);
 
-            await _friendshipRequestRepository.RemoveAsync(friendshipRequest);
+            await _friendshipRequestRepository.UpdateAsync(friendshipRequest);
 
             return await CommitAndPublishDefaultAsync();
         }
-        
+
         private CommandResult FailureDueToFriendshipNotFound()
         {
             return FailureDueToEntityNotFound("Id da Solicitação inválido", "Falha ao buscar solicitação de amizade no banco de dados.");

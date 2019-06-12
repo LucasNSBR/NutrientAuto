@@ -4,6 +4,7 @@ using NutrientAuto.Community.Domain.Aggregates.ProfileAggregate;
 using NutrientAuto.Community.Domain.Commands.ProfileAggregate;
 using NutrientAuto.Community.Domain.Context;
 using NutrientAuto.Community.Domain.DomainEvents.ProfileAggregate;
+using NutrientAuto.Community.Domain.DomainServices.FriendshipRequestAggregate;
 using NutrientAuto.Community.Domain.DomainServices.ProfileAggregate;
 using NutrientAuto.Community.Domain.Repositories.ProfileAggregate;
 using NutrientAuto.CrossCutting.HttpService.HttpContext;
@@ -26,14 +27,16 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.ProfileAggregate
     {
         private readonly IProfileRepository _profileRepository;
         private readonly IProfileDomainService _profileDomainService;
+        private readonly IFriendshipRequestDomainService _friendshipRequestDomainService;
         private readonly IStorageService _storageService;
         private readonly Guid _currentProfileId;
 
-        public ProfileCommandHandler(IProfileRepository profileRepository, IProfileDomainService profileDomainService, IStorageService storageService, IIdentityService identityService, IMediator mediator, IUnitOfWork<ICommunityDbContext> unitOfWork, ILogger<ProfileCommandHandler> logger)
+        public ProfileCommandHandler(IProfileRepository profileRepository, IProfileDomainService profileDomainService, IFriendshipRequestDomainService friendshipRequestDomainService, IStorageService storageService, IIdentityService identityService, IMediator mediator, IUnitOfWork<ICommunityDbContext> unitOfWork, ILogger<ProfileCommandHandler> logger)
             : base(identityService, mediator, unitOfWork, logger)
         {
             _profileRepository = profileRepository;
             _profileDomainService = profileDomainService;
+            _friendshipRequestDomainService = friendshipRequestDomainService;
             _storageService = storageService;
             _currentProfileId = GetCurrentProfileId();
         }
@@ -106,6 +109,10 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.ProfileAggregate
             CommandResult unfriendResult = await _profileDomainService.EndFriendship(_currentProfileId, request.FriendProfileId);
             if (!unfriendResult.Success)
                 return unfriendResult;
+
+            CommandResult friendshipDumpResult = await _friendshipRequestDomainService.DumpExistingFriendshipRequest(_currentProfileId, request.FriendProfileId);
+            if (!friendshipDumpResult.Success)
+                return friendshipDumpResult;
 
             return await CommitAndPublishDefaultAsync();
         }
