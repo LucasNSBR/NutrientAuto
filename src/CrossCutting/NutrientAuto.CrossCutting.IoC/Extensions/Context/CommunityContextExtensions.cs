@@ -42,6 +42,7 @@ using NutrientAuto.Community.Domain.DomainEvents.DietAggregate;
 using NutrientAuto.Community.Domain.DomainEvents.GoalAggregate;
 using NutrientAuto.Community.Domain.DomainEvents.MeasureAggregate;
 using NutrientAuto.Community.Domain.DomainEvents.ProfileAggregate;
+using NutrientAuto.Community.Domain.DomainServices.FriendshipRequestAggregate;
 using NutrientAuto.Community.Domain.DomainServices.MeasureStatisticsAggregate;
 using NutrientAuto.Community.Domain.DomainServices.ProfileAggregate;
 using NutrientAuto.Community.Domain.Factories.PostAggregate;
@@ -91,6 +92,7 @@ namespace NutrientAuto.CrossCutting.IoC.Extensions.Context
             services.AddScoped<IFriendshipRequestReadModelRepository, FriendshipRequestReadModelRepository>();
 
             services.AddScoped<IProfileDomainService, ProfileDomainService>();
+            services.AddScoped<IFriendshipRequestDomainService, FriendshipRequestDomainService>();
             services.AddScoped<IMeasureStatisticsDomainService, MeasureStatisticsDomainService>();
 
             services.AddScoped<IRequestHandler<UpdateProfileCommand, CommandResult>, ProfileCommandHandler>();
