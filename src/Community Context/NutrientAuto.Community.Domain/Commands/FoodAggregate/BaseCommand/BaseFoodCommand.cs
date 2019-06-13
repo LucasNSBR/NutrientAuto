@@ -15,6 +15,6 @@ namespace NutrientAuto.Community.Domain.Commands.FoodAggregate.BaseCommand
         public MacronutrientTableDto Macronutrients { get; set; }
         public MicronutrientTableDto Micronutrients { get; set; }
         public UnitType UnitType { get; set; }
-        public decimal DefaultGramsQuantityMultiplier { get; set; }
+        public decimal? DefaultGramsQuantityMultiplier { get; set; }
     }
 }

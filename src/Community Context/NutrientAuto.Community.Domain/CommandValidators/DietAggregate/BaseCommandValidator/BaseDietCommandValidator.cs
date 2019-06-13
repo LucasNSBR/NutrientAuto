@@ -15,6 +15,7 @@ namespace NutrientAuto.Community.Domain.CommandValidators.DietAggregate.BaseComm
         public void ValidateName()
         {
             RuleFor(command => command.Name)
+                .NotEmpty()
                 .Length(3, 100);
         }
 
