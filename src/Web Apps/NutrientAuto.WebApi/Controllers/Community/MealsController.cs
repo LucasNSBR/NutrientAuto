@@ -60,7 +60,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
             return await CreateCommandResponse(command);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("{id:guid}/add-food")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
