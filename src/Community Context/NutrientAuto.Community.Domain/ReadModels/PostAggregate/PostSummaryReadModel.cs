@@ -17,7 +17,7 @@ namespace NutrientAuto.Community.Domain.ReadModels.PostAggregate
 
         public EntityReference EntityReference { get; set; }
 
-        public List<PostLike> Likes { get; set; }
+        public List<PostLikeReadModel> Likes { get; set; }
         public List<CommentReadModel> Comments { get; set; } 
     }
 }

@@ -54,11 +54,14 @@ namespace NutrientAuto.Community.Data.Repositories.PostAggregate
                          Posts.HasEntityReference AS HasReference, Posts.EntityReferenceId AS ReferenceId, Posts.EntityReferenceType AS ReferenceType,
                          comments.Id AS Id, comments.PostId AS PostId, comments.ProfileId AS ProfileId, comments.Body AS Body, comments.DateCreated AS DateCreated, 
                          replies.Id AS Id, replies.PostId AS PostId, replies.ProfileId AS ProfileId, replies.Body AS Body, replies.DateCreated AS DateCreated, replies.ReplyTo AS ReplyTo,
-                         PostLikes.ProfileId AS ProfileId, PostLikes.DateCreated AS DateCreated
+                         PostLikes.ProfileId AS ProfileId, PostLikes.DateCreated AS DateCreated,
+                         Profiles.Name AS ProfileName,
+                         Profiles.AvatarImageName AS ImageName, Profiles.AvatarImageUrlPath AS UrlPath
                          FROM Posts
                          LEFT JOIN Comments comments ON (comments.PostId = Posts.Id AND comments.ReplyTo IS NULL)
                          LEFT JOIN Comments replies ON (replies.ReplyTo IS NOT NULL AND comments.ID = replies.ReplyTo)
                          LEFT JOIN PostLikes ON PostLikes.PostId = Posts.Id 
+                         LEFT JOIN Profiles ON Profiles.Id = PostLikes.ProfileId
                          WHERE Posts.Id = @id
                          ORDER BY comments.DateCreated DESC, replies.DateCreated DESC";
 
@@ -67,8 +70,8 @@ namespace NutrientAuto.Community.Data.Repositories.PostAggregate
                 Dictionary<Guid, PostSummaryReadModel> rows = new Dictionary<Guid, PostSummaryReadModel>();
 
                 return (await connection
-                    .QueryAsync<PostSummaryReadModel, Image, EntityReference, CommentReadModel, ReplyReadModel, PostLike, PostSummaryReadModel>(sql,
-                    (post, postImage, entityReference, comment, reply, postLike) =>
+                    .QueryAsync<PostSummaryReadModel, Image, EntityReference, CommentReadModel, ReplyReadModel, PostLikeReadModel, Image, PostSummaryReadModel>(sql,
+                    (post, postImage, entityReference, comment, reply, postLike, profileAvatarImage) =>
                     {
                         PostSummaryReadModel summary;
 
@@ -76,7 +79,7 @@ namespace NutrientAuto.Community.Data.Repositories.PostAggregate
                         {
                             summary = post;
                             summary.Comments = new List<CommentReadModel>();
-                            summary.Likes = new List<PostLike>();
+                            summary.Likes = new List<PostLikeReadModel>();
                             rows.Add(id, summary);
                         }
 
@@ -98,6 +101,9 @@ namespace NutrientAuto.Community.Data.Repositories.PostAggregate
 
                         if (postLike != null)
                         {
+                            if (profileAvatarImage != null)
+                                postLike.ProfileAvatarImage = profileAvatarImage;
+
                             if (!summary.Likes.Any(p => p.ProfileId == postLike.ProfileId))
                                 summary.Likes.Add(postLike);
                         }
@@ -107,7 +113,7 @@ namespace NutrientAuto.Community.Data.Repositories.PostAggregate
                         return post;
                     },
                     new { id },
-                    splitOn: "ImageName,HasReference,Id,Id,ProfileId"))
+                    splitOn: "ImageName,HasReference,Id,Id,ProfileId,ImageName"))
                     .FirstOrDefault();
             }
         }
