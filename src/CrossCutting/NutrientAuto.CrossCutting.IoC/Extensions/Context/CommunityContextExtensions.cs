@@ -37,9 +37,11 @@ using NutrientAuto.Community.Domain.Commands.MeasureCategoryAggregate;
 using NutrientAuto.Community.Domain.Commands.PostAggregate;
 using NutrientAuto.Community.Domain.Commands.ProfileAggregate;
 using NutrientAuto.Community.Domain.Context;
+using NutrientAuto.Community.Domain.DomainEventHandlers.DietAggregate;
 using NutrientAuto.Community.Domain.DomainEventHandlers.PostAggregate;
 using NutrientAuto.Community.Domain.DomainEvents.DietAggregate;
 using NutrientAuto.Community.Domain.DomainEvents.GoalAggregate;
+using NutrientAuto.Community.Domain.DomainEvents.MealAggregate;
 using NutrientAuto.Community.Domain.DomainEvents.MeasureAggregate;
 using NutrientAuto.Community.Domain.DomainEvents.ProfileAggregate;
 using NutrientAuto.Community.Domain.DomainServices.FriendshipRequestAggregate;
@@ -136,6 +138,7 @@ namespace NutrientAuto.CrossCutting.IoC.Extensions.Context
             services.AddScoped<IRequestHandler<UpdateFoodTableCommand, CommandResult>, FoodTableCommandHandler>();
             services.AddScoped<IRequestHandler<RemoveFoodTableCommand, CommandResult>, FoodTableCommandHandler>();
 
+            services.AddScoped<IRequestHandler<RegisterDietCommand, CommandResult>, DietCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateDietCommand, CommandResult>, DietCommandHandler>();
             services.AddScoped<IRequestHandler<AddDietMealCommand, CommandResult>, DietCommandHandler>();
             services.AddScoped<IRequestHandler<RemoveDietMealCommand, CommandResult>, DietCommandHandler>();
@@ -149,6 +152,9 @@ namespace NutrientAuto.CrossCutting.IoC.Extensions.Context
             services.AddScoped<INotificationHandler<GoalCompletedDomainEvent>, PostDomainEventHandler>();
             services.AddScoped<INotificationHandler<MeasureRegisteredDomainEvent>, PostDomainEventHandler>();
             services.AddScoped<INotificationHandler<DietRegisteredDomainEvent>, PostDomainEventHandler>();
+
+            services.AddScoped<INotificationHandler<MealFoodAddedDomainEvent>, DietDomainEventHandler>();
+            services.AddScoped<INotificationHandler<MealFoodRemovedDomainEvent>, DietDomainEventHandler>();
 
             services.AddScoped<IPostFactory, PostFactory>();
 
