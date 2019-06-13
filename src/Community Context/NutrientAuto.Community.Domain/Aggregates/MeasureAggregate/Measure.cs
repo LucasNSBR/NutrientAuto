@@ -15,10 +15,10 @@ namespace NutrientAuto.Community.Domain.Aggregates.MeasureAggregate
         public BasicMeasure BasicMeasure { get; private set; }
         public DateTime MeasureDate { get; private set; }
 
-        private List<Image> _bodyPictures;
+        private List<Image> _bodyPictures = new List<Image>();
         public IReadOnlyList<Image> BodyPictures => _bodyPictures;
 
-        private List<MeasureLine> _measureLines;
+        private List<MeasureLine> _measureLines = new List<MeasureLine>();
         public IReadOnlyList<MeasureLine> MeasureLines => _measureLines;
 
         protected Measure()

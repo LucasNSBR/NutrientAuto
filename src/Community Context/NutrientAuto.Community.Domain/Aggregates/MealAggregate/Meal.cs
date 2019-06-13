@@ -19,7 +19,7 @@ namespace NutrientAuto.Community.Domain.Aggregates.MealAggregate
 
         public int MealFoodCount => _mealFoods?.Count ?? 0;
 
-        private readonly List<MealFood> _mealFoods;
+        private readonly List<MealFood> _mealFoods = new List<MealFood>();
         public IReadOnlyList<MealFood> MealFoods => _mealFoods;
 
         protected Meal()

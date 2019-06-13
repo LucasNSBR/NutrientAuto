@@ -17,7 +17,7 @@ namespace NutrientAuto.Community.Domain.Aggregates.DietAggregate
 
         public MacronutrientTable TotalMacronutrients { get; private set; }
 
-        private readonly List<Meal> _dietMeals;
+        private readonly List<Meal> _dietMeals = new List<Meal>();
         public IReadOnlyList<Meal> DietMeals => _dietMeals;
 
         public int MealCount => _dietMeals.Count;
@@ -29,7 +29,6 @@ namespace NutrientAuto.Community.Domain.Aggregates.DietAggregate
             Description = description;
             StartDate = DateTime.Now;
             TotalMacronutrients = MacronutrientTable.Default();
-            _dietMeals = new List<Meal>();
         }
 
         public void Update(string name, string description)

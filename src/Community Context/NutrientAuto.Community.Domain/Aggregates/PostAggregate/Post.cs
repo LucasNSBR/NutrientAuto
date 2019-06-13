@@ -18,10 +18,10 @@ namespace NutrientAuto.Community.Domain.Aggregates.PostAggregate
         public EntityReference EntityReference { get; protected set; }
         public DateTime DateCreated { get; private set; }
 
-        private List<PostLike> _likes;
+        private readonly List<PostLike> _likes = new List<PostLike>();
         public IReadOnlyList<PostLike> Likes => _likes;
 
-        private List<Comment> _comments;
+        private readonly List<Comment> _comments = new List<Comment>();
         public IReadOnlyList<Comment> Comments => _comments;
         
         protected Post()
@@ -36,8 +36,6 @@ namespace NutrientAuto.Community.Domain.Aggregates.PostAggregate
             AttachedImage = attachedImage ?? Image.Default();
             EntityReference = entityReference ?? EntityReference.None();
             DateCreated = DateTime.Now;
-            _likes = new List<PostLike>();
-            _comments = new List<Comment>();
         }
 
         public PostLike FindLikeByProfileId(Guid profileId) => _likes.Find(l => l.ProfileId == profileId);
