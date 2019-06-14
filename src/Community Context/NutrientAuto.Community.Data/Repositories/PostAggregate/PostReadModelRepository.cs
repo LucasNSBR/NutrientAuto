@@ -53,15 +53,18 @@ namespace NutrientAuto.Community.Data.Repositories.PostAggregate
                          Posts.PostImageName as ImageName, Posts.PostImageUrlPath as UrlPath, 
                          Posts.HasEntityReference AS HasReference, Posts.EntityReferenceId AS ReferenceId, Posts.EntityReferenceType AS ReferenceType,
                          comments.Id AS Id, comments.PostId AS PostId, comments.ProfileId AS ProfileId, comments.Body AS Body, comments.DateCreated AS DateCreated, 
+                         commenter.Name AS ProfileName,
                          replies.Id AS Id, replies.PostId AS PostId, replies.ProfileId AS ProfileId, replies.Body AS Body, replies.DateCreated AS DateCreated, replies.ReplyTo AS ReplyTo,
+                         replier.Name as ProfileName,                         
                          PostLikes.ProfileId AS ProfileId, PostLikes.DateCreated AS DateCreated,
-                         Profiles.Name AS ProfileName,
-                         Profiles.AvatarImageName AS ImageName, Profiles.AvatarImageUrlPath AS UrlPath
+                         liker.Name AS ProfileName
                          FROM Posts
                          LEFT JOIN Comments comments ON (comments.PostId = Posts.Id AND comments.ReplyTo IS NULL)
                          LEFT JOIN Comments replies ON (replies.ReplyTo IS NOT NULL AND comments.ID = replies.ReplyTo)
                          LEFT JOIN PostLikes ON PostLikes.PostId = Posts.Id 
-                         LEFT JOIN Profiles ON Profiles.Id = PostLikes.ProfileId
+                         LEFT JOIN Profiles commenter ON commenter.Id = comments.ProfileId
+                         LEFT JOIN Profiles replier ON replier.Id = replies.ProfileId
+                         LEFT JOIN Profiles liker ON liker.Id = PostLikes.ProfileId
                          WHERE Posts.Id = @id
                          ORDER BY comments.DateCreated DESC, replies.DateCreated DESC";
 
@@ -70,8 +73,8 @@ namespace NutrientAuto.Community.Data.Repositories.PostAggregate
                 Dictionary<Guid, PostSummaryReadModel> rows = new Dictionary<Guid, PostSummaryReadModel>();
 
                 return (await connection
-                    .QueryAsync<PostSummaryReadModel, Image, EntityReference, CommentReadModel, ReplyReadModel, PostLikeReadModel, Image, PostSummaryReadModel>(sql,
-                    (post, postImage, entityReference, comment, reply, postLike, profileAvatarImage) =>
+                    .QueryAsync<PostSummaryReadModel, Image, EntityReference, CommentReadModel, ReplyReadModel, PostLikeReadModel, PostSummaryReadModel>(sql,
+                    (post, postImage, entityReference, comment, reply, postLike) =>
                     {
                         PostSummaryReadModel summary;
 
@@ -101,9 +104,6 @@ namespace NutrientAuto.Community.Data.Repositories.PostAggregate
 
                         if (postLike != null)
                         {
-                            if (profileAvatarImage != null)
-                                postLike.ProfileAvatarImage = profileAvatarImage;
-
                             if (!summary.Likes.Any(p => p.ProfileId == postLike.ProfileId))
                                 summary.Likes.Add(postLike);
                         }
@@ -113,7 +113,7 @@ namespace NutrientAuto.Community.Data.Repositories.PostAggregate
                         return post;
                     },
                     new { id },
-                    splitOn: "ImageName,HasReference,Id,Id,ProfileId,ImageName"))
+                    splitOn: "ImageName,HasReference,Id,Id,ProfileId"))
                     .FirstOrDefault();
             }
         }

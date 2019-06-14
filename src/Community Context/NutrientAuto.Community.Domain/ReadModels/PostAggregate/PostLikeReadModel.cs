@@ -1,5 +1,4 @@
-﻿using NutrientAuto.Shared.ValueObjects;
-using System;
+﻿using System;
 
 namespace NutrientAuto.Community.Domain.ReadModels.PostAggregate
 {
@@ -8,6 +7,5 @@ namespace NutrientAuto.Community.Domain.ReadModels.PostAggregate
         public Guid ProfileId { get; set; }
         public DateTime DateCreated { get; set; }
         public string ProfileName { get; set; }
-        public Image ProfileAvatarImage{ get; set; }
     }
 }
