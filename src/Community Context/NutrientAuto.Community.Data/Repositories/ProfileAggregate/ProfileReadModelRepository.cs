@@ -115,5 +115,27 @@ namespace NutrientAuto.Community.Data.Repositories.ProfileAggregate
                     .FirstOrDefault();
             }
         }
+
+        public async Task<IEnumerable<ProfileFriendReadModel>> GetProfileFriendsAsync(Guid id, string nameFilter = null)
+        {
+            string sql = $@"SELECT Profiles.Id AS ProfileId, Profiles.Name, 
+                            Profiles.AvatarImageName AS ImageName, Profiles.AvatarImageUrlPath AS UrlPath
+                            FROM Friends
+                            LEFT JOIN Profiles ON Profiles.Id = Friends.FriendId
+                            WHERE Friends.UserId = @id AND Profiles.Name LIKE '%{@nameFilter ?? string.Empty}%'";
+
+            using (DbConnection connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString))
+            {
+                return (await connection
+                    .QueryAsync<ProfileFriendReadModel, Image, ProfileFriendReadModel>(sql,
+                    (profile, avatarImage) =>
+                    {
+                        profile.AvatarImage = avatarImage;
+                        return profile;
+                    },
+                    new { id },
+                    splitOn: "ImageName"));
+            }
+        }
     }
 }

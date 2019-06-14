@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NutrientAuto.Community.Domain.Commands.FriendshipRequestAggregate;
 using NutrientAuto.Community.Domain.Commands.ProfileAggregate;
+using NutrientAuto.Community.Domain.DomainServices.ProfileAggregate;
 using NutrientAuto.Community.Domain.ReadModels.ProfileAggregate;
 using NutrientAuto.Community.Domain.Repositories.ProfileAggregate;
 using NutrientAuto.CrossCutting.HttpService.HttpContext;
@@ -20,12 +21,14 @@ namespace NutrientAuto.WebApi.Controllers.Community
     public class ProfilesController : BaseController
     {
         private readonly IProfileReadModelRepository _readModelRepository;
+        private readonly IProfileDomainService _profileDomainService;
         private readonly Guid _currentProfileId;
 
-        public ProfilesController(IProfileReadModelRepository readModelRepository, IIdentityService identityService, IDomainNotificationHandler domainNotificationHandler, IMediator mediator, ILogger<ProfilesController> logger)
+        public ProfilesController(IProfileReadModelRepository readModelRepository, IProfileDomainService profileDomainService, IIdentityService identityService, IDomainNotificationHandler domainNotificationHandler, IMediator mediator, ILogger<ProfilesController> logger)
             : base(domainNotificationHandler, mediator, logger)
         {
             _readModelRepository = readModelRepository;
+            _profileDomainService = profileDomainService;
             _currentProfileId = identityService.GetUserId();
         }
 
@@ -100,6 +103,24 @@ namespace NutrientAuto.WebApi.Controllers.Community
             command.ProfileId = id;
 
             return await CreateCommandResponse(command);
+        }
+
+        [HttpGet]
+        [Route("{id:guid}/friends")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetProfileFriendsAsync(Guid profileId, string nameFilter = null)
+        {
+            ProfileAccessResult canAccessGoals = await _profileDomainService.CanAccessProfileData(_currentProfileId, profileId);
+
+            if (canAccessGoals == ProfileAccessResult.CanAccess)
+            {
+                IEnumerable<ProfileFriendReadModel> friends = await _readModelRepository.GetProfileFriendsAsync(profileId, nameFilter);
+                return CreateResponse(friends);
+            }
+            else if (canAccessGoals == ProfileAccessResult.Forbidden) return Forbid();
+
+            return NotFound();
         }
 
         [HttpPut]
