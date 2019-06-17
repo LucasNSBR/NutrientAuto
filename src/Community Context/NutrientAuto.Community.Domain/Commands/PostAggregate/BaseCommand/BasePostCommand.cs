@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using NutrientAuto.Community.Domain.Commands.SeedWork;
+using Microsoft.AspNetCore.Http;
 using NutrientAuto.Shared.Commands;
 using System;
 
@@ -10,6 +10,6 @@ namespace NutrientAuto.Community.Domain.Commands.PostAggregate.BaseCommand
         public Guid PostId { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
-        public ImageDto AttachedImage { get; set; }
+        public IFormFile AttachedImage { get; set; }
     }
 }

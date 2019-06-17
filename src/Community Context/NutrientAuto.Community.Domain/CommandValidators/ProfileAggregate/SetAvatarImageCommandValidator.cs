@@ -8,7 +8,6 @@ namespace NutrientAuto.Community.Domain.CommandValidators.ProfileAggregate
         public SetAvatarImageCommandValidator()
         {
             ValidateProfileId();
-            ValidateAvatarImage();
         }
     }
 }

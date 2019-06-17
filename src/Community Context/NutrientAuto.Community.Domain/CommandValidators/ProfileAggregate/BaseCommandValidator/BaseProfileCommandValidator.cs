@@ -13,14 +13,7 @@ namespace NutrientAuto.Community.Domain.CommandValidators.ProfileAggregate.BaseC
             RuleFor(command => command.ProfileId)
                 .NotEmpty();
         }
-
-        public void ValidateAvatarImage()
-        {
-            RuleFor(command => command.AvatarImage)
-                .NotNull()
-                .SetValidator(new FormFileValidator());
-        }
-
+        
         public void ValidateGenre()
         {
             RuleFor(command => command.Genre)
