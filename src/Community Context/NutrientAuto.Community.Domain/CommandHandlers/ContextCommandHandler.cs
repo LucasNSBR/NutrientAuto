@@ -8,6 +8,9 @@ using NutrientAuto.Shared.Commands;
 using NutrientAuto.Shared.Events;
 using System;
 using System.Threading.Tasks;
+using NutrientAuto.CrossCutting.Storage.Services.StorageValidators;
+using NutrientAuto.Shared.Notifications;
+using System.Collections.Generic;
 
 namespace NutrientAuto.Community.Domain.CommandHandlers
 {
@@ -54,6 +57,18 @@ namespace NutrientAuto.Community.Domain.CommandHandlers
         protected CommandResult FailureDueToPostNotFound(string title = null, string description = null)
         {
             return FailureDueToEntityNotFound(title ?? "Id da Publicação inválido", description ?? "Falha ao buscar Publicação no banco de dados.");
+        }
+
+        protected CommandResult FailureDueToFileValidationFailure(StorageValidatorResult storageValidatorResult)
+        {
+            List<DomainNotification> notifications = new List<DomainNotification>();
+
+            foreach (StorageValidatorError storageValidatorError in storageValidatorResult.Errors)
+            {
+                notifications.Add(new DomainNotification(storageValidatorError.ErrorCode, storageValidatorError.Description));
+            }
+
+            return FailureDueTo(notifications);
         }
 
         protected CommandResult FailureDueToUploadFailure(string title = null, string description = null)

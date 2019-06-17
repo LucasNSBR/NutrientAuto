@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NutrientAuto.Community.Domain.Aggregates.ProfileAggregate;
 using NutrientAuto.Community.Domain.Commands.ProfileAggregate;
 using NutrientAuto.Community.Domain.Context;
@@ -8,7 +9,9 @@ using NutrientAuto.Community.Domain.DomainServices.FriendshipRequestAggregate;
 using NutrientAuto.Community.Domain.DomainServices.ProfileAggregate;
 using NutrientAuto.Community.Domain.Repositories.ProfileAggregate;
 using NutrientAuto.CrossCutting.HttpService.HttpContext;
+using NutrientAuto.CrossCutting.Storage.Configuration;
 using NutrientAuto.CrossCutting.Storage.Services.StorageService;
+using NutrientAuto.CrossCutting.Storage.Services.StorageValidators;
 using NutrientAuto.CrossCutting.UnitOfwork.Abstractions;
 using NutrientAuto.Shared.Commands;
 using NutrientAuto.Shared.ValueObjects;
@@ -29,15 +32,17 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.ProfileAggregate
         private readonly IProfileDomainService _profileDomainService;
         private readonly IFriendshipRequestDomainService _friendshipRequestDomainService;
         private readonly IStorageService _storageService;
+        private readonly IOptions<ContainerOptions> _containerOptions;
         private readonly Guid _currentProfileId;
 
-        public ProfileCommandHandler(IProfileRepository profileRepository, IProfileDomainService profileDomainService, IFriendshipRequestDomainService friendshipRequestDomainService, IStorageService storageService, IIdentityService identityService, IMediator mediator, IUnitOfWork<ICommunityDbContext> unitOfWork, ILogger<ProfileCommandHandler> logger)
+        public ProfileCommandHandler(IProfileRepository profileRepository, IProfileDomainService profileDomainService, IFriendshipRequestDomainService friendshipRequestDomainService, IStorageService storageService, IOptions<ContainerOptions> containerOptions, IIdentityService identityService, IMediator mediator, IUnitOfWork<ICommunityDbContext> unitOfWork, ILogger<ProfileCommandHandler> logger)
             : base(identityService, mediator, unitOfWork, logger)
         {
             _profileRepository = profileRepository;
             _profileDomainService = profileDomainService;
             _friendshipRequestDomainService = friendshipRequestDomainService;
             _storageService = storageService;
+            _containerOptions = containerOptions;
             _currentProfileId = GetCurrentProfileId();
         }
 
@@ -66,6 +71,10 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.ProfileAggregate
 
         public async Task<CommandResult> Handle(SetAvatarImageCommand request, CancellationToken cancellationToken)
         {
+            StorageValidatorResult storageValidator = new ImageStorageValidator().Validate(request.AvatarImage);
+            if (!storageValidator.Success)
+                return FailureDueToFileValidationFailure(storageValidator);
+
             Profile profile = await _profileRepository.GetByIdAsync(request.ProfileId);
             if (!FoundValidProfile(profile))
                 return FailureDueToProfileNotFound();
@@ -74,8 +83,10 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.ProfileAggregate
 
             using (MemoryStream stream = new MemoryStream())
             {
+                string containerName = _containerOptions.Value.ProfileImageContainerName;
+
                 await request.AvatarImage.CopyToAsync(stream);
-                StorageResult result = await _storageService.UploadFileToStorageAsync(stream, $"profile-photo-{Guid.NewGuid().ToString()}");
+                StorageResult result = await _storageService.UploadFileToStorageAsync(containerName, stream, Guid.NewGuid().ToString());
                 if (!result.Success)
                     return FailureDueToUploadFailure();
 
