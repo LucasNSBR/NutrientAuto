@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using NutrientAuto.CrossCutting.IoC.Configuration.Service;
 using NutrientAuto.CrossCutting.IoC.Extensions.Context;
 using NutrientAuto.CrossCutting.IoC.Extensions.Service;
 using NutrientAuto.WebApi.Middlewares;
@@ -70,13 +71,14 @@ namespace NutrientAuto.WebApi
 
             services.AddAutomapper();
 
-            services.AddStorageService(opt =>
+            services.AddStorageService(new StorageOptions
             {
-                opt.AccountName = Configuration["Storage:AccountName"];
-                opt.AccountKey = Configuration["Storage:AccountKey"];
-                opt.ContainerName = Configuration["Storage:ContainerName"];
-                opt.DefaultAvatarImageName = "";
-                opt.DefaultAvatarImageUrl = "";
+                AccountName = Configuration["Storage:AccountName"],
+                AccountKey = Configuration["Storage:AccountKey"],
+
+                PostImageContainerName = Configuration["Storage:Containers:PostImageContainer"],
+                ProfileImageContainerName = Configuration["Storage:Containers:ProfileImageContainer"],
+                MeasureImageContainerName = Configuration["Storage:Containers:MeasureImageContainer"]
             });
 
             services.AddEmailService(opt =>
