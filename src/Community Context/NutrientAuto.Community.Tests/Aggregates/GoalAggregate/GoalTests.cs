@@ -44,7 +44,7 @@ namespace NutrientAuto.Community.Tests.Aggregates.GoalAggregate
 
         #region Update
         [TestMethod]
-        public void ShouldUpdateVariables()
+        public void ShouldUpdateGoalAggregate()
         {
             Goal goal = new Goal(Guid.NewGuid(), "Testando Update", "Testes de Update");
 
