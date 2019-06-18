@@ -37,7 +37,7 @@ namespace NutrientAuto.Community.Domain.Aggregates.ProfileAggregate
             Username = username;
             EmailAddress = emailAddress;
             BirthDate = birthDate;
-            Settings = new ProfileSettings(PrivacyType.Public);
+            Settings = new ProfileSettings(PrivacyType.Private);
         }
 
         public void Update(Genre genre, string name, string username, EmailAddress emailAddress, DateTime birthDate, string bio)
