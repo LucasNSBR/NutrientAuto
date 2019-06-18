@@ -5,13 +5,13 @@ namespace NutrientAuto.CrossCutting.Storage.Services.StorageValidators
     public class StorageValidatorError
     {
         public string ErrorCode { get; private set; }
-        public string Description { get; private set; }
+        public string ErrorMessage { get; private set; }
         public DateTime DateCreated { get; private set; }
 
-        public StorageValidatorError(string errorCode, string description)
+        public StorageValidatorError(string errorCode, string errorMessage)
         {
             ErrorCode = errorCode;
-            Description = description;
+            ErrorMessage = errorMessage;
             DateCreated = DateTime.Now;
         }
     }
