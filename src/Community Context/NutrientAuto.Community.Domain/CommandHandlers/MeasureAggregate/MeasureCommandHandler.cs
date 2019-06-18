@@ -124,7 +124,7 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.MeasureAggregate
                 request.Details,
                 basicMeasure,
                 request.MeasureDate,
-                _mapper.Map<List<Image>>(request.BodyPictures),
+                bodyPictures,
                 _mapper.Map<List<MeasureLine>>(request.MeasureLines)
                 );
 
