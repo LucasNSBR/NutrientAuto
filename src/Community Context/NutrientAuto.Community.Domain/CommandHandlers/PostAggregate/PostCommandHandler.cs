@@ -16,7 +16,9 @@ using NutrientAuto.CrossCutting.UnitOfwork.Abstractions;
 using NutrientAuto.Shared.Commands;
 using NutrientAuto.Shared.ValueObjects;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -56,7 +58,7 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.PostAggregate
             {
                 StorageValidatorResult storageValidator = new ImageStorageValidator().Validate(request.AttachedImage);
                 if (!storageValidator.Success)
-                    return FailureDueToFileValidationFailure(storageValidator);
+                    return FailureDueToFileValidationFailure(storageValidator.Errors.ToList());
 
                 using (MemoryStream stream = new MemoryStream())
                 {

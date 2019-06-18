@@ -59,11 +59,11 @@ namespace NutrientAuto.Community.Domain.CommandHandlers
             return FailureDueToEntityNotFound(title ?? "Id da Publicação inválido", description ?? "Falha ao buscar Publicação no banco de dados.");
         }
 
-        protected CommandResult FailureDueToFileValidationFailure(StorageValidatorResult storageValidatorResult)
+        protected CommandResult FailureDueToFileValidationFailure(List<StorageValidatorError> storageValidatorErrors)
         {
             List<DomainNotification> notifications = new List<DomainNotification>();
 
-            foreach (StorageValidatorError storageValidatorError in storageValidatorResult.Errors)
+            foreach (StorageValidatorError storageValidatorError in storageValidatorErrors)
             {
                 notifications.Add(new DomainNotification(storageValidatorError.ErrorCode, storageValidatorError.ErrorMessage));
             }

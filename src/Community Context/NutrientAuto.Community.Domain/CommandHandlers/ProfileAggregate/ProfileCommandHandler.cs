@@ -17,6 +17,7 @@ using NutrientAuto.Shared.Commands;
 using NutrientAuto.Shared.ValueObjects;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -73,7 +74,7 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.ProfileAggregate
         {
             StorageValidatorResult storageValidator = new ImageStorageValidator().Validate(request.AvatarImage);
             if (!storageValidator.Success)
-                return FailureDueToFileValidationFailure(storageValidator);
+                return FailureDueToFileValidationFailure(storageValidator.Errors.ToList());
 
             Profile profile = await _profileRepository.GetByIdAsync(request.ProfileId);
             if (!FoundValidProfile(profile))
