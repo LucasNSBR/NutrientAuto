@@ -57,7 +57,6 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.ProfileAggregate
                 request.Genre,
                 request.Name,
                 request.Username,
-                new EmailAddress(request.EmailAddress.Email),
                 request.BirthDate,
                 request.Bio
                 );

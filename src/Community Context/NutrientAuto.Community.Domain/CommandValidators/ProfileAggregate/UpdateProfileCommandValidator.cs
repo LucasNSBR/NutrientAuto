@@ -11,7 +11,6 @@ namespace NutrientAuto.Community.Domain.CommandValidators.ProfileAggregate
             ValidateGenre();
             ValidateName();
             ValidateUsername();
-            ValidateEmailAddress();
             ValidateBirthDate();
             ValidateBio();
         }
