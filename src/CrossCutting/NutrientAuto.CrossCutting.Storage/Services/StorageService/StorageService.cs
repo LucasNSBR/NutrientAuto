@@ -39,7 +39,23 @@ namespace NutrientAuto.CrossCutting.Storage.Services.StorageService
 
             return await blob.ExistsAsync();
         }
-        
+
+        public async Task<StorageFile> FindFileAsync(string containerName, string fileName)
+        {
+            CloudBlockBlob blob = GetContainer(containerName)
+                .GetBlockBlobReference(fileName);
+
+            if (await blob.ExistsAsync())
+            {
+
+                await blob.FetchAttributesAsync();
+
+                return new StorageFile(blob.Name, blob.Uri.AbsoluteUri);
+            }
+
+            return null;
+        }
+
         public async Task<StorageResult> UploadFileToStorageAsync(string containerName, MemoryStream stream, string fileName, Dictionary<string, string> metadata = null)
         {
             CloudBlockBlob blob = GetContainer(containerName)
@@ -51,7 +67,7 @@ namespace NutrientAuto.CrossCutting.Storage.Services.StorageService
             {
                 await blob.UploadFromStreamAsync(stream);
 
-                return StorageResult.Ok(blob.Uri.AbsoluteUri.ToString(), fileName);
+                return StorageResult.Ok(blob.Uri.AbsoluteUri, fileName);
             }
             catch (Exception ex)
             {
