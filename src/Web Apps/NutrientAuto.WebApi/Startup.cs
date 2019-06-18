@@ -32,7 +32,12 @@ namespace NutrientAuto.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCoreContext();
-            services.AddCommunityContext(Configuration);
+
+            services.AddCommunityContext(Configuration, avatarImageOptions =>
+            {
+                avatarImageOptions.DefaultAvatarImageName = Configuration[""];
+                avatarImageOptions.DefaultAvatarImageUrlPath = Configuration[""];
+            });
 
             services.AddIdentityContext(Configuration, opt =>
             {

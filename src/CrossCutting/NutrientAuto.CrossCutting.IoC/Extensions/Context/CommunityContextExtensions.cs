@@ -62,13 +62,17 @@ using NutrientAuto.Community.Domain.Repositories.ProfileAggregate;
 using NutrientAuto.CrossCutting.UnitOfwork.Abstractions;
 using NutrientAuto.CrossCutting.UnitOfWork;
 using NutrientAuto.Shared.Commands;
+using NutrientAuto.Shared.Settings.Community;
+using System;
 
 namespace NutrientAuto.CrossCutting.IoC.Extensions.Context
 {
     public static partial class ContextDependencyInjectionExtensions
     {
-        public static IServiceCollection AddCommunityContext(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCommunityContext(this IServiceCollection services, IConfiguration configuration, Action<CommunityDefaultOptions> communityDefaultOptions)
         {
+            services.Configure(communityDefaultOptions);
+
             services.AddDbContext<CommunityDbContext>(opt =>
                  opt.UseSqlServer(configuration.GetConnectionString("SqlServerMain")));
 

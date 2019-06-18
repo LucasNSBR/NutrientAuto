@@ -65,7 +65,7 @@ namespace NutrientAuto.Community.Domain.CommandHandlers
 
             foreach (StorageValidatorError storageValidatorError in storageValidatorResult.Errors)
             {
-                notifications.Add(new DomainNotification(storageValidatorError.ErrorCode, storageValidatorError.Description));
+                notifications.Add(new DomainNotification(storageValidatorError.ErrorCode, storageValidatorError.ErrorMessage));
             }
 
             return FailureDueTo(notifications);

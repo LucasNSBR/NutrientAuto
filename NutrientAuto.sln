@@ -5,23 +5,23 @@ VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Community Context", "Community Context", "{5FED8164-9F41-4F6D-BCB3-629E7915CB7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NutrientAuto.Community.Data", "src\Community Context\NutrientAuto.Community.Data\NutrientAuto.Community.Data.csproj", "{1CE59DB1-33A7-4286-89EC-E05F3A35A133}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NutrientAuto.Community.Data", "src\Community Context\NutrientAuto.Community.Data\NutrientAuto.Community.Data.csproj", "{1CE59DB1-33A7-4286-89EC-E05F3A35A133}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NutrientAuto.Community.Domain", "src\Community Context\NutrientAuto.Community.Domain\NutrientAuto.Community.Domain.csproj", "{3BAD4D09-37D8-46CA-BD38-07528804280E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NutrientAuto.Community.Domain", "src\Community Context\NutrientAuto.Community.Domain\NutrientAuto.Community.Domain.csproj", "{3BAD4D09-37D8-46CA-BD38-07528804280E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity Context", "Identity Context", "{CA201FD2-0509-4333-8096-697F83E674A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NutrientAuto.Identity.Domain", "src\Identity Context\NutrientAuto.Identity.Domain\NutrientAuto.Identity.Domain.csproj", "{023C6735-02C2-4493-B0B2-F480D712F6FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NutrientAuto.Identity.Domain", "src\Identity Context\NutrientAuto.Identity.Domain\NutrientAuto.Identity.Domain.csproj", "{023C6735-02C2-4493-B0B2-F480D712F6FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NutrientAuto.Identity.Data", "src\Identity Context\NutrientAuto.Identity.Data\NutrientAuto.Identity.Data.csproj", "{BB5003A0-D25E-42D6-BA14-0A3B4C482E06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NutrientAuto.Identity.Data", "src\Identity Context\NutrientAuto.Identity.Data\NutrientAuto.Identity.Data.csproj", "{BB5003A0-D25E-42D6-BA14-0A3B4C482E06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NutrientAuto.Identity.Service", "src\Identity Context\NutrientAuto.Identity.Service\NutrientAuto.Identity.Service.csproj", "{9DDBFC0E-C39B-468B-B64D-EB347A3B262D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NutrientAuto.Identity.Service", "src\Identity Context\NutrientAuto.Identity.Service\NutrientAuto.Identity.Service.csproj", "{9DDBFC0E-C39B-468B-B64D-EB347A3B262D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NutrientAuto.Community.Tests", "src\Community Context\NutrientAuto.Community.Tests\NutrientAuto.Community.Tests.csproj", "{6F354190-72FE-42D5-8839-99555B75B2B3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web Apps", "Web Apps", "{8E5BF8A0-24AC-4BA7-BF44-7E2CB6A125CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NutrientAuto.WebApi", "src\Web Apps\NutrientAuto.WebApi\NutrientAuto.WebApi.csproj", "{BFE7C5BD-7E85-4ED2-A8BD-9A6814702438}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NutrientAuto.WebApi", "src\Web Apps\NutrientAuto.WebApi\NutrientAuto.WebApi.csproj", "{BFE7C5BD-7E85-4ED2-A8BD-9A6814702438}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared Kernel", "Shared Kernel", "{34172C43-F5A4-4FD4-BCE9-B1C61D7F50B1}"
 EndProject
@@ -46,6 +46,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NutrientAuto.CrossCutting.UnitOfWork", "src\CrossCutting\NutrientAuto.CrossCutting.UnitOfWork\NutrientAuto.CrossCutting.UnitOfWork.csproj", "{0E05816B-C7CB-4E70-9113-B5346AD18601}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NutrientAuto.CrossCutting.HttpService", "src\CrossCutting\NutrientAuto.CrossCutting.HttpService\NutrientAuto.CrossCutting.HttpService.csproj", "{4DA666DC-EDBA-430A-8781-ACE0A1626955}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NutrientAuto.Shared.Settings", "src\Shared Kernel\NutrientAuto.Shared.Settings\NutrientAuto.Shared.Settings.csproj", "{6BB8DD5E-0D10-4DF1-85B1-EA435107BDB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +123,10 @@ Global
 		{4DA666DC-EDBA-430A-8781-ACE0A1626955}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DA666DC-EDBA-430A-8781-ACE0A1626955}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DA666DC-EDBA-430A-8781-ACE0A1626955}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BB8DD5E-0D10-4DF1-85B1-EA435107BDB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BB8DD5E-0D10-4DF1-85B1-EA435107BDB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BB8DD5E-0D10-4DF1-85B1-EA435107BDB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BB8DD5E-0D10-4DF1-85B1-EA435107BDB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -143,6 +149,7 @@ Global
 		{56CA1720-CB33-4A4C-A427-50E7C751E06B} = {24EDE018-4C71-4ABE-A78C-A30113DE377E}
 		{0E05816B-C7CB-4E70-9113-B5346AD18601} = {24EDE018-4C71-4ABE-A78C-A30113DE377E}
 		{4DA666DC-EDBA-430A-8781-ACE0A1626955} = {24EDE018-4C71-4ABE-A78C-A30113DE377E}
+		{6BB8DD5E-0D10-4DF1-85B1-EA435107BDB3} = {34172C43-F5A4-4FD4-BCE9-B1C61D7F50B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B7C9BF6-734F-4E7A-A7DB-0ABA6B34EA23}
