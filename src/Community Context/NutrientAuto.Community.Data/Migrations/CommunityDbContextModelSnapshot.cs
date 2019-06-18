@@ -130,9 +130,9 @@ namespace NutrientAuto.Community.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("AcceptedDate");
-
                     b.Property<DateTime>("DateCreated");
+
+                    b.Property<DateTime>("DateModified");
 
                     b.Property<string>("RequestBody")
                         .HasMaxLength(250);
@@ -140,6 +140,8 @@ namespace NutrientAuto.Community.Data.Migrations
                     b.Property<Guid>("RequestedId");
 
                     b.Property<Guid>("RequesterId");
+
+                    b.Property<int>("Status");
 
                     b.HasKey("Id");
 
@@ -257,8 +259,6 @@ namespace NutrientAuto.Community.Data.Migrations
 
                     b.Property<DateTime>("DateCreated");
 
-                    b.Property<int>("PostType");
-
                     b.Property<Guid>("ProfileId");
 
                     b.Property<string>("Title")
@@ -270,8 +270,6 @@ namespace NutrientAuto.Community.Data.Migrations
                     b.HasIndex("ProfileId");
 
                     b.ToTable("Posts");
-
-                    b.HasDiscriminator<int>("PostType").HasValue(0);
                 });
 
             modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Friend", b =>
@@ -281,7 +279,7 @@ namespace NutrientAuto.Community.Data.Migrations
 
                     b.Property<Guid>("FriendId");
 
-                    b.Property<Guid>("UserId");
+                    b.Property<Guid?>("UserId");
 
                     b.HasKey("Id");
 
@@ -370,41 +368,6 @@ namespace NutrientAuto.Community.Data.Migrations
                     b.Property<Guid>("ProfileId");
 
                     b.HasIndex("ProfileId");
-
-                    b.HasDiscriminator().HasValue(1);
-                });
-
-            modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.PostAggregate.Subtypes.DietRegisteredPost", b =>
-                {
-                    b.HasBaseType("NutrientAuto.Community.Domain.Aggregates.PostAggregate.Post");
-
-                    b.HasDiscriminator().HasValue(5);
-                });
-
-            modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.PostAggregate.Subtypes.GoalCompletedPost", b =>
-                {
-                    b.HasBaseType("NutrientAuto.Community.Domain.Aggregates.PostAggregate.Post");
-
-                    b.HasDiscriminator().HasValue(3);
-                });
-
-            modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.PostAggregate.Subtypes.GoalRegisteredPost", b =>
-                {
-                    b.HasBaseType("NutrientAuto.Community.Domain.Aggregates.PostAggregate.Post");
-
-                    b.HasDiscriminator().HasValue(2);
-                });
-
-            modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.PostAggregate.Subtypes.MeasureRegisteredPost", b =>
-                {
-                    b.HasBaseType("NutrientAuto.Community.Domain.Aggregates.PostAggregate.Post");
-
-                    b.HasDiscriminator().HasValue(4);
-                });
-
-            modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.PostAggregate.Subtypes.ProfileUpdatedPost", b =>
-                {
-                    b.HasBaseType("NutrientAuto.Community.Domain.Aggregates.PostAggregate.Post");
 
                     b.HasDiscriminator().HasValue(1);
                 });

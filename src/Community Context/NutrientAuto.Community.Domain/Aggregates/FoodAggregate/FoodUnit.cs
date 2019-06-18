@@ -17,10 +17,10 @@ namespace NutrientAuto.Community.Domain.Aggregates.FoodAggregate
         {
         }
 
-        public FoodUnit(UnitType unitType, decimal defaultGramsQuantityMultiplier = 1)
+        public FoodUnit(UnitType unitType, decimal? defaultGramsQuantityMultiplier = null)
         {
             UnitType = unitType;
-            DefaultGramsQuantityMultiplier = defaultGramsQuantityMultiplier;
+            DefaultGramsQuantityMultiplier = defaultGramsQuantityMultiplier ?? 1;
         }
 
         public override string ToString()

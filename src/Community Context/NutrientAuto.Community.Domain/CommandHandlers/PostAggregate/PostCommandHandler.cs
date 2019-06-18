@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NutrientAuto.Community.Domain.Aggregates.CommentAggregate;
 using NutrientAuto.Community.Domain.Aggregates.PostAggregate;
 using NutrientAuto.Community.Domain.Commands.PostAggregate;
@@ -8,10 +9,16 @@ using NutrientAuto.Community.Domain.DomainServices.ProfileAggregate;
 using NutrientAuto.Community.Domain.Repositories.CommentAggregate;
 using NutrientAuto.Community.Domain.Repositories.PostAggregate;
 using NutrientAuto.CrossCutting.HttpService.HttpContext;
+using NutrientAuto.CrossCutting.Storage.Configuration;
+using NutrientAuto.CrossCutting.Storage.Services.StorageService;
+using NutrientAuto.CrossCutting.Storage.Services.StorageValidators;
 using NutrientAuto.CrossCutting.UnitOfwork.Abstractions;
 using NutrientAuto.Shared.Commands;
 using NutrientAuto.Shared.ValueObjects;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,20 +35,43 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.PostAggregate
         private readonly IPostRepository _postRepository;
         private readonly ICommentRepository _commentRepository;
         private readonly IProfileDomainService _profileDomainService;
+        private readonly IStorageService _storageService;
+        private readonly IOptions<ContainerOptions> _containerOptions;
         private readonly Guid _currentProfileId;
 
-        public PostCommandHandler(IPostRepository postRepository, ICommentRepository commentRepository, IProfileDomainService profileDomainService, IIdentityService identityService, IMediator mediator, IUnitOfWork<ICommunityDbContext> unitOfWork, ILogger<PostCommandHandler> logger)
+        public PostCommandHandler(IPostRepository postRepository, ICommentRepository commentRepository, IProfileDomainService profileDomainService, IStorageService storageService, IOptions<ContainerOptions> containerOptions, IIdentityService identityService, IMediator mediator, IUnitOfWork<ICommunityDbContext> unitOfWork, ILogger<PostCommandHandler> logger)
             : base(identityService, mediator, unitOfWork, logger)
         {
             _postRepository = postRepository;
             _commentRepository = commentRepository;
             _profileDomainService = profileDomainService;
+            _storageService = storageService;
+            _containerOptions = containerOptions;
             _currentProfileId = GetCurrentProfileId();
         }
 
         public async Task<CommandResult> Handle(RegisterPostCommand request, CancellationToken cancellationToken)
         {
-            Image image = new Image(request.AttachedImage.UrlPath, request.AttachedImage.ImageName);
+            Image image = null;
+
+            if (request.AttachedImage != null)
+            {
+                StorageValidatorResult storageValidator = new ImageStorageValidator().Validate(request.AttachedImage);
+                if (!storageValidator.Success)
+                    return FailureDueToFileValidationFailure(storageValidator.Errors.ToList());
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    string containerName = _containerOptions.Value.PostImageContainerName;
+
+                    await request.AttachedImage.CopyToAsync(stream);
+                    StorageResult result = await _storageService.UploadFileToStorageAsync(containerName, stream, Guid.NewGuid().ToString());
+                    if (!result.Success)
+                        return FailureDueToUploadFailure();
+
+                    image = new Image(result.FileUrl, result.FileName);
+                }
+            }
 
             Post post = new Post(
                 _currentProfileId,

@@ -8,10 +8,10 @@ namespace NutrientAuto.Community.Domain.Aggregates.MeasureStatisticsAggregate
     {
         public Guid ProfileId { get; private set; }
 
-        private readonly List<BasicStatisticEntry> _basicMeasures;
+        private readonly List<BasicStatisticEntry> _basicMeasures = new List<BasicStatisticEntry>();
         public IReadOnlyList<BasicStatisticEntry> BasicMeasures => _basicMeasures;
 
-        private readonly List<CategoryStatistics> _categoryStatistics;
+        private readonly List<CategoryStatistics> _categoryStatistics = new List<CategoryStatistics>();
         public IReadOnlyList<CategoryStatistics> CategoryStatistics => _categoryStatistics;
 
         public StatisticsWrapper(Guid profileId, List<BasicStatisticEntry> basicMeasures, List<CategoryStatistics> categoryStatistics)

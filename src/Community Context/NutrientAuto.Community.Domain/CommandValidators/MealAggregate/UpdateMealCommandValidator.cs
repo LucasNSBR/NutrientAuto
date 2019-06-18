@@ -12,6 +12,7 @@ namespace NutrientAuto.Community.Domain.CommandValidators.MealAggregate
             ValidateMealId();
 
             RuleFor(command => command.Name)
+                .NotEmpty()
                 .Length(5, 100);
 
             RuleFor(command => command.Description)

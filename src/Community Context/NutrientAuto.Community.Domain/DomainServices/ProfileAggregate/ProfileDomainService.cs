@@ -40,6 +40,9 @@ namespace NutrientAuto.Community.Domain.DomainServices.ProfileAggregate
 
         public async Task<CommandResult> MakeFriends(Guid requesterId, Guid requestedId)
         {
+            if (!IsValidIds(requesterId, requestedId))
+                return FailureDueToProfilesNotFound();
+
             Profile requesterProfile = await _profileRepository.GetByIdAsync(requesterId);
             Profile requestedProfile = await _profileRepository.GetByIdAsync(requestedId);
 
@@ -54,6 +57,9 @@ namespace NutrientAuto.Community.Domain.DomainServices.ProfileAggregate
 
         public async Task<CommandResult> EndFriendship(Guid requesterId, Guid requestedId)
         {
+            if (!IsValidIds(requesterId, requestedId))
+                return FailureDueToProfilesNotFound();
+
             Profile requesterProfile = await _profileRepository.GetByIdAsync(requesterId);
             Profile requestedProfile = await _profileRepository.GetByIdAsync(requestedId);
 
@@ -64,6 +70,11 @@ namespace NutrientAuto.Community.Domain.DomainServices.ProfileAggregate
             requestedProfile.RemoveFriend(requesterProfile);
 
             return await CheckValidationAndUpdateAsync(requesterProfile, requestedProfile);
+        }
+
+        private bool IsValidIds(Guid requesterId, Guid requestedId)
+        {
+            return requesterId != requestedId;
         }
 
         private bool FoundValidProfiles(Profile requesterProfile, Profile requestedProfile)

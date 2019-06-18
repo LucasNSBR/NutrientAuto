@@ -20,6 +20,7 @@
     <ProjectReference Include="..\..\Community Context\NutrientAuto.Community.Domain\NutrientAuto.Community.Domain.csproj" />
     <ProjectReference Include="..\..\Identity Context\NutrientAuto.Identity.Data\NutrientAuto.Identity.Data.csproj" />
     <ProjectReference Include="..\..\Identity Context\NutrientAuto.Identity.Service\NutrientAuto.Identity.Service.csproj" />
+    <ProjectReference Include="..\..\Shared Kernel\NutrientAuto.Shared.Settings\NutrientAuto.Shared.Settings.csproj" />
     <ProjectReference Include="..\NutrientAuto.CrossCutting.EmailService\NutrientAuto.CrossCutting.EmailService.csproj" />
     <ProjectReference Include="..\NutrientAuto.CrossCutting.Mapping\NutrientAuto.CrossCutting.Mapping.csproj" />
     <ProjectReference Include="..\NutrientAuto.CrossCutting.ServiceBus\NutrientAuto.CrossCutting.ServiceBus.csproj" />

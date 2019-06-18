@@ -12,6 +12,7 @@
     <ProjectReference Include="..\..\CrossCutting\NutrientAuto.CrossCutting.HttpService\NutrientAuto.CrossCutting.HttpService.csproj" />
     <ProjectReference Include="..\..\CrossCutting\NutrientAuto.CrossCutting.Storage\NutrientAuto.CrossCutting.Storage.csproj" />
     <ProjectReference Include="..\..\Shared Kernel\NutrientAuto.Shared.IntegrationEvents\NutrientAuto.Shared.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\..\Shared Kernel\NutrientAuto.Shared.Settings\NutrientAuto.Shared.Settings.csproj" />
     <ProjectReference Include="..\..\Shared Kernel\NutrientAuto.Shared\NutrientAuto.Shared.csproj" />
   </ItemGroup>
 

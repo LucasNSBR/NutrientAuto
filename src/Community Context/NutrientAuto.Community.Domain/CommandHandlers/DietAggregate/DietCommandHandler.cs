@@ -99,7 +99,7 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.DietAggregate
 
         public async Task<CommandResult> Handle(RemoveDietMealCommand request, CancellationToken cancellationToken)
         {
-            Diet diet = await _dietRepository.GetByIdAsync(request.DietMealId);
+            Diet diet = await _dietRepository.GetByIdAsync(request.DietId);
             if (!FoundValidDiet(diet))
                 return FailureDueToDietNotFound();
 

@@ -12,6 +12,7 @@ namespace NutrientAuto.Community.Domain.CommandValidators.DietAggregate
                 .NotEmpty();
             
             RuleFor(command => command.Name)
+                .NotEmpty()
                 .Length(3, 100);
 
             RuleFor(command => command.Description)

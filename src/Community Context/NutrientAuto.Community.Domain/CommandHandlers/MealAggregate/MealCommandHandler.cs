@@ -6,6 +6,7 @@ using NutrientAuto.Community.Domain.Aggregates.FoodAggregate;
 using NutrientAuto.Community.Domain.Aggregates.MealAggregate;
 using NutrientAuto.Community.Domain.Commands.MealAggregate;
 using NutrientAuto.Community.Domain.Context;
+using NutrientAuto.Community.Domain.DomainEvents.MealAggregate;
 using NutrientAuto.Community.Domain.Repositories.DietAggregate;
 using NutrientAuto.Community.Domain.Repositories.FoodAggregate;
 using NutrientAuto.Community.Domain.Repositories.MealAggregate;
@@ -81,9 +82,12 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.MealAggregate
                 return FailureDueToEntityStateInconsistency(meal);
 
             await _mealRepository.UpdateAsync(meal);
-            await RecalculateDietTotalMacrosAsync(meal.DietId);
 
-            return await CommitAndPublishDefaultAsync();
+            return await CommitAndPublishAsync(new MealFoodAddedDomainEvent(
+                meal.Id,
+                meal.DietId,
+                mealFood.FoodId
+                ));
         }
 
         public async Task<CommandResult> Handle(RemoveMealFoodCommand request, CancellationToken cancellationToken)
@@ -99,18 +103,12 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.MealAggregate
                 return FailureDueToEntityStateInconsistency(meal);
 
             await _mealRepository.UpdateAsync(meal);
-            await RecalculateDietTotalMacrosAsync(meal.DietId);
 
-            return await CommitAndPublishDefaultAsync();
-        }
-
-        private async Task RecalculateDietTotalMacrosAsync(Guid dietId)
-        {
-            Diet diet = await _dietRepository.GetByIdAsync(dietId);
-
-            diet.RecalculateDietTotalMacros();
-
-            await _dietRepository.UpdateAsync(diet);
+            return await CommitAndPublishAsync(new MealFoodRemovedDomainEvent(
+                meal.Id,
+                meal.DietId,
+                mealFood.FoodId
+                ));
         }
 
         private bool FoundValidMeal(Meal meal)

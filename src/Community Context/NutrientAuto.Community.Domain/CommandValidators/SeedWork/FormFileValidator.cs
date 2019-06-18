@@ -18,7 +18,7 @@ namespace NutrientAuto.Community.Domain.CommandValidators.SeedWork
                            contentType.ToLower() != "image/x-png" ||
                            contentType.ToLower() != "image/png";
                 })
-                .WithMessage("O formato do arquivo deve ser .jpeg ou .png");
+                .WithMessage("O formato da imagem deve ser .jpg, .jpeg ou .png");
 
             RuleFor(command => command.Length)
                 .GreaterThan(0)

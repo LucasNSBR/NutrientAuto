@@ -55,7 +55,13 @@ namespace NutrientAuto.Community.Domain.CommandValidators.FoodAggregate.BaseComm
         public void ValidateDefaultGramsQuantityMultiplier()
         {
             RuleFor(command => command.DefaultGramsQuantityMultiplier)
-                .GreaterThanOrEqualTo(0);
+                .Must(multiplier =>
+                {
+                    if (multiplier != null)
+                        return multiplier > 0;
+
+                    return true;
+                });
         }
     }
 }

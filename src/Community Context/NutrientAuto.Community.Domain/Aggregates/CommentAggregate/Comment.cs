@@ -12,7 +12,7 @@ namespace NutrientAuto.Community.Domain.Aggregates.CommentAggregate
         public string Body { get; private set; }
         public DateTime DateCreated { get; private set; }
 
-        private readonly List<Comment> _replies;
+        private readonly List<Comment> _replies = new List<Comment>();
         public IReadOnlyList<Comment> Replies => _replies;
 
         public Guid? ReplyTo { get; private set; }
@@ -27,8 +27,6 @@ namespace NutrientAuto.Community.Domain.Aggregates.CommentAggregate
             ProfileId = profileId;
             Body = body;
             DateCreated = DateTime.Now;
-
-            _replies = new List<Comment>();
         }
 
         private Comment(Guid postId, Guid profileId, string body, Guid replyTo)
@@ -36,7 +34,7 @@ namespace NutrientAuto.Community.Domain.Aggregates.CommentAggregate
             PostId = postId;
             ProfileId = profileId;
             Body = body;
-            _replies = new List<Comment>();
+            DateCreated = DateTime.Now;
 
             ReplyTo = replyTo;
         }

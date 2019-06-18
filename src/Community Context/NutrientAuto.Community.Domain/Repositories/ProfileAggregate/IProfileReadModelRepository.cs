@@ -11,5 +11,6 @@ namespace NutrientAuto.Community.Domain.Repositories.ProfileAggregate
         Task<ProfileSummaryReadModel> GetProfileSummaryAsync(Guid id);
         Task<ProfileOverviewReadModel> GetProfileOverviewAsync(Guid id);
         Task<ProfileSettingsReadModel> GetProfileSettingsAsync(Guid id);
+        Task<IEnumerable<ProfileFriendReadModel>> GetProfileFriendsAsync(Guid id, string nameFilter = null); 
     }
 }

@@ -11,6 +11,7 @@ namespace NutrientAuto.Community.Domain.CommandValidators.PostAggregate
                 .NotEmpty();
 
             RuleFor(command => command.Body)
+                .NotEmpty()
                 .Length(1, 150);
         }
     }

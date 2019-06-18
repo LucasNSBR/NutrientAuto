@@ -8,31 +8,34 @@ using NutrientAuto.Community.Domain.Repositories.ProfileAggregate;
 using NutrientAuto.Shared.IntegrationEvents.Events.Identity;
 using NutrientAuto.Shared.ValueObjects;
 using System.Threading.Tasks;
-using NutrientAuto.CrossCutting.Storage.Services.StorageDefinitions;
+using Microsoft.Extensions.Options;
+using NutrientAuto.Shared.Settings.Community;
 
 namespace NutrientAuto.Community.Domain.IntegrationEventHandlers.Identity
 {
     public class IdentityIntegrationEventHandler : IConsumer<UserRegisteredIntegrationEvent>
     {
         private readonly IProfileRepository _profileRepository;
-        private readonly IStorageDefinitions _storageDefinitions;
+        private readonly IOptions<CommunityDefaultOptions> _communityDefaultOptions;
         private readonly IUnitOfWork<ICommunityDbContext> _unitOfWork;
         private readonly ILogger<IdentityIntegrationEventHandler> _logger;
 
-        public IdentityIntegrationEventHandler(IProfileRepository profileRepository, IStorageDefinitions storageDefinitions, IUnitOfWork<ICommunityDbContext> unitOfWork, ILogger<IdentityIntegrationEventHandler> logger)
+        public IdentityIntegrationEventHandler(IProfileRepository profileRepository, IOptions<CommunityDefaultOptions> communityDefaultOptions, IUnitOfWork<ICommunityDbContext> unitOfWork, ILogger<IdentityIntegrationEventHandler> logger)
         {
             _profileRepository = profileRepository;
-            _storageDefinitions = storageDefinitions;
+            _communityDefaultOptions = communityDefaultOptions;
             _unitOfWork = unitOfWork;
             _logger = logger;
         }
 
         public async Task Consume(ConsumeContext<UserRegisteredIntegrationEvent> context)
         {
+            Image defaultAvatarImage = new Image(_communityDefaultOptions.Value.DefaultAvatarImageUrlPath, _communityDefaultOptions.Value.DefaultAvatarImageName);
+
             Profile profile = new Profile(
                 context.Message.UserId,
                 context.Message.Genre,
-                _storageDefinitions.GetDefaultProfileAvatarImage(),
+                defaultAvatarImage,
                 context.Message.Name,
                 context.Message.Username,
                 new EmailAddress(context.Message.Email),

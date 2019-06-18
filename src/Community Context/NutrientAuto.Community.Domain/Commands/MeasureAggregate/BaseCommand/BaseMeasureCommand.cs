@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using NutrientAuto.Community.Domain.Commands.SeedWork;
 using NutrientAuto.Shared.Commands;
 using System;
@@ -16,7 +17,7 @@ namespace NutrientAuto.Community.Domain.Commands.MeasureAggregate.BaseCommand
         public decimal Weight { get; set; }
 
         public DateTime MeasureDate { get; set; }
-        public List<ImageDto> BodyPictures { get; set; } = new List<ImageDto>();
+        public List<IFormFile> BodyPictures { get; set; } = new List<IFormFile>();
 
         public bool WritePost { get; set; }
         public List<MeasureLineDto> MeasureLines { get; set; } = new List<MeasureLineDto>();
