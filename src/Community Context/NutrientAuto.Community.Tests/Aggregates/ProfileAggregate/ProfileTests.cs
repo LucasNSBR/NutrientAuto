@@ -32,7 +32,7 @@ namespace NutrientAuto.Community.Tests.Aggregates.ProfileAggregate
 
         #region Initialization
         [TestMethod]
-        public void ShouldSetInitialVariables()
+        public void ShouldSetInitialProfileVariables()
         {
             Profile profile = GetNewProfile();
 

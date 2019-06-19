@@ -10,7 +10,7 @@ namespace NutrientAuto.Community.Tests.Aggregates.ReminderAggregate
     {
         #region Initialization
         [TestMethod]
-        public void ShouldSetInitialVariables()
+        public void ShouldSetInitialReminderVariables()
         {
             Reminder reminder = new Reminder(Guid.NewGuid(), true, "Almoço", "Hora do almoço", new Time(10, 0, 0));
 

@@ -10,7 +10,7 @@ namespace NutrientAuto.Community.Tests.Aggregates.GoalAggregate
     {
         #region Initialization
         [TestMethod]
-        public void ShouldSetInitialVariables()
+        public void ShouldSetInitialGoalVariables()
         {
             Guid profileId = Guid.NewGuid();
             Goal goal = new Goal(profileId, "Novo objetivo de testes", "Testando a inicialização");
