@@ -75,6 +75,9 @@ namespace NutrientAuto.Community.Domain.Aggregates.FriendshipRequestAggregate
 
         public void Dump()
         {
+            if (!IsAccepted)
+                AddNotification("Erro de baixa", "Só é possível baixar uma solicitação que já foi aceita.");
+
             Status = FriendshipRequestStatus.Dumped;
             UpdateDateModified();
         }

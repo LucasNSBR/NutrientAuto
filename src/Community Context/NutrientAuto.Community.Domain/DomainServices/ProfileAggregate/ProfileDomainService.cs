@@ -26,12 +26,14 @@ namespace NutrientAuto.Community.Domain.DomainServices.ProfileAggregate
             {
                 if (requestedProfile.IsPublic)
                     return ProfileAccessResult.CanAccess;
+                if (requestedProfile.IsPrivate)
+                    return ProfileAccessResult.Forbidden;
                 if (requestedProfile.IsProtected)
                 {
                     if (requestedProfile.IsFriend(requesterId))
                         return ProfileAccessResult.CanAccess;
-                    else
-                        return ProfileAccessResult.Forbidden;
+
+                    return ProfileAccessResult.Forbidden;
                 }
             }
 
@@ -41,7 +43,7 @@ namespace NutrientAuto.Community.Domain.DomainServices.ProfileAggregate
         public async Task<CommandResult> MakeFriends(Guid requesterId, Guid requestedId)
         {
             if (!IsValidIds(requesterId, requestedId))
-                return FailureDueToProfilesNotFound();
+                return FailureDueToSameProfile();
 
             Profile requesterProfile = await _profileRepository.GetByIdAsync(requesterId);
             Profile requestedProfile = await _profileRepository.GetByIdAsync(requestedId);
@@ -58,7 +60,7 @@ namespace NutrientAuto.Community.Domain.DomainServices.ProfileAggregate
         public async Task<CommandResult> EndFriendship(Guid requesterId, Guid requestedId)
         {
             if (!IsValidIds(requesterId, requestedId))
-                return FailureDueToProfilesNotFound();
+                return FailureDueToSameProfile();
 
             Profile requesterProfile = await _profileRepository.GetByIdAsync(requesterId);
             Profile requestedProfile = await _profileRepository.GetByIdAsync(requestedId);
@@ -80,6 +82,11 @@ namespace NutrientAuto.Community.Domain.DomainServices.ProfileAggregate
         private bool FoundValidProfiles(Profile requesterProfile, Profile requestedProfile)
         {
             return requesterProfile != null && requestedProfile != null;
+        }
+
+        private CommandResult FailureDueToSameProfile()
+        {
+            return CommandResult.Failure("Perfil inválido", "Não é possível tornar-se amigo de si mesmo.");
         }
 
         private CommandResult FailureDueToProfilesNotFound()

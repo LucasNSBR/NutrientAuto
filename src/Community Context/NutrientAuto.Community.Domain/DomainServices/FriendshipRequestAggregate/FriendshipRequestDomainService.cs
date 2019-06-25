@@ -2,6 +2,7 @@
 using NutrientAuto.Community.Domain.Repositories.FriendshipRequestAggregate;
 using NutrientAuto.Shared.Commands;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NutrientAuto.Community.Domain.DomainServices.FriendshipRequestAggregate
@@ -19,9 +20,11 @@ namespace NutrientAuto.Community.Domain.DomainServices.FriendshipRequestAggregat
         {
             FriendshipRequest friendshipRequest = await _friendshipRequestRepository.GetActiveByCompositeIdAsync(profileId, friendId);
             if (friendshipRequest == null)
-                return CommandResult.Failure("Falha ao criar nova solicitação", "Você já tem uma solicitação de amizade ativa para esse usuário.");
+                return CommandResult.Failure("Falha ao baixar solicitação existente", "A solicitação de amizade não foi encontrada no banco de dados.");
 
             friendshipRequest.Dump();
+            if (!friendshipRequest.IsValid)
+                return CommandResult.Failure(friendshipRequest.GetNotifications().ToList());
 
             await _friendshipRequestRepository.UpdateAsync(friendshipRequest);
             return CommandResult.Ok();
