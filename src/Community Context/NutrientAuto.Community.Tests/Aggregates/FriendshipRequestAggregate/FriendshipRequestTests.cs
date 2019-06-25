@@ -113,10 +113,22 @@ namespace NutrientAuto.Community.Tests.Aggregates.FriendshipRequestAggregate
         {
             FriendshipRequest friendshipRequest = GetFriendshipRequest();
 
+            friendshipRequest.Accept();
             friendshipRequest.Dump();
 
             Assert.IsTrue(friendshipRequest.IsValid);
             Assert.IsTrue(friendshipRequest.IsDumped);
+        }
+
+        [TestMethod]
+        public void ShouldFailToDumpANonAcceptedFriendshipRequest()
+        {
+            FriendshipRequest friendshipRequest = GetFriendshipRequest();
+            
+            friendshipRequest.Dump();
+
+            Assert.IsFalse(friendshipRequest.IsValid);
+            Assert.AreEqual("Só é possível baixar uma solicitação que já foi aceita.", friendshipRequest.GetNotifications().FirstOrDefault().Description);
         }
         #endregion
     }
