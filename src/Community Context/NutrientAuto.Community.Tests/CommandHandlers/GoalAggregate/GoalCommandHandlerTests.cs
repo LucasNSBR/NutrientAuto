@@ -122,6 +122,7 @@ namespace NutrientAuto.Community.Tests.CommandHandlers.GoalAggregate
             Assert.IsTrue(commandResult.Success);
         }
 
+        [TestMethod]
         public async Task ShouldFailToUpdateGoalIdNotFound()
         {
             UpdateGoalCommand command = new UpdateGoalCommand
