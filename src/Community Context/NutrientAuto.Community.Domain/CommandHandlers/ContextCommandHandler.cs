@@ -46,7 +46,7 @@ namespace NutrientAuto.Community.Domain.CommandHandlers
 
         protected CommandResult FailureDueToCustomFoodTableNotFound(string title = null, string description = null)
         {
-            return FailureDueToEntityNotFound(title ?? "Erro de categoria", description ?? "Nenhuma categoria com esse Id foi encontrada no banco de dados.");
+            return FailureDueToEntityNotFound(title ?? "Erro de categoria", description ?? "Nenhuma categoria de alimentos com esse Id foi encontrada no banco de dados.");
         }
 
         protected CommandResult FailureDueToCustomMeasureCategoryNotFound(string title = null, string description = null)
