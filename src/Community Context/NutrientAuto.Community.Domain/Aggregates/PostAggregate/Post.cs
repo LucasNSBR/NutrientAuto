@@ -70,7 +70,7 @@ namespace NutrientAuto.Community.Domain.Aggregates.PostAggregate
         public void RemoveComment(Comment comment)
         {
             if (!_comments.Contains(comment))
-                AddNotification("Comentário indisponível", "Esse comentário não está disponível para remoção.");
+                AddNotification("Comentário indisponível", "Esse comentário não foi encontrado nessa publicação.");
 
             _comments.Remove(comment);
         }

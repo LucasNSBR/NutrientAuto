@@ -32,13 +32,6 @@ namespace NutrientAuto.Community.Domain.CommandValidators.ProfileAggregate.BaseC
                 .Length(3, 30);
         }
 
-        public void ValidateEmailAddress()
-        {
-            RuleFor(command => command.EmailAddress)
-                .NotNull()
-                .SetValidator(new EmailAddressDtoValidator());
-        }
-
         public void ValidateBirthDate()
         {
             RuleFor(command => command.BirthDate)

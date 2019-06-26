@@ -14,7 +14,6 @@ namespace NutrientAuto.Community.Domain.Commands.ProfileAggregate.BaseCommand
         public Genre Genre { get; set; }
         public string Name { get; set; }
         public string Username { get; set; }
-        public EmailAddressDto EmailAddress { get; set; }
         public DateTime BirthDate { get; set; }
         public string Bio { get; set; }
 
