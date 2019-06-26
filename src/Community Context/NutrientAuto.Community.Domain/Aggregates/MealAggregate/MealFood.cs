@@ -8,9 +8,7 @@ namespace NutrientAuto.Community.Domain.Aggregates.MealAggregate
     public class MealFood : Entity<MealFood>
     {
         public Guid FoodId { get; private set; }
-        public string Name { get; private set; }
-        public string Description { get; private set; }
-        public FoodUnit FoodUnit { get; private set; }
+        public Food Food { get; private set; }
         public decimal Quantity { get; private set; }
         public MacronutrientTable Macronutrients { get; private set; }
 
@@ -18,15 +16,12 @@ namespace NutrientAuto.Community.Domain.Aggregates.MealAggregate
         {
         }
 
-        public MealFood(Guid foodId, string name, string description, MacronutrientTable foodMacronutrients, FoodUnit foodUnit, decimal quantity)
+        public MealFood(Food food, decimal quantity)
         {
-            FoodId = foodId;
-            Name = name;
-            Description = description;
-            FoodUnit = foodUnit;
+            FoodId = food.Id;
             Quantity = quantity;
 
-            Macronutrients = CalculateQuantityMacros(foodMacronutrients, foodUnit, quantity);
+            Macronutrients = CalculateQuantityMacros(food.Macronutrients, food.FoodUnit, quantity);
         }
 
         private MacronutrientTable CalculateQuantityMacros(MacronutrientTable macronutrient, FoodUnit foodUnit, decimal quantity)

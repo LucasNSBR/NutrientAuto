@@ -24,5 +24,14 @@ namespace NutrientAuto.Community.Data.Repositories.MealAggregate
                 .AsNoTracking()
                 .ToListAsync();
         }
+
+        public override Task<Meal> GetByIdAsync(Guid id)
+        {
+            return _dbContext
+                .Meals
+                .Include(fm => fm.MealFoods)
+                .ThenInclude(f => f.Food)
+                .FirstOrDefaultAsync(d => d.Id == id);
+        }
     }
 }

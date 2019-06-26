@@ -52,7 +52,9 @@ namespace NutrientAuto.Community.Domain.Aggregates.MealAggregate
 
         public void AddMealFood(MealFood mealFood)
         {
-            if (_mealFoods.Contains(mealFood))
+            bool containsFood = _mealFoods.Any(mf => mf.FoodId == mealFood.FoodId);
+
+            if (containsFood)
             {
                 AddNotification("Alimento duplicado", "Essa refeição já contém esse mesmo alimento.");
                 return;

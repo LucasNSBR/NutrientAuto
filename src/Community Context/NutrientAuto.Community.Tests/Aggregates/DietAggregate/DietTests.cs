@@ -64,9 +64,11 @@ namespace NutrientAuto.Community.Tests.Aggregates.DietAggregate
             Diet diet = GetNewDiet();
             Meal meal = diet.AddMeal("Breakfast", "A faster breakfast", new Time(9, 0, 0));
             FoodUnit foodUnit = new FoodUnit(UnitType.Grams, 1);
+            Food food = new Food("Peito de Frango", "Peito de Frango cozido", Guid.NewGuid(), new MacronutrientTable(0, 24, 2), MicronutrientTable.Default(), foodUnit);
+            Food foodTwo = new Food("Brócolis", "Brócolis Verde", Guid.NewGuid(), new MacronutrientTable(6, 2, 0), MicronutrientTable.Default(), foodUnit);
 
-            meal.AddMealFood(new MealFood(Guid.NewGuid(), "Peito de Frango", "Peito de Frango cozido", new MacronutrientTable(0, 24, 2), foodUnit, 1));
-            meal.AddMealFood(new MealFood(Guid.NewGuid(), "Brócolis", "Brócolis Verde", new MacronutrientTable(6, 2, 0), foodUnit, 1));
+            meal.AddMealFood(new MealFood(food, 1));
+            meal.AddMealFood(new MealFood(foodTwo, 1));
 
             diet.RecalculateDietTotalMacros();
 
@@ -80,7 +82,9 @@ namespace NutrientAuto.Community.Tests.Aggregates.DietAggregate
         {
             Diet diet = GetNewDiet();
             Meal meal = diet.AddMeal("Breakfast", "A faster breakfast", new Time(9, 0, 0));
-            meal.AddMealFood(new MealFood(Guid.NewGuid(), "Peito de Frango", "Peito de Frango Cozido", new MacronutrientTable(20, 48, 21), new FoodUnit(UnitType.Grams, 1), 1));
+            Food food = new Food("Peito de Frango", "Peito de Frango cozido", Guid.NewGuid(), new MacronutrientTable(20, 48, 21), MicronutrientTable.Default(), new FoodUnit(UnitType.Grams, 1));
+
+            meal.AddMealFood(new MealFood(food, 1));
 
             diet.RecalculateDietTotalMacros();
 
