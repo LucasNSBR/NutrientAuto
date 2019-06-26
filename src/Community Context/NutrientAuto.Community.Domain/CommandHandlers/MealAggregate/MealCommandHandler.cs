@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using NutrientAuto.Community.Domain.Aggregates.DietAggregate;
 using NutrientAuto.Community.Domain.Aggregates.FoodAggregate;
 using NutrientAuto.Community.Domain.Aggregates.MealAggregate;
 using NutrientAuto.Community.Domain.Commands.MealAggregate;
@@ -69,16 +68,12 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.MealAggregate
                 return FailureDueToCustomFoodNotFound();
 
             MealFood mealFood = new MealFood(
-                food.Id,
-                food.Name,
-                food.Description,
-                food.Macronutrients,
-                food.FoodUnit,
+                food,
                 request.Quantity
                 );
 
             meal.AddMealFood(mealFood);
-            if (!mealFood.IsValid)
+            if (!meal.IsValid)
                 return FailureDueToEntityStateInconsistency(meal);
 
             await _mealRepository.UpdateAsync(meal);
