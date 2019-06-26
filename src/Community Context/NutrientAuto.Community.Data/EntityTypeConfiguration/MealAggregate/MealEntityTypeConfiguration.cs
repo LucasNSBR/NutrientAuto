@@ -49,8 +49,11 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MealAggregate
                 {
                     cfg.Property<Guid>("Id");
                     cfg.HasKey("Id");
-                    cfg.Property(mf => mf.Name).IsRequired().HasMaxLength(100);
-                    cfg.Property(mf => mf.Description).IsRequired().HasMaxLength(250);
+
+                    cfg.HasOne(mf => mf.Food)
+                    .WithMany()
+                    .HasForeignKey(mf => mf.FoodId);
+
                     cfg.Property(mf => mf.Quantity).HasPrecision(18, 2);
 
                     cfg.OwnsOne(mf => mf.Macronutrients, macroCfg =>
@@ -60,12 +63,6 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MealAggregate
                         macroCfg.Property(fm => fm.Protein).HasColumnName("MealFoodProtein").HasPrecision(18, 2);
                         macroCfg.Property(fm => fm.Carbohydrate).HasColumnName("MealFoodCarbohydrate").HasPrecision(18, 2);
                         macroCfg.Property(fm => fm.Fat).HasColumnName("MealFoodFat").HasPrecision(18, 2);
-                    });
-
-                    cfg.OwnsOne(mf => mf.FoodUnit, unitCfg =>
-                    {
-                        unitCfg.Property(fu => fu.UnitType).HasColumnName("MealFoodUnitType");
-                        unitCfg.Property(fu => fu.DefaultGramsQuantityMultiplier).HasColumnName("MealFoodDefaultGramsQuantityMultiplier").HasPrecision(18, 2);
                     });
 
                     cfg.ToTable("MealFoods");
