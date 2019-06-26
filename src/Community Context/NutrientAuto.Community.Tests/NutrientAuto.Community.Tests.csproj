@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CrossCutting\NutrientAuto.CrossCutting.Mapping\NutrientAuto.CrossCutting.Mapping.csproj" />
     <ProjectReference Include="..\NutrientAuto.Community.Domain\NutrientAuto.Community.Domain.csproj" />
   </ItemGroup>
 
