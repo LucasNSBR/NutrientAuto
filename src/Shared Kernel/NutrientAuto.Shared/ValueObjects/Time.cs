@@ -8,6 +8,10 @@ namespace NutrientAuto.Shared.ValueObjects
         public int Minute { get; private set; }
         public int Second { get; private set; }
 
+        protected Time()
+        {
+        }
+
         public Time(int hour, int minute, int second)
         {
             Hour = hour;
