@@ -30,7 +30,7 @@ namespace NutrientAuto.Community.Tests.Aggregates.MealAggregate
             FoodUnit foodUnit = new FoodUnit(UnitType.Grams, 1);
 
             Food food = new Food("Bacon", "Bacon de testes", Guid.NewGuid(), MacronutrientTable.Default(), MicronutrientTable.Default(), foodUnit);
-            meal.AddMealFood(new MealFood(food.Id, food.Name, food.Description, food.Macronutrients, foodUnit, 1));
+            meal.AddMealFood(new MealFood(food, 1));
 
             Assert.AreEqual(1, meal.MealFoodCount);
         }
@@ -43,7 +43,7 @@ namespace NutrientAuto.Community.Tests.Aggregates.MealAggregate
             FoodUnit foodUnit = new FoodUnit(UnitType.Grams, 1);
 
             Food food = new Food("Bacon", "Bacon de testes", Guid.NewGuid(), MacronutrientTable.Default(), MicronutrientTable.Default(), foodUnit);
-            MealFood mealFood = new MealFood(food.Id, food.Name, food.Description, food.Macronutrients, foodUnit, 1);
+            MealFood mealFood = new MealFood(food, 1);
 
             meal.AddMealFood(mealFood);
             meal.AddMealFood(mealFood);
@@ -59,7 +59,7 @@ namespace NutrientAuto.Community.Tests.Aggregates.MealAggregate
             FoodUnit foodUnit = new FoodUnit(UnitType.Grams, 1);
 
             Food food = new Food("Bacon", "Bacon de testes", Guid.NewGuid(), MacronutrientTable.Default(), MicronutrientTable.Default(), foodUnit);
-            MealFood mealFood = new MealFood(food.Id, food.Name, food.Description, food.Macronutrients, foodUnit, 0);
+            MealFood mealFood = new MealFood(food, 0);
 
             meal.AddMealFood(mealFood);
             Assert.AreEqual(1, meal.MealFoodCount);
@@ -75,7 +75,7 @@ namespace NutrientAuto.Community.Tests.Aggregates.MealAggregate
             FoodUnit foodUnit = new FoodUnit(UnitType.Grams, 1);
 
             Food food = new Food("Bacon", "Bacon de testes", Guid.NewGuid(), MacronutrientTable.Default(), MicronutrientTable.Default(), foodUnit);
-            MealFood mealFood = new MealFood(food.Id, food.Name, food.Description, food.Macronutrients, foodUnit, 0);
+            MealFood mealFood = new MealFood(food, 0);
 
             meal.RemoveMealFood(mealFood);
             meal.RemoveMealFood(mealFood);
@@ -90,8 +90,11 @@ namespace NutrientAuto.Community.Tests.Aggregates.MealAggregate
             Meal meal = GetMeal();
             FoodUnit foodUnit = new FoodUnit(UnitType.Grams, 1);
 
-            meal.AddMealFood(new MealFood(Guid.NewGuid(), "Peito de Frango", "Peito de Frango cozido", new MacronutrientTable(0, 24, 2), foodUnit, 1));
-            meal.AddMealFood(new MealFood(Guid.NewGuid(), "Brócolis", "Brócolis Verde", new MacronutrientTable(6, 2, 0), foodUnit, 1));
+            Food food = new Food("Peito de Frango", "Peito de Frango cozido", Guid.NewGuid(), new MacronutrientTable(0, 24, 2), MicronutrientTable.Default(), foodUnit);
+            Food foodTwo = new Food("Brócolis", "Brócolis Verde", Guid.NewGuid(), new MacronutrientTable(6, 2, 0), MicronutrientTable.Default(), foodUnit);
+
+            meal.AddMealFood(new MealFood(food, 1));
+            meal.AddMealFood(new MealFood(foodTwo, 1));
 
             Assert.AreEqual(6, meal.MealMacronutrients.Carbohydrate);
             Assert.AreEqual(26, meal.MealMacronutrients.Protein);
@@ -104,8 +107,11 @@ namespace NutrientAuto.Community.Tests.Aggregates.MealAggregate
             Meal meal = GetMeal();
             FoodUnit foodUnit = new FoodUnit(UnitType.Grams, 100);
 
-            meal.AddMealFood(new MealFood(Guid.NewGuid(), "Peito de Frango", "Peito de Frango cozido", new MacronutrientTable(0, 24, 2), foodUnit, 100));
-            meal.AddMealFood(new MealFood(Guid.NewGuid(), "Brócolis", "Brócolis Verde", new MacronutrientTable(6, 2, 0), foodUnit, 100));
+            Food food = new Food("Peito de Frango", "Peito de Frango cozido", Guid.NewGuid(), new MacronutrientTable(0, 24, 2), MicronutrientTable.Default(), foodUnit);
+            Food foodTwo = new Food("Brócolis", "Brócolis Verde", Guid.NewGuid(), new MacronutrientTable(6, 2, 0), MicronutrientTable.Default(), foodUnit);
+
+            meal.AddMealFood(new MealFood(food, 100));
+            meal.AddMealFood(new MealFood(foodTwo, 100));
 
             Assert.AreEqual(6, meal.MealMacronutrients.Carbohydrate);
             Assert.AreEqual(26, meal.MealMacronutrients.Protein);
