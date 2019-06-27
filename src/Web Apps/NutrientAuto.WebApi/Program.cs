@@ -1,25 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Formatting.Compact;
+using System.IO;
 
 namespace NutrientAuto.WebApi
 {
     public class Program
     {
-        public static void Main(string[] args)
+        protected Program()
         {
-            BuildWebHost(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static void Main(string[] args)
+        {
+            IConfiguration configuration = new ConfigurationBuilder()
+                            .SetBasePath(Directory.GetCurrentDirectory())
+                            .AddJsonFile("appsettings.json")
+                            .Build();
+
+            BuildWebHost(args, configuration).Run();
+        }
+
+        public static IWebHost BuildWebHost(string[] args, IConfiguration configuration) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseSerilog(new LoggerConfiguration()
+                    .Enrich.FromLogContext()
+                    .WriteTo.Console()
+                    .WriteTo.Http(requestUri: configuration["LogstashHost"],
+                                  textFormatter: new CompactJsonFormatter())
+                    .CreateLogger())
                 .Build();
     }
 }

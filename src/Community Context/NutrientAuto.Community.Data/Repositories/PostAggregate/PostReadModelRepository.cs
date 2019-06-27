@@ -86,13 +86,10 @@ namespace NutrientAuto.Community.Data.Repositories.PostAggregate
                             rows.Add(id, summary);
                         }
 
-                        if (comment != null)
+                        if (comment != null && !summary.Comments.Any(m => m.Id == comment.Id))
                         {
-                            if (!summary.Comments.Any(m => m.Id == comment.Id))
-                            {
-                                summary.Comments.Add(comment);
-                                comment.Replies = new List<ReplyReadModel>();
-                            }
+                            summary.Comments.Add(comment);
+                            comment.Replies = new List<ReplyReadModel>();
                         }
 
                         if (reply != null)
@@ -102,11 +99,8 @@ namespace NutrientAuto.Community.Data.Repositories.PostAggregate
                                 commentToReply.Replies.Add(reply);
                         }
 
-                        if (postLike != null)
-                        {
-                            if (!summary.Likes.Any(p => p.ProfileId == postLike.ProfileId))
-                                summary.Likes.Add(postLike);
-                        }
+                        if (postLike != null && !summary.Likes.Any(p => p.ProfileId == postLike.ProfileId))
+                            summary.Likes.Add(postLike);
 
                         post.EntityReference = entityReference;
                         post.AttachedImage = postImage;

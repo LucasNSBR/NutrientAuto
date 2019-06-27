@@ -6,7 +6,6 @@ using NutrientAuto.Community.Domain.Aggregates.MealAggregate;
 using NutrientAuto.Community.Domain.Commands.MealAggregate;
 using NutrientAuto.Community.Domain.Context;
 using NutrientAuto.Community.Domain.DomainEvents.MealAggregate;
-using NutrientAuto.Community.Domain.Repositories.DietAggregate;
 using NutrientAuto.Community.Domain.Repositories.FoodAggregate;
 using NutrientAuto.Community.Domain.Repositories.MealAggregate;
 using NutrientAuto.CrossCutting.HttpService.HttpContext;
@@ -25,16 +24,14 @@ namespace NutrientAuto.Community.Domain.CommandHandlers.MealAggregate
                                       IRequestHandler<RemoveMealFoodCommand, CommandResult>
     {
         private readonly IMealRepository _mealRepository;
-        private readonly IDietRepository _dietRepository;
         private readonly IFoodRepository _foodRepository;
         private readonly IMapper _mapper;
         private readonly Guid _currentProfileId;
 
-        public MealCommandHandler(IMealRepository mealRepository, IDietRepository dietRepository, IFoodRepository foodRepository, IMapper mapper, IIdentityService identityService, IMediator mediator, IUnitOfWork<ICommunityDbContext> unitOfWork, ILogger<MealCommandHandler> logger)
+        public MealCommandHandler(IMealRepository mealRepository, IFoodRepository foodRepository, IMapper mapper, IIdentityService identityService, IMediator mediator, IUnitOfWork<ICommunityDbContext> unitOfWork, ILogger<MealCommandHandler> logger)
             : base(identityService, mediator, unitOfWork, logger)
         {
             _mealRepository = mealRepository;
-            _dietRepository = dietRepository;
             _foodRepository = foodRepository;
             _mapper = mapper;
             _currentProfileId = GetCurrentProfileId();

@@ -67,17 +67,11 @@ namespace NutrientAuto.Community.Data.Repositories.MeasureAggregate
                             rows.Add(id, summary);
                         }
 
-                        if (bodyPicture != null)
-                        {
-                            if (!summary.BodyPictures.Contains(bodyPicture))
-                                summary.BodyPictures.Add(bodyPicture);
-                        }
+                        if (bodyPicture != null && !summary.BodyPictures.Contains(bodyPicture))
+                            summary.BodyPictures.Add(bodyPicture);
 
-                        if (measureLine != null)
-                        {
-                            if (!summary.MeasureLines.Any(m => m.Id == measureLine.Id))
-                                summary.MeasureLines.Add(measureLine);
-                        }
+                        if (measureLine != null && !summary.MeasureLines.Any(m => m.Id == measureLine.Id))
+                            summary.MeasureLines.Add(measureLine);
 
                         measure.BasicMeasure = basicMeasure;
                         return measure;

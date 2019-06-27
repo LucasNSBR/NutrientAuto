@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using NutrientAuto.CrossCutting.EmailService.Models;
 using NutrientAuto.CrossCutting.EmailService.Services.Dispatcher;
@@ -21,14 +20,12 @@ namespace NutrientAuto.Identity.Service.Services.Account
     {
         private readonly NutrientSignInManager _signInManager;
         private readonly IEmailDispatcher _emailDispatcher;
-        private readonly IMediator _mediator;
 
-        public AccountService(NutrientUserManager userManager, NutrientSignInManager signInManager, IEmailDispatcher emailDispatcher, IMediator mediator, IDomainNotificationHandler domainNotificationHandler, IIntegrationServiceBus integrationBus, ILogger<AccountService> logger)
+        public AccountService(NutrientUserManager userManager, NutrientSignInManager signInManager, IEmailDispatcher emailDispatcher, IDomainNotificationHandler domainNotificationHandler, IIntegrationServiceBus integrationBus, ILogger<AccountService> logger)
             : base(userManager, domainNotificationHandler, integrationBus, logger)
         {
             _signInManager = signInManager;
             _emailDispatcher = emailDispatcher;
-            _mediator = mediator;
         }
 
         public async Task<bool> CheckUsernameAvailabilityAsync(string username)
@@ -141,7 +138,7 @@ namespace NutrientAuto.Identity.Service.Services.Account
                 NotifyIdentityErrors(result);
             else
             {
-                IdentityResult claimSuccess = await _userManager.AddClaimAsync(user, new Claim("EmailConfirmed", "true"));
+                IdentityResult claimSuccess = await _userManager.AddClaimAsync(user, new Claim("ActiveProfile", "true"));
                 if (claimSuccess.Succeeded)
                     await PublishAsync(new UserConfirmedEmailIntegrationEvent(user.Id, user.Email));
                 else
