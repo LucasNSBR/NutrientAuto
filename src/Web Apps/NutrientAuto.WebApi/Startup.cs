@@ -130,12 +130,6 @@ namespace NutrientAuto.WebApi
             services.AddAuthorization(cfg => cfg.AddPolicy("AdminAccount",
                 cfgPolicy => cfgPolicy.RequireClaim("AdminAccount", "true")));
 
-            services.AddAuthorization(cfg => cfg.AddPolicy("SupportAccount",
-                cfgPolicy => cfgPolicy.RequireClaim("SupportAccount", "true")));
-
-            services.AddAuthorization(cfg => cfg.AddPolicy("ActiveNutritionist",
-                cfgPolicy => cfgPolicy.RequireClaim("ActiveNutritionist", "true")));
-
             services.AddAuthorization(cfg => cfg.AddPolicy("ActiveProfile",
                 cfgPolicy => cfgPolicy.RequireClaim("ActiveProfile", "true")));
 
