@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace NutrientAuto.WebApi.Controllers.Identity
 {
     [Produces("application/json")]
-    //[Authorize]
+    [Authorize]
     [Route("api/users")]
     public class UsersController : BaseController
     {
@@ -28,38 +28,7 @@ namespace NutrientAuto.WebApi.Controllers.Identity
             _httpContextUserAccessor = httpContextUserAccessor;
         }
 
-        [HttpGet]
-        [Authorize]
-        [Route("")]
-        public async Task<IActionResult> GetAllUsersAsync()
-        {
-            List<NutrientIdentityUser> users = await _userService.GetAllAsync();
-
-            return CreateResponse(users.Select(user => ToUser(user)));
-        }
-
-        [HttpGet]
-        [Authorize]
-        [Route("{id:guid}")]
-        public async Task<IActionResult> GetByIdAsync(Guid id)
-        {
-            NutrientIdentityUser user = await _userService.GetByIdAsync(id);
-
-            return CreateResponse(ToUser(user));
-        }
-
-        [HttpGet]
-        [Authorize]
-        [Route("{email:minlength(3)}")]
-        public async Task<IActionResult> GetByEmailAsync(string email)
-        {
-            NutrientIdentityUser user = await _userService.GetByEmailAsync(email);
-
-            return CreateResponse(ToUser(user));
-        }
-
         [HttpPost]
-        [Authorize]
         [Route("invite/{email:minlength(3)}")]
         public async Task<IActionResult> InviteUserAsync(string invitedEmail)
         {
