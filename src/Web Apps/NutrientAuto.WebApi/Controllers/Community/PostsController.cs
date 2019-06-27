@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NutrientAuto.Community.Domain.Commands.CommentAggregate;
@@ -16,7 +17,7 @@ using System.Threading.Tasks;
 namespace NutrientAuto.WebApi.Controllers.Community
 {
     [Produces("application/json")]
-    //[Authorize(Policy = "ActiveProfile")]
+    [Authorize]
     [Route("api/posts")]
     public class PostsController : BaseController
     {
@@ -69,6 +70,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
             return NotFound();
         }
 
+        [Authorize("ActiveProfile")]
         [HttpPost]
         [Route("")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -78,6 +80,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
             return await CreateCommandResponse(command);
         }
 
+        [Authorize("ActiveProfile")]
         [HttpDelete]
         [Route("{id:guid}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -92,6 +95,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
             return await CreateCommandResponse(command);
         }
 
+        [Authorize("ActiveProfile")]
         [HttpPut]
         [Route("{id:guid}/like")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -106,6 +110,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
             return await CreateCommandResponse(command);
         }
 
+        [Authorize("ActiveProfile")]
         [HttpPut]
         [Route("{id:guid}/unlike")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -120,6 +125,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
             return await CreateCommandResponse(command);
         }
 
+        [Authorize("ActiveProfile")]
         [HttpPut]
         [Route("{id:guid}/add-comment")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -131,6 +137,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
             return await CreateCommandResponse(command);
         }
 
+        [Authorize("ActiveProfile")]
         [HttpPut]
         [Route("{id:guid}/remove-comment/{commentId:guid}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -146,6 +153,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
             return await CreateCommandResponse(command);
         }
 
+        [Authorize("ActiveProfile")]
         [HttpPut]
         [Route("{id:guid}/reply-comment/{commentId:guid}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]

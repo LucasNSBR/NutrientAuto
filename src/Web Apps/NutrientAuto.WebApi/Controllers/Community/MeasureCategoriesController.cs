@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NutrientAuto.Community.Domain.Aggregates.MeasureCategoryAggregate;
@@ -12,8 +13,8 @@ using System.Threading.Tasks;
 
 namespace NutrientAuto.WebApi.Controllers.Community
 {
+    [Authorize("ActiveProfile")]
     [Produces("application/json")]
-    //[Authorize(Policy = "ActiveProfile")]
     [Route("api/measure-categories")]
     public class MeasureCategoriesController : BaseController
     {

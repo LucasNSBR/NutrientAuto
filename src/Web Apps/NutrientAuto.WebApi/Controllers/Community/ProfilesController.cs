@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NutrientAuto.Community.Domain.Commands.FriendshipRequestAggregate;
@@ -15,8 +16,8 @@ using System.Threading.Tasks;
 
 namespace NutrientAuto.WebApi.Controllers.Community
 {
+    [Authorize(Policy = "ActiveProfile")]
     [Produces("application/json")]
-    //[Authorize(Policy = "ActiveProfile")]
     [Route("api/profiles")]
     public class ProfilesController : BaseController
     {
