@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NutrientAuto.Community.Domain.Aggregates.FoodTableAggregate;
@@ -14,8 +15,8 @@ using System.Threading.Tasks;
 
 namespace NutrientAuto.WebApi.Controllers.Community.Admin
 {
+    [Authorize(Policy = "AdminAccount")]
     [Produces("application/json")]
-    //[Authorize(Policy = "AdminAccount")]
     [Route("api/admin/food-tables")]
     public class FoodTablesController : BaseController
     {
