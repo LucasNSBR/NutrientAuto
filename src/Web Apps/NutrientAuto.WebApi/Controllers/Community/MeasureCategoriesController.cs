@@ -9,6 +9,7 @@ using NutrientAuto.CrossCutting.HttpService.HttpContext;
 using NutrientAuto.Shared.Notifications;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace NutrientAuto.WebApi.Controllers.Community
@@ -30,6 +31,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
 
         [HttpGet]
         [Route("")]
+        [ProducesResponseType(typeof(List<MeasureCategory>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllAsync()
         {
             List<MeasureCategory> measureCategories = await _measureCategoryRepository.GetAllByProfileIdAsync(_currentProfileId);
@@ -39,6 +41,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
 
         [HttpGet]
         [Route("{id:guid}")]
+        [ProducesResponseType(typeof(MeasureCategory), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             MeasureCategory measureCategory = await _measureCategoryRepository.GetByIdAndProfileIdAsync(id, _currentProfileId);
@@ -48,6 +51,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
 
         [HttpGet]
         [Route("my-measure-categories")]
+        [ProducesResponseType(typeof(List<CustomMeasureCategory>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllByProfileIdAsync()
         {
             List<CustomMeasureCategory> customMeasureCategories = await _measureCategoryRepository.GetAllCustomsByProfileIdAsync(_currentProfileId);
@@ -57,6 +61,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
 
         [HttpGet]
         [Route("favorites")]
+        [ProducesResponseType(typeof(List<MeasureCategory>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllFavoritesByProfileIdAsync()
         {
             List<MeasureCategory> measureCategories = await _measureCategoryRepository.GetAllFavoritesByProfileIdAsync(_currentProfileId);
@@ -66,6 +71,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
 
         [HttpGet]
         [Route("my-measure-categories/{id:guid}")]
+        [ProducesResponseType(typeof(CustomMeasureCategory), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetCustomByIdAsync(Guid id)
         {
             CustomMeasureCategory customMeasureCategory = await _measureCategoryRepository.GetCustomByIdAsync(id, _currentProfileId);
@@ -75,6 +81,8 @@ namespace NutrientAuto.WebApi.Controllers.Community
 
         [HttpPost]
         [Route("my-measure-categories")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> RegisterAsync([FromBody]RegisterMeasureCategoryCommand command)
         {
             return await CreateCommandResponse(command);
@@ -82,6 +90,8 @@ namespace NutrientAuto.WebApi.Controllers.Community
 
         [HttpPut]
         [Route("my-measure-categories/{id:guid}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody]UpdateMeasureCategoryCommand command)
         {
             command.MeasureCategoryId = id;
@@ -91,6 +101,8 @@ namespace NutrientAuto.WebApi.Controllers.Community
 
         [HttpDelete]
         [Route("my-measure-categories/{id:guid}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> RemoveAsync(Guid id)
         {
             RemoveMeasureCategoryCommand command = new RemoveMeasureCategoryCommand

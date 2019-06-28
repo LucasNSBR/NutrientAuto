@@ -54,7 +54,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
         }
 
         [HttpGet]
-        [Route("")]
+        [Route("categories")]
         [ProducesResponseType(typeof(List<CategoryStatistics>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetEntriesByCategoriesAsync(DateTime startDate, DateTime endDate, [FromBody]List<Guid> categoryIds)
         {

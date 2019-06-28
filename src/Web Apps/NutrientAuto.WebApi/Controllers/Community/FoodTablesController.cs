@@ -9,6 +9,7 @@ using NutrientAuto.CrossCutting.HttpService.HttpContext;
 using NutrientAuto.Shared.Notifications;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace NutrientAuto.WebApi.Controllers.Community
@@ -30,6 +31,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
 
         [HttpGet]
         [Route("")]
+        [ProducesResponseType(typeof(List<FoodTable>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllAsync()
         {
             List<FoodTable> foodTables = await _foodTableRepository.GetAllByProfileIdAsync(_currentProfileId);
@@ -39,6 +41,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
 
         [HttpGet]
         [Route("{id:guid}")]
+        [ProducesResponseType(typeof(FoodTable), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             FoodTable foodTable = await _foodTableRepository.GetByIdAndProfileIdAsync(id, _currentProfileId);
@@ -48,6 +51,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
 
         [HttpGet]
         [Route("my-food-tables")]
+        [ProducesResponseType(typeof(List<CustomFoodTable>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllByProfileIdAsync()
         {
             List<CustomFoodTable> customFoodTables = await _foodTableRepository.GetAllCustomsByProfileIdAsync(_currentProfileId);
@@ -57,6 +61,7 @@ namespace NutrientAuto.WebApi.Controllers.Community
 
         [HttpGet]
         [Route("my-food-tables/{id:guid}")]
+        [ProducesResponseType(typeof(CustomFoodTable), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetCustomByIdAsync(Guid id)
         {
             CustomFoodTable customFoodTable = await _foodTableRepository.GetCustomByIdAsync(id, _currentProfileId);
@@ -66,6 +71,8 @@ namespace NutrientAuto.WebApi.Controllers.Community
 
         [HttpPost]
         [Route("my-food-tables")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> RegisterAsync([FromBody]RegisterFoodTableCommand command)
         {
             return await CreateCommandResponse(command);
@@ -73,6 +80,8 @@ namespace NutrientAuto.WebApi.Controllers.Community
 
         [HttpPut]
         [Route("my-food-tables/{id:guid}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody]UpdateFoodTableCommand command)
         {
             command.FoodTableId = id;
@@ -82,6 +91,8 @@ namespace NutrientAuto.WebApi.Controllers.Community
 
         [HttpDelete]
         [Route("my-food-tables/{id:guid}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> RemoveAsync(Guid id)
         {
             RemoveFoodTableCommand command = new RemoveFoodTableCommand

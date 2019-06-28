@@ -17,7 +17,6 @@ namespace NutrientAuto.WebApi.Controllers.Community
 {
     [Authorize("ActiveProfile")]
     [Produces("application/json")]
-    [Authorize]
     [Route("api/measures")]
     public class MeasuresController : BaseController
     {

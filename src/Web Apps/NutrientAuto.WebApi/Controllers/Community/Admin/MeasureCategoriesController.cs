@@ -11,6 +11,7 @@ using NutrientAuto.CrossCutting.UnitOfWork;
 using NutrientAuto.Shared.Notifications;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace NutrientAuto.WebApi.Controllers.Community.Admin
@@ -32,6 +33,7 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpGet]
         [Route("")]
+        [ProducesResponseType(typeof(List<MeasureCategory>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllAsync()
         {
             List<MeasureCategory> measureCategories = await _measureCategoryRepository.GetAllDefaultsAsync();
@@ -41,6 +43,7 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpGet]
         [Route("{id:guid}")]
+        [ProducesResponseType(typeof(MeasureCategory), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             MeasureCategory measureCategory = await _measureCategoryRepository.GetDefaultByIdAsync(id);
@@ -50,6 +53,8 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpPost]
         [Route("")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> RegisterAsync([FromBody]RegisterMeasureCategoryCommand command)
         {
             bool validCommand = command.Validate();
@@ -69,6 +74,8 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpPut]
         [Route("{id:guid}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody]UpdateMeasureCategoryCommand command)
         {
             bool validCommand = command.Validate();
@@ -92,6 +99,8 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpDelete]
         [Route("{id:guid}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> RemoveAsync(Guid id)
         {
             MeasureCategory measureCategory = await _measureCategoryRepository.GetDefaultByIdAsync(id);

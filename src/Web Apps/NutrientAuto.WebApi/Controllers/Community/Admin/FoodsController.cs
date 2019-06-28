@@ -13,6 +13,7 @@ using NutrientAuto.CrossCutting.UnitOfWork;
 using NutrientAuto.Shared.Notifications;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace NutrientAuto.WebApi.Controllers.Community.Admin
@@ -36,6 +37,7 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpGet]
         [Route("")]
+        [ProducesResponseType(typeof(List<Food>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllAsync()
         {
             List<Food> foods = await _foodRepository.GetAllDefaultsAsync();
@@ -45,6 +47,7 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpGet]
         [Route("{id:guid}")]
+        [ProducesResponseType(typeof(Food), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             Food food = await _foodRepository.GetDefaultByIdAsync(id);
@@ -54,6 +57,8 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpPost]
         [Route("")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> RegisterAsync([FromBody]RegisterFoodCommand command)
         {
             bool validCommand = command.Validate();
@@ -76,6 +81,8 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpPut]
         [Route("{id:guid}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody]UpdateFoodCommand command)
         {
             bool validCommand = command.Validate();
@@ -102,6 +109,8 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpDelete]
         [Route("{id:guid}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> RemoveAsync(Guid id)
         {
             Food food = await _foodRepository.GetDefaultByIdAsync(id);

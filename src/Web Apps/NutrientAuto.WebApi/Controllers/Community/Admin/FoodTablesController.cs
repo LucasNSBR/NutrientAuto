@@ -11,6 +11,7 @@ using NutrientAuto.CrossCutting.UnitOfWork;
 using NutrientAuto.Shared.Notifications;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace NutrientAuto.WebApi.Controllers.Community.Admin
@@ -32,6 +33,7 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpGet]
         [Route("")]
+        [ProducesResponseType(typeof(List<FoodTable>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllAsync()
         {
             List<FoodTable> foodTables = await _foodTableRepository.GetAllDefaultsAsync();
@@ -41,6 +43,7 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpGet]
         [Route("{id:guid}")]
+        [ProducesResponseType(typeof(FoodTable), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             FoodTable foodTable = await _foodTableRepository.GetDefaultByIdAsync(id);
@@ -50,6 +53,8 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpPost]
         [Route("")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> RegisterAsync([FromBody]RegisterFoodTableCommand command)
         {
             bool validCommand = command.Validate();
@@ -68,6 +73,8 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpPut]
         [Route("{id:guid}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody]UpdateFoodTableCommand command)
         {
             bool validCommand = command.Validate();
@@ -90,6 +97,8 @@ namespace NutrientAuto.WebApi.Controllers.Community.Admin
 
         [HttpDelete]
         [Route("{id:guid}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> RemoveAsync(Guid id)
         {
             FoodTable foodTable = await _foodTableRepository.GetDefaultByIdAsync(id);
