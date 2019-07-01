@@ -9,22 +9,19 @@ namespace NutrientAuto.WebApi
 {
     public class Program
     {
-        protected Program()
+        public static void Main(string[] args)
         {
+            BuildWebHost(args).Run();
         }
 
-        public static void Main(string[] args)
+        public static IWebHost BuildWebHost(string[] args)
         {
             IConfiguration configuration = new ConfigurationBuilder()
                             .SetBasePath(Directory.GetCurrentDirectory())
                             .AddJsonFile("appsettings.json")
                             .Build();
 
-            BuildWebHost(args, configuration).Run();
-        }
-
-        public static IWebHost BuildWebHost(string[] args, IConfiguration configuration) =>
-            WebHost.CreateDefaultBuilder(args)
+            return WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseSerilog(new LoggerConfiguration()
                     .Enrich.FromLogContext()
@@ -33,5 +30,6 @@ namespace NutrientAuto.WebApi
                                   textFormatter: new CompactJsonFormatter())
                     .CreateLogger())
                 .Build();
+        }
     }
 }
