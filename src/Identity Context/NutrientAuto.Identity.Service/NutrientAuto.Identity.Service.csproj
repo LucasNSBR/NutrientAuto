@@ -5,18 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CrossCutting\NutrientAuto.CrossCutting.ServiceBus\NutrientAuto.CrossCutting.ServiceBus.csproj" />
-    <ProjectReference Include="..\..\CrossCutting\NutrientAuto.CrossCutting.UnitOfWork\NutrientAuto.CrossCutting.UnitOfWork.csproj" />
-    <ProjectReference Include="..\NutrientAuto.Identity.Domain\NutrientAuto.Identity.Domain.csproj" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Microsoft.IdentityModel.Tokens">
-      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.identitymodel.tokens\5.1.4\lib\netstandard1.4\Microsoft.IdentityModel.Tokens.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IdentityModel.Tokens.Jwt">
-      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\system.identitymodel.tokens.jwt\5.1.4\lib\netstandard1.4\System.IdentityModel.Tokens.Jwt.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\CrossCutting\NutrientAuto.CrossCutting.ServiceBus\NutrientAuto.CrossCutting.ServiceBus.csproj" />
+    <ProjectReference Include="..\..\CrossCutting\NutrientAuto.CrossCutting.UnitOfWork\NutrientAuto.CrossCutting.UnitOfWork.csproj" />
+    <ProjectReference Include="..\NutrientAuto.Identity.Domain\NutrientAuto.Identity.Domain.csproj" />
   </ItemGroup>
 
 </Project>
