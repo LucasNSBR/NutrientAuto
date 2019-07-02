@@ -10,7 +10,7 @@ using NutrientAuto.Identity.Data.Context;
 namespace NutrientAuto.Identity.Data.Migrations
 {
     [DbContext(typeof(ApplicationIdentityDbContext))]
-    [Migration("20190701224207_initial")]
+    [Migration("20190702042013_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

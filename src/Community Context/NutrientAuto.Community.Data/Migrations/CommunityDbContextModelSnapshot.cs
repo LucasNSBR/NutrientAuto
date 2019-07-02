@@ -386,7 +386,7 @@ namespace NutrientAuto.Community.Data.Migrations
                     b.HasOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile")
                         .WithMany()
                         .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("NutrientAuto.Community.Domain.Aggregates.CommentAggregate.Comment")
                         .WithMany("Replies")
@@ -590,12 +590,12 @@ namespace NutrientAuto.Community.Data.Migrations
                     b.HasOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile")
                         .WithMany()
                         .HasForeignKey("RequestedId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile")
                         .WithMany()
                         .HasForeignKey("RequesterId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.GoalAggregate.Goal", b =>
@@ -660,7 +660,7 @@ namespace NutrientAuto.Community.Data.Migrations
                             b1.HasOne("NutrientAuto.Community.Domain.Aggregates.FoodAggregate.Food", "Food")
                                 .WithMany()
                                 .HasForeignKey("FoodId")
-                                .OnDelete(DeleteBehavior.Cascade);
+                                .OnDelete(DeleteBehavior.Restrict);
 
                             b1.HasOne("NutrientAuto.Community.Domain.Aggregates.MealAggregate.Meal")
                                 .WithMany("MealFoods")
@@ -818,7 +818,7 @@ namespace NutrientAuto.Community.Data.Migrations
                             b1.HasOne("NutrientAuto.Community.Domain.Aggregates.MeasureCategoryAggregate.MeasureCategory", "MeasureCategory")
                                 .WithMany()
                                 .HasForeignKey("MeasureCategoryId")
-                                .OnDelete(DeleteBehavior.Cascade);
+                                .OnDelete(DeleteBehavior.Restrict);
 
                             b1.HasOne("NutrientAuto.Community.Domain.Aggregates.MeasureAggregate.Measure")
                                 .WithMany("MeasureLines")
@@ -913,7 +913,7 @@ namespace NutrientAuto.Community.Data.Migrations
                             b1.HasOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile")
                                 .WithMany()
                                 .HasForeignKey("ProfileId")
-                                .OnDelete(DeleteBehavior.Cascade);
+                                .OnDelete(DeleteBehavior.Restrict);
                         });
 
                     b.OwnsOne("NutrientAuto.Shared.ValueObjects.Image", "AttachedImage", b1 =>
@@ -944,12 +944,12 @@ namespace NutrientAuto.Community.Data.Migrations
                     b.HasOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile")
                         .WithMany()
                         .HasForeignKey("FriendId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile")
                         .WithMany("Friends")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("NutrientAuto.Community.Domain.Aggregates.ProfileAggregate.Profile", b =>
