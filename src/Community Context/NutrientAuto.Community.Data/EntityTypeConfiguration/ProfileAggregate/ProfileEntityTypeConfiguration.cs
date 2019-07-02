@@ -62,7 +62,7 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.ProfileAggregate
                 .HasMany(p => p.Friends)
                 .WithOne()
                 .HasForeignKey("UserId")
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

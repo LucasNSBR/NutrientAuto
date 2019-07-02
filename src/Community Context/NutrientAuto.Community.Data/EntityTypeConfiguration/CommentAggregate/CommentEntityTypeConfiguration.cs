@@ -23,7 +23,7 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.CommentAggregate
                 .HasOne<Profile>()
                 .WithMany()
                 .HasForeignKey(c => c.ProfileId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Property(c => c.Body)

@@ -58,7 +58,7 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MeasureAggregate
                 {
                     measureLineCfg.Property<Guid>("Id");
                     measureLineCfg.HasKey("Id");
-                    measureLineCfg.HasOne(m => m.MeasureCategory).WithMany().HasForeignKey(ml => ml.MeasureCategoryId).OnDelete(DeleteBehavior.Cascade);
+                    measureLineCfg.HasOne(m => m.MeasureCategory).WithMany().HasForeignKey(ml => ml.MeasureCategoryId).OnDelete(DeleteBehavior.Restrict);
                     measureLineCfg.Property(m => m.MeasureCategoryId).HasColumnName("MeasureCategoryId");
                     measureLineCfg.Property(m => m.Value).HasColumnName("Value").HasPrecision(18, 2);
                     measureLineCfg.OnDelete(DeleteBehavior.Cascade);

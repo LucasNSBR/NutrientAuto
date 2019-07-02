@@ -52,7 +52,8 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MealAggregate
 
                     cfg.HasOne(mf => mf.Food)
                     .WithMany()
-                    .HasForeignKey(mf => mf.FoodId);
+                    .HasForeignKey(mf => mf.FoodId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
                     cfg.Property(mf => mf.Quantity).HasPrecision(18, 2);
 
@@ -65,6 +66,7 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.MealAggregate
                         macroCfg.Property(fm => fm.Fat).HasColumnName("MealFoodFat").HasPrecision(18, 2);
                     });
 
+                    cfg.OnDelete(DeleteBehavior.Restrict);
                     cfg.ToTable("MealFoods");
                 });
         }

@@ -53,7 +53,7 @@ namespace NutrientAuto.Community.Data.EntityTypeConfiguration.PostAggregate
                 {
                     cfg.Property<Guid>("Id");
                     cfg.HasKey("Id");
-                    cfg.HasOne<Profile>().WithMany().HasForeignKey(pl => pl.ProfileId).OnDelete(DeleteBehavior.Cascade);
+                    cfg.HasOne<Profile>().WithMany().HasForeignKey(pl => pl.ProfileId).OnDelete(DeleteBehavior.Restrict);
                     cfg.Property(p => p.DateCreated).IsRequired();
                     cfg.ToTable("PostLikes");
                 });
